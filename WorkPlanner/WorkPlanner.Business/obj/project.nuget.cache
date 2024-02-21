@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "HWehdMaeK7Ucn0k7tWhScDARd2ecgYYeQOFoQYhSTaI2ZNWItr+cGENwyOTLxdiEY2jwXuoWZZS5UQFSVow0Fw==",
+  "success": true,
+  "projectFilePath": "D:\\Facultate\\Licenta\\bachelor-degree\\WorkPlanner\\WorkPlanner.Business\\WorkPlanner.Business.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Dan\\.nuget\\packages\\mediatr\\12.2.0\\mediatr.12.2.0.nupkg.sha512",
+    "C:\\Users\\Dan\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\Dan\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

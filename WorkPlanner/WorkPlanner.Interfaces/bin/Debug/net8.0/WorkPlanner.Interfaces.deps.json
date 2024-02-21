@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "WorkPlanner.Interfaces/1.0.0": {
+        "runtime": {
+          "WorkPlanner.Interfaces.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WorkPlanner.Interfaces/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
