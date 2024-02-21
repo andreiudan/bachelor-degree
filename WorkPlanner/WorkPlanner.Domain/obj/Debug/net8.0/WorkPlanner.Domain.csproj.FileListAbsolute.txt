@@ -1,0 +1,12 @@
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\bin\Debug\net8.0\WorkPlanner.Domain.deps.json
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\bin\Debug\net8.0\WorkPlanner.Domain.dll
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\bin\Debug\net8.0\WorkPlanner.Domain.pdb
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\obj\Debug\net8.0\WorkPlanner.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\obj\Debug\net8.0\WorkPlanner.Domain.AssemblyInfoInputs.cache
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\obj\Debug\net8.0\WorkPlanner.Domain.AssemblyInfo.cs
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\obj\Debug\net8.0\WorkPlanner.Domain.csproj.CoreCompileInputs.cache
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\obj\Debug\net8.0\WorkPlanner.Domain.sourcelink.json
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\obj\Debug\net8.0\WorkPlanner.Domain.dll
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\obj\Debug\net8.0\refint\WorkPlanner.Domain.dll
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\obj\Debug\net8.0\WorkPlanner.Domain.pdb
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Domain\obj\Debug\net8.0\ref\WorkPlanner.Domain.dll

@@ -1,0 +1,12 @@
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\bin\Debug\net8.0\WorkPlanner.Interfaces.deps.json
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\bin\Debug\net8.0\WorkPlanner.Interfaces.dll
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\bin\Debug\net8.0\WorkPlanner.Interfaces.pdb
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\obj\Debug\net8.0\WorkPlanner.Interfaces.GeneratedMSBuildEditorConfig.editorconfig
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\obj\Debug\net8.0\WorkPlanner.Interfaces.AssemblyInfoInputs.cache
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\obj\Debug\net8.0\WorkPlanner.Interfaces.AssemblyInfo.cs
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\obj\Debug\net8.0\WorkPlanner.Interfaces.csproj.CoreCompileInputs.cache
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\obj\Debug\net8.0\WorkPlanner.Interfaces.sourcelink.json
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\obj\Debug\net8.0\WorkPlanner.Interfaces.dll
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\obj\Debug\net8.0\refint\WorkPlanner.Interfaces.dll
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\obj\Debug\net8.0\WorkPlanner.Interfaces.pdb
+D:\Facultate\Licenta\bachelor-degree\WorkPlanner\WorkPlanner.Interfaces\obj\Debug\net8.0\ref\WorkPlanner.Interfaces.dll
