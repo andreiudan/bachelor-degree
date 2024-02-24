@@ -10,7 +10,7 @@ namespace WorkPlanner.DataAccess.Repositories
 
         public Repository(DbContext context)
         {
-            Context = context ?? throw new ArgumentNullException(nameof(context));
+            this.Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<TModel> AddAsync(TModel model)
@@ -20,7 +20,7 @@ namespace WorkPlanner.DataAccess.Repositories
                 throw new ArgumentNullException(nameof(model));
             }
 
-            await Context.Set<TModel>().AddAsync(model);
+            await this.Context.Set<TModel>().AddAsync(model);
 
             return model;
         }
@@ -32,14 +32,14 @@ namespace WorkPlanner.DataAccess.Repositories
                 return false;
             }
 
-            await Task.Run(() => Context.Set<TModel>().Remove(model));
+            await Task.Run(() => this.Context.Set<TModel>().Remove(model));
 
             return true;
         }
 
         public Task<IEnumerable<TModel>> GetAllAsync()
         {
-            return Task.FromResult(Context.Set<TModel>().AsEnumerable());
+            return Task.FromResult(this.Context.Set<TModel>().AsEnumerable());
         }
 
         public async Task<TModel> FindAsync(Expression<Func<TModel, bool>> predicate)
@@ -49,7 +49,7 @@ namespace WorkPlanner.DataAccess.Repositories
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            return await Context.Set<TModel>().FirstOrDefaultAsync(predicate);
+            return await this.Context.Set<TModel>().FirstOrDefaultAsync(predicate);
         }
     }
 }

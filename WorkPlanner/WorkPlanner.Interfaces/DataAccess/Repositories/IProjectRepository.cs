@@ -1,6 +1,8 @@
-﻿namespace WorkPlanner.Interfaces.DataAccess.Repositories
+﻿using WorkPlanner.Domain.Entities;
+
+namespace WorkPlanner.Interfaces.DataAccess.Repositories
 {
-    public interface IProjectRepository
+    public interface IProjectRepository : IRepository<Project>
     {
     }
 }

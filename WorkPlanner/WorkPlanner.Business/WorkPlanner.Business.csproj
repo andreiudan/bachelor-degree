@@ -7,14 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="CommandHandlers\" />
+    <Folder Include="Exceptions\" />
     <Folder Include="QueryHandlers\" />
     <Folder Include="Queries\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkPlanner.Domain\WorkPlanner.Domain.csproj" />
+    <ProjectReference Include="..\WorkPlanner.Interfaces\WorkPlanner.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -17,7 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkPlanner.Business\WorkPlanner.Business.csproj" />
     <ProjectReference Include="..\WorkPlanner.DataAccess\WorkPlanner.DataAccess.csproj" />
+    <ProjectReference Include="..\WorkPlanner.Domain\WorkPlanner.Domain.csproj" />
+    <ProjectReference Include="..\WorkPlanner.Interfaces\WorkPlanner.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

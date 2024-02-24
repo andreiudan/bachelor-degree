@@ -22,7 +22,7 @@ namespace WorkPlanner.Domain.Entities
         public string HashedPassword { get; set; }
 
         [Required]
-        public int Salt { get; set; }
+        public string Salt { get; set; }
 
         [Required]
         public string Username { get; set; }
