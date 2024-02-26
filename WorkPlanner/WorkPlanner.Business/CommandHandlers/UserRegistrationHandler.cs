@@ -13,14 +13,12 @@ namespace WorkPlanner.Business.CommandHandlers
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
         private readonly IPasswordHasher passwordHasher;
-        private readonly IUsernameGenerator usernameGenerator;
 
-        public UserRegistrationHandler(IMapper mapper, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher, IUsernameGenerator usernameGenerator)
+        public UserRegistrationHandler(IMapper mapper, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             this.passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
-            this.usernameGenerator = usernameGenerator ?? throw new ArgumentNullException(nameof(usernameGenerator));
         }
 
         public async Task<int> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
@@ -35,7 +33,7 @@ namespace WorkPlanner.Business.CommandHandlers
             user.Salt = passwordHasher.GenerateSalt(saltLength);
             user.HashedPassword = passwordHasher.CalculateHash(request.User.Password, user.Salt);
 
-            user.Username = usernameGenerator.GenerateUsername(request.User);
+            user.Username = "";
 
             User registeredUser = await unitOfWork.Users.AddAsync(user);
 

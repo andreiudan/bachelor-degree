@@ -27,6 +27,12 @@ namespace WorkPlanner.Domain.Entities
         [Required]
         public string Username { get; set; }
 
+        [Required]
+        public DateTime RegistrationTime { get; set; }
+
+        [Required]
+        public bool Verified { get; set; }
+
         public override bool Equals(object? obj)
         {
             if (obj == null)
@@ -50,12 +56,26 @@ namespace WorkPlanner.Domain.Entities
                 this.Email == obj.Email &&
                 this.HashedPassword == obj.HashedPassword &&
                 this.Salt.CompareTo(obj.Salt) == 0 &&
-                this.Username == obj.Username;
+                this.Username == obj.Username &&
+                this.RegistrationTime == RegistrationTime &&
+                this.Verified == Verified;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, FirstName, LastName, Email, HashedPassword, Salt, Username);
+            HashCode hash = new HashCode();
+
+            hash.Add(Id);
+            hash.Add(FirstName);
+            hash.Add(LastName);
+            hash.Add(Email);
+            hash.Add(HashedPassword);
+            hash.Add(Salt);
+            hash.Add(Username);
+            hash.Add(RegistrationTime);
+            hash.Add(Verified);
+
+            return hash.ToHashCode();
         }
     }
 }

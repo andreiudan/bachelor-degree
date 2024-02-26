@@ -35,5 +35,15 @@ namespace WorkPlanner.Api.Controllers
 
             return Created();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Validate(int id)
+        {
+            EmailValidationCommand request = new EmailValidationCommand(id);
+
+            string result = await mediator.Send(request);
+         
+            return Ok();
+        }
     }
 }

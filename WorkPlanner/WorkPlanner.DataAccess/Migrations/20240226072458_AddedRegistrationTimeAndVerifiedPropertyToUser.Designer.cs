@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkPlanner.DataAccess;
 
@@ -10,9 +11,11 @@ using WorkPlanner.DataAccess;
 namespace WorkPlanner.DataAccess.Migrations
 {
     [DbContext(typeof(WorkPlannerContext))]
-    partial class WorkPlannerContextModelSnapshot : ModelSnapshot
+    [Migration("20240226072458_AddedRegistrationTimeAndVerifiedPropertyToUser")]
+    partial class AddedRegistrationTimeAndVerifiedPropertyToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
@@ -188,9 +191,9 @@ namespace WorkPlanner.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("RegistrationTime")
-                        .ValueGeneratedOnAdd()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT")
-                        .HasDefaultValueSql("datetime('now')");
+                        .HasDefaultValue(new DateTime(2024, 2, 26, 7, 24, 56, 702, DateTimeKind.Utc).AddTicks(6710));
 
                     b.Property<string>("Salt")
                         .IsRequired()

@@ -1,36 +1,41 @@
-﻿using WorkPlanner.Domain.Dtos;
+﻿using System.Text.RegularExpressions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
-using WorkPlanner.Interfaces.DataAccess;
 
 namespace WorkPlanner.Business.UserRegistration
 {
     public class UsernameGenerator : IUsernameGenerator
     {
-        //private readonly IUnitOfWork unitOfWork;
-
-        //public UsernameGenerator(IUnitOfWork unitOfWork)
-        //{
-        //    this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-        //}
-
-        public string GenerateUsername(UserRegistrationDto user)
+        public string GenerateUsername(User userToActivate, User lastUserWithSameUsername)
         {
             int nrOfCharFromLastName = 4;
-            string username = user.FirstName;
+            string username = userToActivate.FirstName;
 
-            if (user.LastName.Length > nrOfCharFromLastName)
+            if (userToActivate.LastName.Length > nrOfCharFromLastName)
             {
-                username += user.LastName[..nrOfCharFromLastName];
+                username += userToActivate.LastName[..nrOfCharFromLastName];
             }
             else
             {
-                username += user.LastName;
+                username += userToActivate.LastName;
             }
 
-            ///TO DO:add a number to the username if it already exists
+            return username + GetFirstUsableUsernameId(lastUserWithSameUsername);
+        }
 
-            return username;
+        private string GetFirstUsableUsernameId(User lastUserWithSameUsername)
+        {
+            int idForNewUsername = 1;
+            string lastUserWithSameUsernameId = Regex.Replace(lastUserWithSameUsername.Username, 
+                                                              "[^0-9]+", 
+                                                              string.Empty);
+
+            if (!lastUserWithSameUsernameId.Equals(string.Empty))
+            {
+                idForNewUsername = int.Parse(lastUserWithSameUsernameId) + 1;
+            }
+
+            return idForNewUsername.ToString();
         }
     }
 }
