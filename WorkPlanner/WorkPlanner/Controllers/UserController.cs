@@ -29,9 +29,13 @@ namespace WorkPlanner.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegistrationDto user)
         {
-            UserRegistrationCommand request = new UserRegistrationCommand(user);
+            UserRegistrationCommand registerRequest = new UserRegistrationCommand(user);
 
-            int result = await mediator.Send(request);
+            int result = await mediator.Send(registerRequest);
+
+            SendValidationEmailCommand emailRequest = new SendValidationEmailCommand(result);
+
+            await mediator.Send(emailRequest);
 
             return Created();
         }
@@ -39,11 +43,13 @@ namespace WorkPlanner.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Validate(int id)
         {
-            EmailValidationCommand request = new EmailValidationCommand(id);
+            UserValidationCommand request = new UserValidationCommand(id);
 
             string result = await mediator.Send(request);
          
             return Ok();
         }
+
+
     }
 }

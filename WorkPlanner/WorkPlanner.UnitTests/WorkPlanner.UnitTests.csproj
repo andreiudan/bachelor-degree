@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,14 +26,15 @@
     <ProjectReference Include="..\WorkPlanner.DataAccess\WorkPlanner.DataAccess.csproj" />
     <ProjectReference Include="..\WorkPlanner.Domain\WorkPlanner.Domain.csproj" />
     <ProjectReference Include="..\WorkPlanner.Interfaces\WorkPlanner.Interfaces.csproj" />
+    <ProjectReference Include="..\WorkPlanner.Notification\WorkPlanner.Notification.csproj" />
     <ProjectReference Include="..\WorkPlanner\WorkPlanner.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Business\" />
     <Folder Include="Domain\" />
     <Folder Include="DataAccess\" />
     <Folder Include="Api\" />
+    <Folder Include="Notification\" />
   </ItemGroup>
 
 </Project>

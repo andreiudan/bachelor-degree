@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
     <PackageReference Include="MimeKit" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WorkPlanner.Domain\WorkPlanner.Domain.csproj" />
+    <ProjectReference Include="..\WorkPlanner.Interfaces\WorkPlanner.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

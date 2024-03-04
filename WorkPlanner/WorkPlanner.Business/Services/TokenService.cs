@@ -3,11 +3,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using WorkPlanner.Domain;
+using WorkPlanner.Domain.Configurations;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 
-namespace WorkPlanner.Business
+namespace WorkPlanner.Business.Services
 {
     public class TokenService : ITokenService
     {
@@ -31,7 +31,7 @@ namespace WorkPlanner.Business
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SigningKey));
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-            JwtSecurityToken token = new JwtSecurityToken(claims: claims, 
+            JwtSecurityToken token = new JwtSecurityToken(claims: claims,
                                                           expires: DateTime.UtcNow.AddMinutes(jwtConfig.ExpirationTimeInMinutes),
                                                           signingCredentials: credentials);
 

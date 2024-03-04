@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using WorkPlanner.Business.Commands;
+using WorkPlanner.Business.Services;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
@@ -12,7 +13,9 @@ namespace WorkPlanner.Business.CommandHandlers
         private readonly IPasswordHasher passwordHasher;
         private readonly ITokenService tokenService;
 
-        public UserAuthenticationHandler(IUnitOfWork unitOfWork, IPasswordHasher passwordHasher, ITokenService tokenService)
+        public UserAuthenticationHandler(IUnitOfWork unitOfWork, 
+                                         IPasswordHasher passwordHasher, 
+                                         ITokenService tokenService)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             this.passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));

@@ -6,9 +6,13 @@ using WorkPlanner.Business.Commands;
 using AutoMapper;
 using WorkPlanner.Business;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using WorkPlanner.Domain;
 using WorkPlanner.Api;
 using WorkPlanner.Business.UserRegistration;
+using WorkPlanner.Business.Services;
+using WorkPlanner.Interfaces.Notification;
+using WorkPlanner.Notification;
+using WorkPlanner.Domain.EmailTypes;
+using WorkPlanner.Domain.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +41,12 @@ builder.Services.AddDbContext<WorkPlannerContext>(options =>
 builder.Services.AddMediatR(cfg => 
     cfg.RegisterServicesFromAssemblies(typeof(UserRegistrationCommand).Assembly));
 
+builder.Services.AddOptions<EmailServiceConfiguration>()
+    .Bind(builder.Configuration.GetSection(nameof(EmailServiceConfiguration)));
+
+builder.Services.AddOptions<AccountValidationConfiguration>()
+    .Bind(builder.Configuration.GetSection(nameof(AccountValidationConfiguration)));
+
 builder.Services.AddOptions<JwtBearerConfiguration>()
     .Bind(builder.Configuration.GetSection(nameof(JwtBearerConfiguration)));
 
@@ -49,7 +59,16 @@ builder.Services.AddAuthentication(option =>
 }).AddJwtBearer();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<IEmailClient, EmailClient>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddScoped<ValidationEmail>();
+
+builder.Services.AddScoped<IEmailMessageFactory, EmailMessageFactory>();
+
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<IUsernameGenerator, UsernameGenerator>();
 

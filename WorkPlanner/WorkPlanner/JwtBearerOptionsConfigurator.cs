@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using WorkPlanner.Domain;
+using WorkPlanner.Domain.Configurations;
 
 namespace WorkPlanner.Api
 {

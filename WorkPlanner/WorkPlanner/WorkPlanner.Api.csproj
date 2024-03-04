@@ -23,6 +23,7 @@
     <ProjectReference Include="..\WorkPlanner.DataAccess\WorkPlanner.DataAccess.csproj" />
     <ProjectReference Include="..\WorkPlanner.Domain\WorkPlanner.Domain.csproj" />
     <ProjectReference Include="..\WorkPlanner.Interfaces\WorkPlanner.Interfaces.csproj" />
+    <ProjectReference Include="..\WorkPlanner.Notification\WorkPlanner.Notification.csproj" />
   </ItemGroup>
 
 </Project>

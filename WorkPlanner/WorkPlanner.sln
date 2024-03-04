@@ -5,15 +5,17 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkPlanner.Api", "WorkPlanner\WorkPlanner.Api.csproj", "{6D76C797-7998-45E9-8D9D-A2E5D999DA91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkPlanner.Business", "WorkPlanner.Business\WorkPlanner.Business.csproj", "{59808327-7084-4BDE-9894-F14B7483F938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkPlanner.Business", "WorkPlanner.Business\WorkPlanner.Business.csproj", "{59808327-7084-4BDE-9894-F14B7483F938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkPlanner.Interfaces", "WorkPlanner.Interfaces\WorkPlanner.Interfaces.csproj", "{3B76F662-D271-455F-9D62-C20FA8682D99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkPlanner.Interfaces", "WorkPlanner.Interfaces\WorkPlanner.Interfaces.csproj", "{3B76F662-D271-455F-9D62-C20FA8682D99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkPlanner.DataAccess", "WorkPlanner.DataAccess\WorkPlanner.DataAccess.csproj", "{210EF427-A9ED-4D2E-9487-52D11160FD7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkPlanner.DataAccess", "WorkPlanner.DataAccess\WorkPlanner.DataAccess.csproj", "{210EF427-A9ED-4D2E-9487-52D11160FD7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkPlanner.Domain", "WorkPlanner.Domain\WorkPlanner.Domain.csproj", "{93CE0894-BC1E-4E2F-99E2-2CE4CAA6319F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkPlanner.Domain", "WorkPlanner.Domain\WorkPlanner.Domain.csproj", "{93CE0894-BC1E-4E2F-99E2-2CE4CAA6319F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkPlanner.UnitTests", "WorkPlanner.UnitTests\WorkPlanner.UnitTests.csproj", "{2D0994E2-B0C8-4671-90DD-EB8B9828D0F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkPlanner.UnitTests", "WorkPlanner.UnitTests\WorkPlanner.UnitTests.csproj", "{2D0994E2-B0C8-4671-90DD-EB8B9828D0F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkPlanner.Notification", "WorkPlanner.Notification\WorkPlanner.Notification.csproj", "{1E844BF6-1A85-4849-AF22-706A366ACF01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{2D0994E2-B0C8-4671-90DD-EB8B9828D0F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D0994E2-B0C8-4671-90DD-EB8B9828D0F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D0994E2-B0C8-4671-90DD-EB8B9828D0F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E844BF6-1A85-4849-AF22-706A366ACF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E844BF6-1A85-4849-AF22-706A366ACF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E844BF6-1A85-4849-AF22-706A366ACF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E844BF6-1A85-4849-AF22-706A366ACF01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

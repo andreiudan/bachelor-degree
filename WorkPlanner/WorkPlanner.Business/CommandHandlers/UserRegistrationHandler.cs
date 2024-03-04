@@ -14,7 +14,9 @@ namespace WorkPlanner.Business.CommandHandlers
         private readonly IUnitOfWork unitOfWork;
         private readonly IPasswordHasher passwordHasher;
 
-        public UserRegistrationHandler(IMapper mapper, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher)
+        public UserRegistrationHandler(IMapper mapper, 
+                                       IUnitOfWork unitOfWork, 
+                                       IPasswordHasher passwordHasher)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));

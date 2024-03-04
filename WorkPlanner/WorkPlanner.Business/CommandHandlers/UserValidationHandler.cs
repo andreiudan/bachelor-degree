@@ -6,18 +6,18 @@ using WorkPlanner.Interfaces.DataAccess;
 
 namespace WorkPlanner.Business.CommandHandlers
 {
-    internal class EmailValidationHandler : IRequestHandler<EmailValidationCommand, string>
+    public class UserValidationHandler : IRequestHandler<UserValidationCommand, string>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IUsernameGenerator usernameGenerator;
 
-        public EmailValidationHandler(IUnitOfWork unitOfWork, IUsernameGenerator usernameGenerator)
+        public UserValidationHandler(IUnitOfWork unitOfWork, IUsernameGenerator usernameGenerator)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            this.usernameGenerator = usernameGenerator ?? throw new ArgumentNullException(nameof(usernameGenerator));
+            this.usernameGenerator = usernameGenerator ?? throw new ArgumentNullException(nameof(usernameGenerator));        
         }
 
-        public async Task<string> Handle(EmailValidationCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UserValidationCommand request, CancellationToken cancellationToken)
         {
             User userToValidate = await unitOfWork.Users.FindAsync(u => u.Id.Equals(request.Id));
             User lastUserWithSameUsername = await unitOfWork.Users.GetLastUserWithSameUsername(userToValidate.Username);

@@ -1,4 +1,4 @@
-﻿namespace WorkPlanner.Domain
+﻿namespace WorkPlanner.Domain.Configurations
 {
     public class JwtBearerConfiguration
     {
