@@ -6,24 +6,25 @@ namespace WorkPlanner.Business.UserRegistration
 {
     public class UsernameGenerator : IUsernameGenerator
     {
-        public string GenerateUsername(User userToActivate, User lastUserWithSameUsername)
+        private int NrOfCharFromLastName = 4;
+
+        public string GenerateUsername(User userToActivate)
         {
-            int nrOfCharFromLastName = 4;
             string username = userToActivate.FirstName;
 
-            if (userToActivate.LastName.Length > nrOfCharFromLastName)
+            if (userToActivate.LastName.Length > NrOfCharFromLastName)
             {
-                username += userToActivate.LastName[..nrOfCharFromLastName];
+                username += userToActivate.LastName[..NrOfCharFromLastName];
             }
             else
             {
                 username += userToActivate.LastName;
             }
 
-            return username + GetFirstUsableUsernameId(lastUserWithSameUsername);
+            return username;
         }
 
-        private string GetFirstUsableUsernameId(User lastUserWithSameUsername)
+        public string GetFirstUsableUsernameId(User lastUserWithSameUsername)
         {
             int idForNewUsername = 1;
             string lastUserWithSameUsernameId = Regex.Replace(lastUserWithSameUsername.Username, 

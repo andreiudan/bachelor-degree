@@ -1,13 +1,12 @@
 ﻿using MediatR;
 using WorkPlanner.Business.Commands;
-using WorkPlanner.Business.Services;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
 
 namespace WorkPlanner.Business.CommandHandlers
 {
-    internal class UserAuthenticationHandler : IRequestHandler<UserAuthenticationCommand, string>
+    public class UserAuthenticationHandler : IRequestHandler<UserAuthenticationCommand, string>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IPasswordHasher passwordHasher;
@@ -26,12 +25,12 @@ namespace WorkPlanner.Business.CommandHandlers
         {
             User user = await unitOfWork.Users.FindAsync(u => u.Email == request.User.Email);
 
-            if(user is null)
+            if (user is null)
             {
                 throw new InvalidOperationException("User with this email does not exist");
             }
 
-            if(!passwordHasher.VerifyPassword(request.User.Password, user.Salt, user.HashedPassword))
+            if (!passwordHasher.VerifyPassword(request.User.Password, user.Salt, user.HashedPassword))
             {
                 throw new InvalidOperationException("Invalid password");
             }

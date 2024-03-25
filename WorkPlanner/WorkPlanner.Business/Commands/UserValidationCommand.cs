@@ -4,11 +4,11 @@ namespace WorkPlanner.Business.Commands
 {
     public class UserValidationCommand : IRequest<string>
     {
-        public int Id { get; set; }
+        public string validationToken { get; set; }
 
-        public UserValidationCommand(int id)
+        public UserValidationCommand(string validationToken)
         {
-            this.Id = id;
+            this.validationToken = validationToken;
         }
     }
 }

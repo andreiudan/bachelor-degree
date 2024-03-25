@@ -1,5 +1,4 @@
 ﻿using Moq;
-using NUnit.Framework;
 using WorkPlanner.Business.CommandHandlers;
 using WorkPlanner.Business.Commands;
 using WorkPlanner.Domain.Entities;
@@ -8,7 +7,7 @@ using WorkPlanner.Interfaces.DataAccess;
 
 namespace WorkPlanner.UnitTests.Business.CommandHandlers
 {
-    internal class EmailValidationHandlerUnitTests
+    internal class UserValidationHandlerUnitTests
     {
         private Mock<IUnitOfWork> unitOfWorkMock;
         private Mock<IUsernameGenerator> usernameGeneratorMock;
@@ -35,9 +34,10 @@ namespace WorkPlanner.UnitTests.Business.CommandHandlers
             };
 
             emailValidationCommand = new UserValidationCommand(user.Id);
-            emailValidationHandler = new UserValidationHandler(unitOfWorkMock.Object, 
+            emailValidationHandler = new UserValidationHandler(unitOfWorkMock.Object,
                                                                 usernameGeneratorMock.Object)
-;        }
+;
+        }
 
         [Test]
         public void Constructor_WhenUnitOfWorkIsNull_ThrowsArgumentNullException()

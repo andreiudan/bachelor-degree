@@ -7,7 +7,7 @@ using WorkPlanner.Interfaces.DataAccess;
 
 namespace WorkPlanner.Business.CommandHandlers
 {
-    internal class UserRegistrationHandler : IRequestHandler<UserRegistrationCommand, int>
+    public class UserRegistrationHandler : IRequestHandler<UserRegistrationCommand, int>
     {
         private const int saltLength = 16;
         private readonly IMapper mapper;

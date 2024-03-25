@@ -11,5 +11,7 @@ namespace WorkPlanner.Interfaces.DataAccess.Repositories
         public Task<IEnumerable<TModel>> GetAllAsync();
 
         public Task<TModel> FindAsync(Expression<Func<TModel, bool>> predicate);
+
+        public Task<IEnumerable<TModel>> GetAll();
     }
 }

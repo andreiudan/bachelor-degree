@@ -51,5 +51,10 @@ namespace WorkPlanner.DataAccess.Repositories
 
             return await this.Context.Set<TModel>().FirstOrDefaultAsync(predicate);
         }
+
+        public async Task<IEnumerable<TModel>> GetAll()
+        {
+            return await this.Context.Set<TModel>().ToListAsync();
+        }
     }
 }

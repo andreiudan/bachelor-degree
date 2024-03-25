@@ -1,7 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using WorkPlanner.Business.Commands;
+using WorkPlanner.Business.Queries;
 using WorkPlanner.Domain.Dtos;
+using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Api.Controllers
 {
@@ -40,16 +43,24 @@ namespace WorkPlanner.Api.Controllers
             return Created();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Validate(int id)
+        [HttpGet("validate")]
+        public async Task<IActionResult> Validate(string validationToken)
         {
-            UserValidationCommand request = new UserValidationCommand(id);
+            UserValidationCommand request = new UserValidationCommand(validationToken);
 
             string result = await mediator.Send(request);
-         
-            return Ok();
+
+            return Redirect(result);
         }
 
+        [HttpGet("get")]
+        public async Task<IActionResult> GetUsers(string id)
+        {
+            GetUserQuery request = new GetUserQuery(id);
 
+            User result = await mediator.Send(request);
+
+            return Ok(result);
+        }
     }
 }

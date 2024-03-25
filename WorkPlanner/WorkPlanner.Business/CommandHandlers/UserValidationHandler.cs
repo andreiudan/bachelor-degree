@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System.Text;
 using WorkPlanner.Business.Commands;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
@@ -19,22 +20,36 @@ namespace WorkPlanner.Business.CommandHandlers
 
         public async Task<string> Handle(UserValidationCommand request, CancellationToken cancellationToken)
         {
-            User userToValidate = await unitOfWork.Users.FindAsync(u => u.Id.Equals(request.Id));
-            User lastUserWithSameUsername = await unitOfWork.Users.GetLastUserWithSameUsername(userToValidate.Username);
+            int idToBeActivated = decodeId(request.validationToken);
 
-            if (lastUserWithSameUsername is not null)
+            User userToValidate = await unitOfWork.Users.FindAsync(u => u.Id.Equals(idToBeActivated));
+
+            string newUsername = usernameGenerator.GenerateUsername(userToValidate);
+
+            User lastUserWithSameUsername = await unitOfWork.Users.GetLastUserWithSameUsername(newUsername);
+
+            userToValidate.Username = newUsername;
+            if(lastUserWithSameUsername is not null)
             {
-                userToValidate.Username = usernameGenerator.GenerateUsername(lastUserWithSameUsername,
-                                                                             userToValidate);
-
-                await unitOfWork.Users.UpdateUsername(userToValidate.Id, userToValidate.Username);
+                userToValidate.Username += usernameGenerator.GetFirstUsableUsernameId(lastUserWithSameUsername);
             }
+
+            await unitOfWork.Users.UpdateUsername(userToValidate.Id, userToValidate.Username);
 
             await unitOfWork.Users.ValidateUser(userToValidate.Id);
 
             await unitOfWork.CompleteAsync();
 
-            return "";
+            return "Activated!"; //TO DO: redirect to success activation page
+        }
+
+        private int decodeId(string encodedId)
+        {
+            byte[] decodedIdBytes = Convert.FromBase64String(encodedId);
+
+            string id = Encoding.UTF8.GetString(decodedIdBytes);
+
+            return int.Parse(id);
         }
     }
 }
