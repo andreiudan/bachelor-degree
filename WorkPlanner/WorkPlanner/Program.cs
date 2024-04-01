@@ -30,7 +30,7 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-               builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+               builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
 });
 
 builder.Services.AddDbContext<WorkPlannerContext>(options =>
@@ -91,5 +91,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors();
 
 app.Run();
