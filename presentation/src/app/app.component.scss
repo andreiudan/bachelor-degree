@@ -1,0 +1,47 @@
+header {
+    width: 100%;
+    position: sticky;
+    padding-block-start: 1.33em;
+    padding-block-end: 1.33em;
+    padding-inline-start: 0px;
+    padding-inline-end: 0px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    float: right;
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+    font-size: clamp(12px, 2vw, 18px);
+}
+
+.logo {
+    display: flex;
+    float: left;
+    padding-inline-start: 36px;
+}
+
+.logo a{
+    text-decoration: none;
+    color: black;
+}
+
+.logo h4{
+    margin: 0;
+}
+
+.logo img {
+    margin: 0;
+}
+
+.margin-right-120{
+    margin-right: 120px;
+}
+
+.margin-right-32{
+    margin-right: 32px;
+}

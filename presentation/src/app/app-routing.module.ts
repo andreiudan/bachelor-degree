@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { WrapperComponent } from './components/wrapper/wrapper.component';
+import { AppComponent } from './app.component';
+import { LandingComponent } from './components/landing/landing.component';
 
 const routes: Routes = [
   {
@@ -16,6 +18,10 @@ const routes: Routes = [
       {
         path: 'register',
         component: RegisterComponent,
+      },
+      {
+        path: 'landing',
+        component: LandingComponent,
       },
     ]
   }

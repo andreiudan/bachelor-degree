@@ -12,13 +12,15 @@ import { MatInputModule } from '@angular/material/input';
 import { WrapperComponent } from './components/wrapper/wrapper.component'
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { HttpInterceptorService } from './services/interceptor/http-interceptor.service';
+import { LandingComponent } from './components/landing/landing.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    WrapperComponent
+    WrapperComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,21 @@
 <p>register works!</p>
+
+<form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <input matInput placeholder="First Name" type="text" [(ngModel)]="user.firstName" name="firstName">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Last Name" type="text" [(ngModel)]="user.lastName" name="lastName">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Email" type="email" [(ngModel)]="user.email" name="email">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Password" type="password" [(ngModel)]="user.password" name="password">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary">Register</button>
+</form>

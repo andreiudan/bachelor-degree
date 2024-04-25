@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    padding: 0;
+    margin: 0;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+    width: 100%;
+}
+
+.landing-div{
+    clear: both;
+    float: right;
+    height: 100%;
+    padding-block-start: 23.3em;
+    padding-block-end: 23.3em;
+    padding-inline-start: 0px;
+    padding-inline-end: 8em;
+}
+
+.right-div {
+    float: right;
+    width: 50%;
+    background-color: bisque;
+}
+
+.left-div {
+    float: left;
+    width: 50%;
+    background-color: bisque;
+}
+
+h2 {
+    margin: 0;
+    font-size: clamp(18px, 5vw, 58px);
+}
+
+.padding-top-200 {
+    padding-top: 200px;
+}
+
+.margin-top-10 {
+    padding-top: 10pc;
+}
+
+.margin-left-5 {
+    margin-left: 5%;
+}
+
+.margin-right-5 {
+    margin-right: 5%;
+}
+
+footer{
+    margin-top: 10cap;
+    position: sticky;
+    background-color: blueviolet;
+}
