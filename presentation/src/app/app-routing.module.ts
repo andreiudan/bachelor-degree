@@ -5,6 +5,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { AppComponent } from './app.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,14 @@ const routes: Routes = [
       {
         path: 'landing',
         component: LandingComponent,
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+      },
+      {
+        path: 'registerSuccessful',
+        component: RegisterComponent,
       },
     ]
   }

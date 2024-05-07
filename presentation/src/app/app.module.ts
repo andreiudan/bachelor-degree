@@ -13,6 +13,10 @@ import { WrapperComponent } from './components/wrapper/wrapper.component'
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { HttpInterceptorService } from './services/interceptor/http-interceptor.service';
 import { LandingComponent } from './components/landing/landing.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -20,7 +24,8 @@ import { LandingComponent } from './components/landing/landing.component';
     LoginComponent,
     RegisterComponent,
     WrapperComponent,
-    LandingComponent
+    LandingComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,6 +34,9 @@ import { LandingComponent } from './components/landing/landing.component';
     MatFormFieldModule,
     MatInputModule,
     HttpClientModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   providers: [
     provideClientHydration(),

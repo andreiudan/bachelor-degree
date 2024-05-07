@@ -1,21 +1,63 @@
-<p>register works!</p>
+<div class="main-div">
+    <div class="presentation-div">
+        <h2>Join the innovation journey.</h2>
+        <p>Create your account now!</p>
+    </div>
 
-<form (ngSubmit)="onSubmit()">
-    <mat-form-field>
-        <input matInput placeholder="First Name" type="text" [(ngModel)]="user.firstName" name="firstName">
-    </mat-form-field>
+    <mat-card>
+        <mat-card-title>
+            <h2>Register</h2>
+        </mat-card-title>
 
-    <mat-form-field>
-        <input matInput placeholder="Last Name" type="text" [(ngModel)]="user.lastName" name="lastName">
-    </mat-form-field>
+        <mat-card-content>
+            <form (ngSubmit)="onSubmit()">
+                <div class="name-input-div">
+                    <mat-form-field ngClass="firstname-input">
+                        <mat-label>First Name</mat-label>
+                        <input matInput type="text" [(ngModel)]="user.firstName" name="firstName">
+                    </mat-form-field>
+                
+                    <mat-form-field ngClass="lastname-input">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput type="text" [(ngModel)]="user.lastName" name="lastName">
+                    </mat-form-field>
+                </div>
+            
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" [(ngModel)]="user.email" name="email">
+                </mat-form-field>
+            
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" [(ngModel)]="user.password" name="password">
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="this.setPasswordVisibility('password')">
+                        <mat-icon>remove_red_eye</mat-icon>
+                    </button>
+                </mat-form-field>
 
-    <mat-form-field>
-        <input matInput placeholder="Email" type="email" [(ngModel)]="user.email" name="email">
-    </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Repeat Password</mat-label>
+                    <input matInput type="password" name="repeatPassword">
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="this.setPasswordVisibility('repeatPassword')">
+                        <mat-icon>remove_red_eye</mat-icon>
+                    </button>
+                </mat-form-field>
 
-    <mat-form-field>
-        <input matInput placeholder="Password" type="password" [(ngModel)]="user.password" name="password">
-    </mat-form-field>
+                <button mat-raised-button color="primary" type="submit">
+                    Register
+                </button>
+            </form>        
+        </mat-card-content>
 
-    <button mat-raised-button color="primary">Register</button>
-</form>
+        <mat-card-actions>
+            <div class="separator-div">
+                <hr class="separation-line">
+                <p>Or</p>
+                <hr class="separation-line">
+            </div>
+
+            <a routerLink="/login">Already have an account?</a>
+        </mat-card-actions>
+    </mat-card>        
+</div>

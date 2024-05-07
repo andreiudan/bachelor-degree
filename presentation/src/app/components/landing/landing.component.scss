@@ -18,8 +18,8 @@
     clear: both;
     float: right;
     height: 100%;
-    padding-block-start: 23.3em;
-    padding-block-end: 23.3em;
+    padding-block-start: 30vh;
+    padding-block-end: 30vh;
     padding-inline-start: 0px;
     padding-inline-end: 8em;
 }
@@ -27,13 +27,13 @@
 .right-div {
     float: right;
     width: 50%;
-    background-color: bisque;
+    padding-inline-start: 4em;
 }
 
 .left-div {
     float: left;
     width: 50%;
-    background-color: bisque;
+    padding-inline-start: 3em;
 }
 
 h2 {
@@ -58,7 +58,29 @@ h2 {
 }
 
 footer{
-    margin-top: 10cap;
+    display: flex;
     position: sticky;
-    background-color: blueviolet;
+    justify-content: space-between;
+    padding-block-end: 1em;
+    padding-block-start: 1em;
+}
+
+footer .right-footer-div a{
+    text-decoration: none;
+    display: flex;
+    color: black;
+    font-size: clamp(12px, 2vw, 16px);
+    margin-inline-end: 2em;
+    width: fit-content;
+    margin-block-end: 0.5em;
+}
+
+footer .left-footer-div a{
+    text-decoration: none;
+    display: flex;
+    color: black;
+    font-size: clamp(12px, 2vw, 16px);
+    margin-inline-start: 2em;
+    width: fit-content;
+    margin-block-end: 0.5em;
 }

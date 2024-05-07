@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from '../../../models/user';
 import { UserService } from '../../services/user/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { RegistrationSuccessfulDialogComponent } from '../registration-successful-dialog/registration-successful-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +14,7 @@ export class RegisterComponent implements OnInit {
   public registerForm: FormGroup;
   public user = new User();
 
-  public constructor(private formBuilder: FormBuilder, private userService: UserService){
+  public constructor(private formBuilder: FormBuilder, private userService: UserService, private dialog: MatDialog){
   }
 
   public ngOnInit(): void {
@@ -54,7 +56,25 @@ export class RegisterComponent implements OnInit {
 
   private register(user: User): void {
     this.userService.register(user).subscribe((response: string) => {
-      console.log(response);
+      this.openDialog();
     });
+  }
+
+  public setPasswordVisibility(inputName: string): void {
+    const input = document.querySelector('input[name="' + inputName + '"]');
+
+    if(input === null){
+      return;
+    }
+
+    if(input.getAttribute('type') === 'password'){
+      input.setAttribute('type', 'text');
+    } else {
+      input.setAttribute('type', 'password');
+    }
+  }
+
+  private openDialog(): void {
+    this.dialog.open(RegistrationSuccessfulDialogComponent);
   }
 }

@@ -1,13 +1,45 @@
-<form (ngSubmit)="onSubmit()">
-    <mat-form-field>
-        <input matInput type="email" name="email" [(ngModel)]="user.email">
-    </mat-form-field>
 
-    <mat-form-field>
-        <input matInput type="password" name="password" [(ngModel)]="user.password">
-    </mat-form-field>
+<div class="main-div">
+    <div class="presentation-div">
+        <h2>Dive into </h2>
+        <h2 class="title-gradient"> Productivity!</h2>
+    </div>
+    
+    <mat-card>
+        <mat-card-title>
+            <h2>Log In</h2>
+        </mat-card-title>
 
-    <button type="submit">
-        Log In
-    </button>
-</form>
+        <mat-card-content>
+            <form (ngSubmit)="onSubmit()">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" name="email" [(ngModel)]="user.email">
+                </mat-form-field>
+            
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" name="password" [(ngModel)]="user.password">
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="this.setPasswordVisibility()">
+                        <mat-icon>remove_red_eye</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <button mat-raised-button color="accent" type="submit">
+                    Log In
+                </button>
+            </form>
+        </mat-card-content>
+        
+        <mat-card-actions>
+            <div class="separator-div">
+                <hr class="separation-line">
+                <p>Or</p>
+                <hr class="separation-line">
+            </div>
+
+            <a routerLink="/register">Sign up</a>
+        </mat-card-actions>
+    </mat-card>    
+</div>
+

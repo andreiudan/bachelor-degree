@@ -44,4 +44,17 @@ export class LoginComponent implements OnInit{
     });
   }
 
+  public setPasswordVisibility(): void {
+    const input = document.querySelector('input[name="password"]');
+
+    if(input === null){
+      return;
+    }
+
+    if(input.getAttribute('type') === 'password'){
+      input.setAttribute('type', 'text');
+    } else {
+      input.setAttribute('type', 'password');
+    }
+  }
 }
