@@ -1,0 +1,147 @@
+.mat-mdc-select {
+    width: 15% !important;
+    height: 20px !important;
+    border: 1px solid gray !important;
+    border-radius: 18px !important;
+    margin-inline-start: 12px;
+    margin-block-start: 12px;
+    margin-block-end: 12px;
+    padding-block-end: 3px;
+}
+
+mat-grid-list {
+    margin-inline-start: 12px;
+    margin-inline-end: 12px;
+}
+
+mat-grid-tile {
+    height: 100%;
+    width: 100%;
+    border-radius: 18px;
+}
+
+mat-card{
+    width: 96%;
+    height: 96%;
+    border-radius: 18px;
+}
+
+mat-card-header {
+    font-weight: normal;
+    padding: 6px 0 0 6px;
+}
+
+.story-points-divider {
+    margin-top: 6px;
+    height: 54px;
+}
+
+.story-points-div {
+    display: flex;  
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    p{
+        margin: 6px 0 0 0;
+        font-weight: lighter;
+    }
+
+    .value{
+        font-size: 24px;
+        font-weight: bolder;
+    }
+}
+
+.story-points-title-alignment {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    padding-left: 0;
+}
+
+.story-points-alignment {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+    font-size: 12px;
+    width: 100%;
+    height: 100%;
+    padding: 0 0 0 0;
+    margin-bottom: 6px;
+}
+
+.single-info-card {
+    position: absolute;
+    bottom: 6px;
+    right: 12px;
+    padding: 0 0 0 0;
+
+    p{
+        font-weight: bolder;
+        font-size: 24px;
+    }
+}
+
+.mat-mdc-card-content:last-child {
+    padding-bottom: 0; 
+}
+
+.chart-info-div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 12px;
+}
+
+.chart-center-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    
+    p{
+        margin: 0 0 0 0;
+    }
+}
+
+.chart-legend-alignment {
+    display: flex;
+    flex-direction: column;
+    padding-inline-start: 12px;
+
+    div{
+        margin: 3.5px 0 3.5px 0;
+        height: 13px;
+        width: 13px;
+    }
+
+    p{
+        margin: 1px 0 1px 0;
+    }
+}
+
+.to-do-div-color {
+    background-color: #DF0E0E;
+    height: 13px;
+    width: 13px;
+}
+
+.in-progress-div-color {
+    background-color: #267DAD;
+    height: 13px;
+    width: 13px;
+}
+
+.in-review-div-color {
+    background-color: #CEDF0E;
+    height: 13px;
+    width: 13px;
+}
+
+.done-div-color {
+    background-color: #1D500B;
+    height: 13px;
+    width: 13px;
+}

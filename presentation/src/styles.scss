@@ -52,8 +52,24 @@ html, body {
   width: 100%;
   max-width: 100%; 
 }
+
 body { 
   margin: 0; 
   font-family: 'Poppins-Medium'; 
   background-color: #E3F9F1;
+}
+
+.dropDown-seasons-panel {
+  border-radius: 10px !important;
+  border: 1px solid gray !important;
+  position: absolute !important;
+  top: 2px !important;
+}
+
+.mat-mdc-select-arrow-wrapper {
+  margin-inline-end: 6px !important;
+}
+
+.mat-mdc-select-value{
+  padding-inline-start: 3px !important;
 }

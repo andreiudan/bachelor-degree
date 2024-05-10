@@ -1,15 +1,54 @@
-<header>
+<mat-toolbar color="primary">
+    <button *ngIf="isLoggedIn" mat-icon-button (click)="this.toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+    </button>
+
     <div class="logo">
         <a routerLink="/landing"><img src="" alt="Logo"></a>
         <h4><a routerLink="/landing">ProjectName</a></h4>
     </div>
-
-    <nav>
+    <span class="example-spacer"></span>
+    <nav *ngIf="!isLoggedIn">
         <a class="margin-right-32">Discover</a>
         <a routerLink="/login" class="margin-right-120">Join</a>
-    </nav>  
-</header>
+    </nav>
 
-<div class="rest-of-screen">
-    <app-wrapper></app-wrapper>
-</div>
+    <button *ngIf="isLoggedIn" mat-icon-button (click)="this.toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <button *ngIf="isLoggedIn" mat-icon-button (click)="this.toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+    </button>
+
+</mat-toolbar>
+
+<mat-sidenav-container autosize>
+    <mat-sidenav *ngIf="isLoggedIn" [opened]="false" mode="side">
+        <mat-nav-list>
+            <a mat-list-item routerLink="/dashboard">
+                <span class="entry">
+                    <mat-icon>home</mat-icon>
+                    <span *ngIf="!isSidenavCollapsed">Home</span>
+                </span>
+            </a>
+
+            <a mat-list-item routerLink="/about">
+                <span class="entry">
+                    <mat-icon>info</mat-icon>
+                    <span *ngIf="!isSidenavCollapsed">About</span>
+                </span>
+            </a>
+
+            <a mat-list-item routerLink="/contact">
+                <span class="entry">
+                    <mat-icon>contact_support</mat-icon>
+                    <span *ngIf="!isSidenavCollapsed">Contact</span>
+                </span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <app-wrapper></app-wrapper>
+    </mat-sidenav-content>
+</mat-sidenav-container>

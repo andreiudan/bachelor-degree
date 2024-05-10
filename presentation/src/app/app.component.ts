@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,9 +8,23 @@ import { Router } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  @ViewChild(MatSidenav)
+  sidenav!: MatSidenav;
   title = 'presentation';
+  isSidenavCollapsed = false;
+  isLoggedIn = true;
 
   constructor(private router: Router) {
-    //this.router.navigate(['/landing']);
+    // if (!this.isLoggedIn) {
+    //   this.router.navigate(['/login']);
+    // }
+    // else {
+    //   this.router.navigate(['/landing']);
+    // }
+  }
+
+  public toggleSidenav(): void {
+    this.sidenav.open();
+    this.isSidenavCollapsed = !this.isSidenavCollapsed;
   }
 }

@@ -1,4 +1,4 @@
-header {
+mat-toolbar {
     width: 100%;
     position: sticky;
     padding-block-start: 1.33em;
@@ -46,6 +46,38 @@ nav a {
     margin-right: 32px;
 }
 
-.rest-of-screen{
-    height: calc(100vh - 100px);
+mat-toolbar{
+    position: fixed;
+    top: 0;
+    z-index: 2;
 }
+
+mat-sidenav-container {
+    height:100%;
+}
+
+// Move the content down so that it won't be hidden by the toolbar
+mat-sidenav {
+    padding-top: 3.5rem;
+    @media screen and (min-width: 600px) {
+      padding-top: 4rem;
+    }
+
+    .entry{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding:0.75rem;
+    }
+  }
+
+  mat-sidenav-content{
+    padding-top: 3.5rem;
+    @media screen and (min-width: 600px) {
+        padding-top: 4rem;
+    }
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+  }
