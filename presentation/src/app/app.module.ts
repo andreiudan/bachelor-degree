@@ -22,6 +22,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { TaskComponent } from './components/task/task.component';
+import { SprintComponent } from './components/sprint/sprint.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -31,6 +34,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     WrapperComponent,
     LandingComponent,
     DashboardComponent,
+    TaskComponent,
+    SprintComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +52,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatListModule,
     MatSelectModule,
     MatGridListModule,
+    MatCheckboxModule,
   ],
   providers: [
     provideClientHydration(),

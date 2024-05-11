@@ -6,6 +6,8 @@ import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { AppComponent } from './app.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SprintComponent } from './components/sprint/sprint.component';
+import { TaskComponent } from './components/task/task.component';
 
 const routes: Routes = [
   {
@@ -32,6 +34,14 @@ const routes: Routes = [
         path: 'registerSuccessful',
         component: RegisterComponent,
       },
+      {
+        path: 'task',
+        component: TaskComponent,
+      },
+      {
+        path: 'sprint',
+        component: SprintComponent,
+      }
     ]
   }
 ];

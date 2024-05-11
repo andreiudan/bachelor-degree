@@ -73,3 +73,8 @@ body {
 .mat-mdc-select-value{
   padding-inline-start: 3px !important;
 }
+
+.mdc-checkbox__background {
+  border: 1.5px solid #000000 !important;
+  border-radius: 5px !important;
+}

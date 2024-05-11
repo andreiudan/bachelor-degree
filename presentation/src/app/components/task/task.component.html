@@ -1,0 +1,94 @@
+<p>ProjectName</p>
+
+<div class="title-div">
+    <h2>TaskName</h2>
+    <p>- SprintName</p>
+    <span class="spacer"></span>
+    <button mat-icon-button>
+        <mat-icon>edit</mat-icon>
+    </button>
+</div>
+
+<div class="page-alignment">
+    <div class="task-info">
+        <div class="info-divider">
+            <h4>Description</h4>
+            <mat-divider></mat-divider>
+        </div>
+        <p>Task Description</p>
+        
+        <div class="info-divider">
+            <h4>Key Tasks</h4>
+            <mat-divider></mat-divider>
+        </div>
+        <div>
+            <mat-checkbox class="custom-checkbox">Subtask name 1</mat-checkbox>
+        </div>
+        <div>
+            <mat-checkbox class="custom-checkbox">Subtask name 2</mat-checkbox>
+        </div>
+    </div>
+    
+    <mat-divider vertical class="vertical-divider"></mat-divider>
+    
+    <div class="task-properties">
+        <div class="info-divider">
+            <button (click)="this.toggleDetails()">></button>
+            <h4>Details</h4>
+            <mat-divider></mat-divider>
+        </div>
+        <div *ngIf="showDetails" class="properties-alignment">
+            <div>
+                <p>Priority:</p>
+                <p>Type:</p>
+                <p>Labels:</p>
+                <br>
+                <p>Status:</p>
+                <p>Story Points:</p>
+            </div>
+            <div>
+                <div class="priority-property">
+                    <mat-icon>home</mat-icon>
+                    <p>PriorityType</p>
+                </div>
+                <p>TaskType</p>
+                <p>Label1</p>
+                <p>Label2</p>
+                <p>TaskStatus</p>
+                <p>StoryPoints</p>
+            </div>
+        </div>
+    
+        <div class="info-divider">
+            <button (click)="this.togglePeople()">></button>
+            <p>People</p>
+            <mat-divider></mat-divider>
+        </div>
+        <div *ngIf="showPeople" class="properties-alignment">
+            <div>
+                <p>Assignees:</p>
+                <p>Author:</p>
+            </div>
+            <div>
+                <p>AssigneeName</p>
+                <p>AuthorName</p>
+            </div>
+        </div>
+    
+        <div class="info-divider">
+            <button (click)="this.toggleDates()">></button>
+            <p>Dates</p>
+            <mat-divider></mat-divider>
+        </div>
+        <div *ngIf="showDates" class="properties-alignment">
+            <div>
+                <p>Due:</p>
+                <p>Created:</p>
+            </div>
+            <div>
+                <p>DueDate</p>
+                <p>CreatedDate</p>
+            </div>
+        </div>
+    </div>
+</div>

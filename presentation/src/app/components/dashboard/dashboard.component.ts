@@ -34,6 +34,13 @@ export interface Sprint {
   sprintPlannedPoints: number
 }
 
+export interface Task {
+  name: string
+  priority: string
+  status: string
+  storyPoints: number
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -74,5 +81,10 @@ export class DashboardComponent {
     {sprintNumber: 1, sprintFinalPoints: 23, sprintPlannedPoints: 50},
     {sprintNumber: 2, sprintFinalPoints: 50, sprintPlannedPoints: 50},
     {sprintNumber: 3, sprintFinalPoints: 10, sprintPlannedPoints: 50},
+  ];
+
+  blockerTasks: Task[] = [
+    {name: 'Login API Integration', priority: 'High', status: 'In Progress', storyPoints: 5},
+    {name: 'Task 2', priority: 'Medium', status: 'To Do', storyPoints: 3},
   ];
 }

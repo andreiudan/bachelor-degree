@@ -4,7 +4,7 @@
     border: 1px solid gray !important;
     border-radius: 18px !important;
     margin-inline-start: 12px;
-    margin-block-start: 12px;
+    margin-block-start: 48px;
     margin-block-end: 12px;
     padding-block-end: 3px;
 }
@@ -81,6 +81,54 @@ mat-card-header {
         font-weight: bolder;
         font-size: 24px;
     }
+}
+
+.blockers-alignment{
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    width: 100%;
+    height: 100%;
+    padding: 0 0 0 0 !important;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    border-radius: 6px !important;
+
+    p{
+        margin: 0 12px 0 6px;
+    }
+
+    .story-points {
+        background-color: #bebaba;
+        border-radius: 30px;
+        padding: 2px 4px 2px 4px;
+    }
+
+    .task-title {
+        font-weight: bolder;
+        margin-left: 12px;
+    }
+}
+
+.blockers-card {
+    width: 96%;
+    height: 96%;
+    border-radius: 6px;
+}
+
+.blockers-grid-card-content {
+    padding: 0 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.blockers-div {
+    height: fit-content;
+    width: 96%;
+    margin-top: 6px;
+    margin-bottom: 6px;
 }
 
 .mat-mdc-card-content:last-child {

@@ -28,14 +28,14 @@
             <mat-card-content class="story-points-alignment">
                 <div class="story-points-div">
                     <p class="value">{{this.storyPoints.completedPoints}}</p>
-                    <p>{{this.storyPoints.completedTitle}}</p>
+                    <p>Completed</p>
                 </div>
 
                 <mat-divider vertical class="story-points-divider"></mat-divider>
                 
                 <div class="story-points-div">
                     <p class="value">{{this.storyPoints.plannedPoints}}</p>
-                    <p>{{this.storyPoints.plannedTitle}}</p>
+                    <p>Planned</p>
                 </div>
             </mat-card-content>
         </mat-card>
@@ -81,8 +81,17 @@
                 <mat-card-title>Blockers</mat-card-title>
             </mat-card-header>
 
-            <mat-card-content>
-                <p>>></p>
+            <mat-card-content class="blockers-grid-card-content">
+                @for (task of blockerTasks; track $index) {
+                    <div class="blockers-div">
+                        <mat-card class="blockers-card">
+                            <mat-card-content class="blockers-alignment">
+                                <p class="task-title">{{task.name}}</p>
+                                <p class="story-points">{{task.storyPoints}}</p>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                }
             </mat-card-content>
         </mat-card>
     </mat-grid-tile>
