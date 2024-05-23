@@ -25,6 +25,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { TaskComponent } from './components/task/task.component';
 import { SprintComponent } from './components/sprint/sprint.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(),
+    provideAnimations(),
     {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}
   ],
   bootstrap: [AppComponent]

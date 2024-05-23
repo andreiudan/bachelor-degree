@@ -46,6 +46,10 @@ nav a {
     margin-right: 32px;
 }
 
+.menu-btn{
+    margin-left: 12px;
+}
+
 mat-toolbar{
     position: fixed;
     top: 0;
@@ -67,7 +71,7 @@ mat-sidenav {
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding:0.75rem;
+        padding:0.5rem;
     }
   }
 

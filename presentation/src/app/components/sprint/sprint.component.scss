@@ -1,0 +1,127 @@
+body{
+    align-self: stretch;
+}
+
+p{
+    margin: 3px 0 3px 0;
+}
+
+.project-name{
+    padding-top: 12px;
+    margin: 0 0 -8px 18px;
+    color: #B0B0B0;
+    font-weight: lighter;
+    font-size: 12px;
+}
+
+.title-div {
+    display: flex;
+    align-items: center;
+    margin: 0 18px 0 18px;
+}
+
+.spacer{
+    flex: 1 1 auto;
+}
+
+h2{
+    margin: 0 0 0 0;
+}
+
+.page-alignment{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 73%;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+}
+
+.status-component{
+    width: 23%; 
+    align-self: stretch;
+    margin-left: 14px;
+    margin-right: 14px;
+
+    mat-card-header{
+        p{
+            display: flex;
+            align-items: flex-start;
+            margin: 0 0 0 0;
+        }
+    }
+}
+
+mat-card{
+    mat-card-header{
+        color: #B0B0B0;
+        font-size: 12px;
+        padding: 12px 12px 0 12px;
+    }
+}
+
+.task-card{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+
+    .task-info{
+        display: flex;
+        align-items: center;
+        margin-top: 6px;
+        gap: 0 6px;
+    }
+
+    mat-card-header{
+        padding: 4px 6px 6px 8px;
+
+        mat-card-title{
+            font-size: 14px;
+            padding: 0 0 0 0;
+            color: black;
+        }
+    
+        mat-card-subtitle{
+            font-size: 11px;
+            font-weight: bold;
+            padding: 0 0 0 0;
+            margin-top: -8px;
+        }
+    }    
+
+    mat-card-content{
+        padding: 10px 12px 6px 8px;
+    }
+
+    .task-id{
+        color: #B0B0B0;
+        font-size: 12px;
+        margin: 0 0 0 0;
+    }
+
+    .story-points {
+        background-color: #bebaba;
+        border-radius: 30px;
+        padding: 2px 4px 2px 4px;
+        font-size: 12px;
+    }
+
+    .task-labels{
+        background-color: red;
+        border-radius: 12px;
+        font-size: 12px;
+        width: fit-content;
+
+        mat-card-content{
+            padding: 0px 8px 0px 8px;
+            border-radius: 20px;
+            color: white;
+
+            p{
+                margin-top: -1px;
+            }
+        }        
+    }
+}

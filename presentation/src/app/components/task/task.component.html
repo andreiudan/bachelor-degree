@@ -1,8 +1,8 @@
-<p>ProjectName</p>
+<p class="project-name">ProjectName</p>
 
 <div class="title-div">
-    <h2>TaskName</h2>
-    <p>- SprintName</p>
+    <h2>Login API Integration</h2>
+    <p class="sprint-name"> - SprintName</p>
     <span class="spacer"></span>
     <button mat-icon-button>
         <mat-icon>edit</mat-icon>
@@ -15,16 +15,20 @@
             <h4>Description</h4>
             <mat-divider></mat-divider>
         </div>
-        <p>Task Description</p>
+        <p class="description">
+            Lorem ipsum dolor sit amet, 
+            consectetur adipisicing elit. Veniam doloremque 
+            earum cum nisi deleniti facere cumque doloribus, 
+            numquam eligendi, voluptas quis, voluptates tenetur 
+            impedit assumenda eaque ea eos itaque. Error!
+        </p>
         
         <div class="info-divider">
             <h4>Key Tasks</h4>
             <mat-divider></mat-divider>
         </div>
-        <div>
+        <div class="subtasks">
             <mat-checkbox class="custom-checkbox">Subtask name 1</mat-checkbox>
-        </div>
-        <div>
             <mat-checkbox class="custom-checkbox">Subtask name 2</mat-checkbox>
         </div>
     </div>
@@ -38,7 +42,7 @@
             <mat-divider></mat-divider>
         </div>
         <div *ngIf="showDetails" class="properties-alignment">
-            <div>
+            <div class="properties-names">
                 <p>Priority:</p>
                 <p>Type:</p>
                 <p>Labels:</p>
@@ -46,7 +50,7 @@
                 <p>Status:</p>
                 <p>Story Points:</p>
             </div>
-            <div>
+            <div class="properties-values">
                 <div class="priority-property">
                     <mat-icon>home</mat-icon>
                     <p>PriorityType</p>
@@ -61,15 +65,15 @@
     
         <div class="info-divider">
             <button (click)="this.togglePeople()">></button>
-            <p>People</p>
+            <h4>People</h4>
             <mat-divider></mat-divider>
         </div>
         <div *ngIf="showPeople" class="properties-alignment">
-            <div>
+            <div class="properties-names">
                 <p>Assignees:</p>
                 <p>Author:</p>
             </div>
-            <div>
+            <div class="properties-values">
                 <p>AssigneeName</p>
                 <p>AuthorName</p>
             </div>
@@ -77,15 +81,15 @@
     
         <div class="info-divider">
             <button (click)="this.toggleDates()">></button>
-            <p>Dates</p>
+            <h4>Dates</h4>
             <mat-divider></mat-divider>
         </div>
         <div *ngIf="showDates" class="properties-alignment">
-            <div>
+            <div class="properties-names">
                 <p>Due:</p>
                 <p>Created:</p>
             </div>
-            <div>
+            <div class="properties-values">
                 <p>DueDate</p>
                 <p>CreatedDate</p>
             </div>
