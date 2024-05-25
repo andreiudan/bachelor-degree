@@ -1,0 +1,488 @@
+app-calendar {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    width: inherit;
+    height: inherit;
+}
+
+.info-alignment {
+  display: flex;
+  align-items: center;
+  gap: 0 6px;
+  padding: 12px 48px 12px 48px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.day-week-month {
+  display: flex;
+  align-items: center;
+  background-color: #d9d9d9;
+  border-radius: 8px;
+  padding: 2.5px 2px 2.5px 2px;
+  cursor: pointer;
+
+  p {
+    margin: 0 16px 0 16px;
+  }
+
+  mat-divider {
+    height: 18px;
+    background-color: inherit;
+    width: 1px;
+    border: 0;
+    border-radius: 12px;
+  }
+
+  .show-divider {
+    background-color: #f5fffa;
+  }
+
+  .hide-divider {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .selected-div {
+    background-color: #94a19ece;
+    border-radius: 8px;
+    padding: 2px 16px 2px 16px;
+    box-shadow: 0 0 2.5px rgba(0, 0, 0, 0.4);
+    cursor: default;
+
+    p {
+      margin: 0 0 0 0;
+    }
+  }
+}
+
+.day-week-month:hover {
+  background-color: #c4c4c4;
+}
+
+.week-calendar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .week-names-alignment {
+    display: grid;
+    grid-template-columns: 85px auto;
+    grid-template-rows: 1fr;
+    gap: 0px;
+
+    .blank-space {
+      grid-area: 1 / 1 / 2 / 2;
+    }
+
+    .week-alignment {
+      grid-area: 1 / 2 / 2 / 3;
+
+      .week {
+        display: grid;
+        align-items: center;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: repeat(1, 1fr);
+        gap: 0px;
+
+        .day {
+          display: flex;
+
+          h4 {
+            margin: 0 4px 0 0;
+          }
+
+          p {
+            margin: 0 0 4px 0;
+            color: #929292;
+            font-weight: lighter;
+          }
+        }
+      }
+    }
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 28px;
+    padding-bottom: 6px;
+  }
+
+  mat-divider {
+    height: 1px;
+    background-color: black;
+    width: 98%;
+    border: 0;
+    align-self: center;
+  }
+
+  .current-day {
+    h4 {
+      color: #68d8c9;
+    }
+
+    p {
+      color: #68d8c9 !important;
+    }
+  }
+
+  .calendar {
+    overflow-y: auto;
+    min-height: 0px;
+    flex: 1 1 0%;
+    position: relative;
+
+    .calendar-alignment {
+      display: flex;
+      height: calc(200%);
+      position: relative;
+      overflow: hidden;
+      min-height: 960px;
+    }
+
+    .hours-size {
+      width: 85px;
+    }
+
+    .hours {
+      display: grid;
+      grid-template-columns: 90px repeat(1, calc(100% - 90px));
+      grid-template-rows: repeat(1440, 1fr);
+      gap: 0px;
+      width: 100%;
+      height: 100%;
+
+      .row0 {
+        grid-area: 1 / 1 / 2 / 2;
+        height: 1px;
+      }
+
+      .row1 {
+        grid-area: 61 / 1 / 62 / 2;
+        height: 1px;
+      }
+
+      .row2 {
+        grid-area: 121 / 1 / 122 / 2;
+        height: 1px;
+      }
+
+      .row3 {
+        grid-area: 181 / 1 / 182 / 2;
+        height: 1px;
+      }
+
+      .row4 {
+        grid-area: 241 / 1 / 242 / 2;
+        height: 1px;
+      }
+
+      .row5 {
+        grid-area: 301 / 1 / 302 / 2;
+        height: 1px;
+      }
+
+      .row6 {
+        grid-area: 361 / 1 / 362 / 2;
+        height: 1px;
+      }
+
+      .row7 {
+        grid-area: 421 / 1 / 422 / 2;
+        height: 1px;
+      }
+
+      .row8 {
+        grid-area: 481 / 1 / 482 / 2;
+        height: 1px;
+      }
+
+      .row9 {
+        grid-area: 541 / 1 / 542 / 2;
+        height: 1px;
+      }
+
+      .row10 {
+        grid-area: 601 / 1 / 602 / 2;
+        height: 1px;
+      }
+
+      .row11 {
+        grid-area: 661 / 1 / 662 / 2;
+        height: 1px;
+      }
+
+      .row12 {
+        grid-area: 721 / 1 / 722 / 2;
+        height: 1px;
+      }
+
+      .row13 {
+        grid-area: 781 / 1 / 782 / 2;
+        height: 1px;
+      }
+
+      .row14 {
+        grid-area: 841 / 1 / 842 / 2;
+        height: 1px;
+      }
+
+      .row15 {
+        grid-area: 901 / 1 / 902 / 2;
+        height: 1px;
+      }
+
+      .row16 {
+        grid-area: 961 / 1 / 962 / 2;
+        height: 1px;
+      }
+
+      .row17 {
+        grid-area: 1021 / 1 / 1022 / 2;
+        height: 1px;
+      }
+
+      .row18 {
+        grid-area: 1081 / 1 / 1082 / 2;
+        height: 1px;
+      }
+
+      .row19 {
+        grid-area: 1141 / 1 / 1142 / 2;
+        height: 1px;
+      }
+
+      .row20 {
+        grid-area: 1201 / 1 / 1202 / 2;
+        height: 1px;
+      }
+
+      .row21 {
+        grid-area: 1261 / 1 / 1262 / 2;
+        height: 1px;
+      }
+
+      .row22 {
+        grid-area: 1321 / 1 / 1322 / 2;
+        height: 1px;
+      }
+
+      .row23 {
+        grid-area: 1381 / 1 / 1382 / 2;
+        height: 1px;
+      }
+
+      .blank-row0 {
+        grid-area: 1 / 2 / 2 / 3;
+        height: 0px;
+        pointer-events: none;
+      }
+
+      .blank-row1 {
+        grid-area: 61 / 2 / 62 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row2 {
+        grid-area: 121 / 2 / 122 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row3 {
+        grid-area: 181 / 2 / 182 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row4 {
+        grid-area: 241 / 2 / 242 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row5 {
+        grid-area: 301 / 2 / 302 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row6 {
+        grid-area: 361 / 2 / 362 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row7 {
+        grid-area: 421 / 2 / 422 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row8 {
+        grid-area: 481 / 2 / 482 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row9 {
+        grid-area: 541 / 2 / 542 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row10 {
+        grid-area: 601 / 2 / 602 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row11 {
+        grid-area: 661 / 2 / 662 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row12 {
+        grid-area: 721 / 2 / 722 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row13 {
+        grid-area: 781 / 2 / 782 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row14 {
+        grid-area: 841 / 2 / 842 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row15 {
+        grid-area: 901 / 2 / 902 / 3;
+        height: 0px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+      }
+
+      .blank-row16 {
+        grid-area: 961 / 2 / 962 / 3;
+        height: 0px;
+        pointer-events: none;
+      }
+
+      .blank-row17 {
+        grid-area: 1021 / 2 / 1022 / 3;
+        height: 0px;
+        pointer-events: none;
+      }
+
+      .blank-row18 {
+        grid-area: 1081 / 2 / 1082 / 3;
+        height: 0px;
+        pointer-events: none;
+      }
+
+      .blank-row19 {
+        grid-area: 1141 / 2 / 1142 / 3;
+        height: 0px;
+        pointer-events: none;
+      }
+
+      .blank-row20 {
+        grid-area: 1201 / 2 / 1202 / 3;
+        height: 0px;
+        pointer-events: none;
+      }
+
+      .blank-row21 {
+        grid-area: 1261 / 2 / 1262 / 3;
+        height: 0px;
+        pointer-events: none;
+      }
+
+      .blank-row22 {
+        grid-area: 1321 / 2 / 1322 / 3;
+        height: 0px;
+        pointer-events: none;
+      }
+
+      .blank-row23 {
+        grid-area: 1381 / 2 / 1382 / 3;
+        height: 0px;
+        pointer-events: none;
+      }
+
+      .hour {
+        position: relative;
+        top: -8px;
+        left: -20px;
+        height: 20px;
+        width: 90px;
+        overflow: hidden;
+        font-size: 13px;
+        color: rgb(102, 102, 102);
+        text-align: right;
+      }
+    }
+
+    .calendar-background-alignment {
+      width: 100%;
+      position: relative;
+
+      .calendar-background {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+
+        .columns {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          display: flex;
+
+          .col {
+            flex: 1 1 0%;
+            border-left: 1px solid rgba(0, 0, 0, 0.08);
+          }
+        }
+
+        .row-lines {
+          position: absolute;
+          height: 100%;
+          width: 97%;
+
+          .row-line {
+            position: absolute;
+            top: var(--top);
+            width: 100%;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+          }
+        }
+      }
+    }
+  }
+}

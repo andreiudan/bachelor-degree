@@ -1,0 +1,210 @@
+<div class="info-alignment">
+  <h3>{{ this.currentUTCMonthName }}</h3>
+  <p>{{ this.currentUTCYear }}</p>
+
+  <span class="spacer"></span>
+  <div class="day-week-month">
+    <div
+      (click)="onDayClicked()"
+      class="{{ this.selectedCalendarType === 'day' ? 'selected-div' : '' }}"
+    >
+      <p>Day</p>
+    </div>
+
+    <mat-divider
+      class="{{
+        this.selectedCalendarType === 'month' ? 'show-divider' : 'hide-divider'
+      }}"
+      vertical
+    ></mat-divider>
+    <div
+      (click)="onWeekClicked()"
+      class="{{ this.selectedCalendarType === 'week' ? 'selected-div' : '' }}"
+    >
+      <p>Week</p>
+    </div>
+
+    <mat-divider
+      class="{{
+        this.selectedCalendarType === 'day' ? 'show-divider' : 'hide-divider'
+      }}"
+      vertical
+    ></mat-divider>
+    <div
+      (click)="onMonthClicked()"
+      class="{{ this.selectedCalendarType === 'month' ? 'selected-div' : '' }}"
+    >
+      <p>Month</p>
+    </div>
+  </div>
+  <span class="spacer"></span>
+
+  <button><</button>
+  <button>Today</button>
+  <button>></button>
+</div>
+
+<div *ngIf="this.selectedCalendarType === 'week'" class="week-calendar">
+  <div class="week-names-alignment">
+    <div class="blank-space"></div>
+    <div class="week-alignment">
+      <div class="week">
+        @for (day of daysInSelectedWeek; track $index) {
+            <div
+            class="{{ this.currentUTCDay == day.date ? 'current-day' : '' }} day"
+            >
+            <h4>{{ day.date }}</h4>
+            <p>{{ day.name }}</p>
+            </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><mat-divider></mat-divider></div>
+
+  <div class="calendar">
+    <div class="calendar-alignment">
+      <div class="hours-size">
+        <div class="hours">
+          <div class="row0">
+            <div class="hour"></div>
+          </div>
+          <div class="row1">
+            <div class="hour">01</div>
+          </div>
+          <div class="row2">
+            <div class="hour">02</div>
+          </div>
+          <div class="row3">
+            <div class="hour">03</div>
+          </div>
+          <div class="row4">
+            <div class="hour">04</div>
+          </div>
+          <div class="row5">
+            <div class="hour">05</div>
+          </div>
+          <div class="row6">
+            <div class="hour">06</div>
+          </div>
+          <div class="row7">
+            <div class="hour">07</div>
+          </div>
+          <div class="row8">
+            <div class="hour">08</div>
+          </div>
+          <div class="row9">
+            <div class="hour">09</div>
+          </div>
+          <div class="row10">
+            <div class="hour">10</div>
+          </div>
+          <div class="row11">
+            <div class="hour">11</div>
+          </div>
+          <div class="row12">
+            <div class="hour">12</div>
+          </div>
+          <div class="row13">
+            <div class="hour">13</div>
+          </div>
+          <div class="row14">
+            <div class="hour">14</div>
+          </div>
+          <div class="row15">
+            <div class="hour">15</div>
+          </div>
+          <div class="row16">
+            <div class="hour">16</div>
+          </div>
+          <div class="row17">
+            <div class="hour">17</div>
+          </div>
+          <div class="row18">
+            <div class="hour">18</div>
+          </div>
+          <div class="row19">
+            <div class="hour">19</div>
+          </div>
+          <div class="row20">
+            <div class="hour">20</div>
+          </div>
+          <div class="row21">
+            <div class="hour">21</div>
+          </div>
+          <div class="row22">
+            <div class="hour">22</div>
+          </div>
+          <div class="row23">
+            <div class="hour">23</div>
+          </div>
+          <div class="blank-row0"></div>
+          <div class="blank-row1"></div>
+          <div class="blank-row2"></div>
+          <div class="blank-row3"></div>
+          <div class="blank-row4"></div>
+          <div class="blank-row5"></div>
+          <div class="blank-row6"></div>
+          <div class="blank-row7"></div>
+          <div class="blank-row8"></div>
+          <div class="blank-row9"></div>
+          <div class="blank-row10"></div>
+          <div class="blank-row11"></div>
+          <div class="blank-row12"></div>
+          <div class="blank-row13"></div>
+          <div class="blank-row14"></div>
+          <div class="blank-row15"></div>
+          <div class="blank-row16"></div>
+          <div class="blank-row17"></div>
+          <div class="blank-row18"></div>
+          <div class="blank-row19"></div>
+          <div class="blank-row20"></div>
+          <div class="blank-row21"></div>
+          <div class="blank-row22"></div>
+          <div class="blank-row23"></div>
+        </div>
+      </div>
+
+      <div class="calendar-background-alignment">
+        <div class="calendar-background">
+          <div class="columns">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+          </div>
+
+          <div class="row-lines">
+            <div class="row-line" style="--top: 4.166666666666666%"></div>
+            <div class="row-line" style="--top: 8.333333333333332%"></div>
+            <div class="row-line" style="--top: 12.5%"></div>
+            <div class="row-line" style="--top: 16.666666666666664%"></div>
+            <div class="row-line" style="--top: 20.833333333333336%"></div>
+            <div class="row-line" style="--top: 25%"></div>
+            <div class="row-line" style="--top: 29.166666666666668%"></div>
+            <div class="row-line" style="--top: 33.33333333333333%"></div>
+            <div class="row-line" style="--top: 37.5%"></div>
+            <div class="row-line" style="--top: 41.66666666666667%"></div>
+            <div class="row-line" style="--top: 45.83333333333333%"></div>
+            <div class="row-line" style="--top: 50%"></div>
+            <div class="row-line" style="--top: 54.166666666666664%"></div>
+            <div class="row-line" style="--top: 58.333333333333336%"></div>
+            <div class="row-line" style="--top: 62.5%"></div>
+            <div class="row-line" style="--top: 66.66666666666666%"></div>
+            <div class="row-line" style="--top: 70.83333333333334%"></div>
+            <div class="row-line" style="--top: 75%"></div>
+            <div class="row-line" style="--top: 79.16666666666666%"></div>
+            <div class="row-line" style="--top: 83.33333333333334%"></div>
+            <div class="row-line" style="--top: 87.5%"></div>
+            <div class="row-line" style="--top: 91.66666666666666%"></div>
+            <div class="row-line" style="--top: 95.83333333333334%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
