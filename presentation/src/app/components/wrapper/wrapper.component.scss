@@ -1,11 +1,8 @@
-*{
-  align-self: stretch;
-  height: 100%;
-  width: 100%;
-}
-
-.background-color {
+.main-content {
   margin: 0; 
+  padding: 0;
   font-family: 'Poppins-Medium'; 
   background-color: #F5FFFA;
+  height: calc(100% - 4rem);
+  width: 100%;
 }

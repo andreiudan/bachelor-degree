@@ -1,10 +1,14 @@
-app-calendar {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    position: relative;
-    width: inherit;
-    height: inherit;
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.main-div {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
 }
 
 .info-alignment {
@@ -63,10 +67,18 @@ app-calendar {
   background-color: #c4c4c4;
 }
 
+.calendar-display {
+  flex: 1 1 0%;
+  outline: none;
+  min-height: 0px;
+}
+
 .week-calendar {
   position: relative;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
 
   .week-names-alignment {
     display: grid;
@@ -93,6 +105,7 @@ app-calendar {
 
           h4 {
             margin: 0 4px 0 0;
+            padding-left: 2px;
           }
 
           p {
@@ -450,6 +463,7 @@ app-calendar {
     }
 
     .calendar-background-alignment {
+      height: 100%;
       width: 100%;
       position: relative;
 

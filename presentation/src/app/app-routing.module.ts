@@ -13,41 +13,39 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 const routes: Routes = [
   {
     path: '',
-    component: WrapperComponent,
-    children: [
-      {
-        path: 'login',
-        component: LoginComponent,
-      },
-      {
-        path: 'register',
-        component: RegisterComponent,
-      },
-      {
-        path: 'landing',
-        component: LandingComponent,
-      },
-      {
-        path: 'dashboard',
-        component: DashboardComponent,
-      },
-      {
-        path: 'registerSuccessful',
-        component: RegisterComponent,
-      },
-      {
-        path: 'task',
-        component: TaskComponent,
-      },
-      {
-        path: 'sprint',
-        component: SprintComponent,
-      },
-      {
-        path: 'calendar',
-        component: CalendarComponent,
-      }
-    ]
+    component: WrapperComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'landing',
+    component: LandingComponent,
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+  },
+  {
+    path: 'registerSuccessful',
+    component: RegisterComponent,
+  },
+  {
+    path: 'task',
+    component: TaskComponent,
+  },
+  {
+    path: 'sprint',
+    component: SprintComponent,
+  },
+  {
+    path: 'calendar',
+    component: CalendarComponent,
   }
 ];
 
