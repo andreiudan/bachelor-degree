@@ -22,7 +22,7 @@
 </mat-toolbar>
 
 <mat-sidenav-container autosize>
-    <mat-sidenav *ngIf="isLoggedIn" [opened]="false" mode="side">
+    <mat-sidenav *ngIf="isLoggedIn" [opened]="true" mode="side">
         <mat-nav-list>
             <a mat-list-item routerLink="/dashboard">
                 <span class="entry">
@@ -31,7 +31,7 @@
                 </span>
             </a>
 
-            <a mat-list-item routerLink="/about">
+            <a mat-list-item routerLink="/calendar">
                 <span class="entry">
                     <mat-icon>info</mat-icon>
                     <span *ngIf="!isSidenavCollapsed">About</span>

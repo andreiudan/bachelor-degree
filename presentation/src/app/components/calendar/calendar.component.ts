@@ -46,8 +46,10 @@ export class CalendarComponent {
 
   public onWeekClicked(): void {
     this.selectedCalendarType = 'week';
+  }
 
-    this.daysInSelectedWeek = this.getWeekdays();
+  public onMonthClicked(): void {
+    this.selectedCalendarType = 'month';
   }
 
   private initializeCurrentUTCDate(): void {
@@ -59,9 +61,7 @@ export class CalendarComponent {
     this.selectedMonth = this.currentUTCDate.getMonth();
     this.selectedDay = this.currentUTCDate.getDate();
 
-    this.selectedWeekStartDay = this.findMondayInWeek();
-
-    this.daysInSelectedWeek = this.getWeekdays();
+    this.setSelectedWeekStartDay();
   }
 
   private getNrOfDaysInSelectedMonth(): number {
@@ -129,38 +129,61 @@ export class CalendarComponent {
     return weekDays;
   }
 
-  private findMondayInWeek(): number {
-    let mondayDateInSelectedWeek = 1;
+  private setSelectedWeekStartDay(): void {
+    if(new Date(this.selectedYear, this.selectedMonth, this.selectedDay).getDay() === 1) {
+      this.selectedWeekStartDay = this.selectedDay;
+      this.daysInSelectedWeek = this.getWeekdays();
 
-    this.selectedWeekStartDay =
-      this.selectedDay - (this.selectedDay % 7) - 1;
-
-    for(let i = this.selectedWeekStartDay; i >= 1; i--) {
-      if(new Date(this.selectedYear, this.selectedMonth, i).getDay() === 1) {
-        mondayDateInSelectedWeek = i;
-        break;
-      }
+      return;
     }
 
-    return mondayDateInSelectedWeek;
+    if(this.selectedDay - 6 >= 1) {
+      for(let i = this.selectedDay - 6; i <= this.selectedDay; i++) {
+        if(new Date(this.selectedYear, this.selectedMonth, i).getDay() === 1) {
+          this.selectedWeekStartDay = i;
+          this.daysInSelectedWeek = this.getWeekdays();
+
+          return;
+        }
+      }
+    } else {
+      this.selectedMonth -= 1;
+      const daysInPreviousMonth = this.getNrOfDaysInSelectedMonth();
+      let remainingDays = 7 - this.selectedDay;
+
+      for(let i = daysInPreviousMonth - remainingDays; i <= daysInPreviousMonth; i++) {
+        if(new Date(this.selectedYear, this.selectedMonth, i).getDay() === 1) {
+          this.selectedWeekStartDay = i;
+          this.daysInSelectedWeek = this.getWeekdays();
+
+          this.selectedMonth += 1;
+          return;
+        }
+      }
+
+      remainingDays = this.selectedDay % 7;
+
+      for(let i = this.selectedDay - remainingDays; i <= this.selectedDay; i++) {
+        if(new Date(this.selectedYear, this.selectedMonth, i).getDay() === 1) {
+          this.selectedWeekStartDay = i;
+          this.daysInSelectedWeek = this.getWeekdays();
+
+          this.selectedMonth += 1;
+          return;
+        }
+      }
+    }
   }
 
   private getWeekdays(): ICalendarDay[] {
     const weekDays: ICalendarDay[] = [];
     const daysInSelectedMonth = this.getNrOfDaysInSelectedMonth();
-    
-    let selectedWeekEndDay = 7;
-    let selectedWeekdays: ICalendarDay[] = [];
 
     if (this.selectedWeekStartDay + 6 <= daysInSelectedMonth) {
        return this.selectedWeekFromSelectedMonth();
     }
 
     return this.selectedWeekFromTwoMonths(daysInSelectedMonth);
-  }
-
-  public onMonthClicked(): void {
-    this.selectedCalendarType = 'month';
   }
 
   public createEventDiv(event: MouseEvent): void {
@@ -287,12 +310,11 @@ export class CalendarComponent {
   public onNextClicked(): void {
     switch (this.selectedCalendarType) {
       case 'day':
-        
+        this.calculateNextDay();
         break;
 
       case 'week':
         this.calculateNextWeek();
-        this.daysInSelectedWeek = this.getWeekdays();
         break;
 
       case 'month':
@@ -315,6 +337,9 @@ export class CalendarComponent {
       this.selectedMonth,
       1
     ).toLocaleString('default', { month: 'long' });
+    
+    this.selectedDay = 1;
+    this.setSelectedWeekStartDay();
   }
 
   private calculateNextWeek(): void {
@@ -344,34 +369,59 @@ export class CalendarComponent {
         1
       ).toLocaleString('default', { month: 'long' });
     }
+
+    this.daysInSelectedWeek = this.getWeekdays();
+  }
+
+  private calculateNextDay(): void {
+    let previousDay = this.selectedDay;
+
+    if(this.selectedDay + 1 <= this.getNrOfDaysInSelectedMonth()) {
+      this.selectedDay += 1;
+    }
+    else {
+      this.selectedDay = 1;
+      this.selectedMonth += 1;
+
+      if(this.selectedMonth > 11) {
+        this.selectedMonth = 0;
+        this.selectedYear += 1;
+      }
+
+      this.selectedMonthName = new Date(
+        this.selectedYear,
+        this.selectedMonth,
+        1
+      ).toLocaleString('default', { month: 'long' });
+    }
+
+    if(previousDay === this.daysInSelectedWeek[6].date){
+      this.setSelectedWeekStartDay();
+    }
   }
 
   public onPreviousClicked(): void {
     switch (this.selectedCalendarType) {
       case 'day':
-        
+        this.calculatePreviousDay();
         break;
 
       case 'week':
         this.calculatePreviousWeek();
-        this.daysInSelectedWeek = this.getWeekdays();
         break;
 
       case 'month':
         this.calculatePreviousMonth();
-        this.selectedDay = 1;
-        this.daysInSelectedWeek = this.getWeekdays();
         break;
     }
   }
 
   private calculatePreviousMonth(): void {
-    if(this.selectedMonth === 0) {
+    this.selectedMonth -= 1;
+
+    if(this.selectedMonth < 0) {
       this.selectedMonth = 11;
       this.selectedYear -= 1;
-    } 
-    else {
-      this.selectedMonth -= 1;
     }
 
     this.selectedMonthName = new Date(
@@ -379,6 +429,9 @@ export class CalendarComponent {
       this.selectedMonth,
       1
     ).toLocaleString('default', { month: 'long' });
+
+    this.selectedDay = 1;
+    this.setSelectedWeekStartDay();
   }
 
   private calculatePreviousWeek(): void {
@@ -402,6 +455,36 @@ export class CalendarComponent {
 
       const daysInSelectedMonth = this.getNrOfDaysInSelectedMonth();
       this.selectedWeekStartDay = daysInSelectedMonth - remainingDays;
+    }
+
+    this.daysInSelectedWeek = this.getWeekdays();
+  }
+
+  private calculatePreviousDay(): void {
+    let previousDay = this.selectedDay;
+
+    if(this.selectedDay - 1 >= 1) {
+      this.selectedDay -= 1;
+    }
+    else {
+      this.selectedMonth -= 1;
+
+      if(this.selectedMonth < 0) {
+        this.selectedMonth = 11;
+        this.selectedYear -= 1;
+      }
+
+      this.selectedMonthName = new Date(
+        this.selectedYear,
+        this.selectedMonth,
+        1
+      ).toLocaleString('default', { month: 'long' });
+
+      this.selectedDay = this.getNrOfDaysInSelectedMonth();
+    }
+
+    if(previousDay === this.daysInSelectedWeek[0].date){
+      this.setSelectedWeekStartDay();
     }
   }
 

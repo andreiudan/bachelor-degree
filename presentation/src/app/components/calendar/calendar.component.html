@@ -45,9 +45,13 @@
     </div>
 
     <div class="date-select-buttons">
-      <button (click)="onPreviousClicked()"><</button>
-      <button (click)="onTodayClicked()">Today</button>
-      <button (click)="onNextClicked()">></button>
+      <button class="arrow-button" (click)="onPreviousClicked()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button class="today-button" (click)="onTodayClicked()">Today</button>
+      <button class="arrow-button" (click)="onNextClicked()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
     </div>
   </div>
 

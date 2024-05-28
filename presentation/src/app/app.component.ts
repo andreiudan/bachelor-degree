@@ -11,7 +11,7 @@ export class AppComponent {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   title = 'presentation';
-  isSidenavCollapsed = false;
+  isSidenavCollapsed = true;
   isLoggedIn = true;
 
   constructor(private router: Router) {

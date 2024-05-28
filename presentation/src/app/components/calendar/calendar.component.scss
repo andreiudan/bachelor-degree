@@ -15,7 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 48px 12px 48px;
+  padding: 18px 48px 48px 48px;
 
   .date{
     display: flex;
@@ -30,7 +30,42 @@
 
   .date-select-buttons {
     display: flex;
-    gap: 0 6px;
+    gap: 0 12px;
+
+    .arrow-button {
+      padding: 0;
+      font-size: 0px;
+      padding-inline: 8px;
+      padding-block: 1px;
+      height: fit-content;
+      border-radius: 5px;
+      border: none;
+      box-shadow: 0 0 2.5px rgba(0, 0, 0, 0.4);
+      color: #288a7d;
+    }
+
+    .arrow-button:hover {
+      background-color: #c4c4c4;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
+    }
+
+    .today-button {
+      padding: 0;
+      font-weight: bold;
+      font-size: 14px;
+      padding-inline: 18px;
+      padding-block: 5px;
+      height: fit-content;
+      border-radius: 5px;
+      border: none;
+      box-shadow: 0 0 2.5px rgba(0, 0, 0, 0.4);
+      color: #288a7d;
+    }
+
+    .today-button:hover {
+      background-color: #c4c4c4;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
+    }
   }
 }
 
