@@ -14,8 +14,24 @@
 .info-alignment {
   display: flex;
   align-items: center;
-  gap: 0 6px;
+  justify-content: space-between;
   padding: 12px 48px 12px 48px;
+
+  .date{
+    display: flex;
+    align-items: center;
+
+    p{
+      margin: 0 0 0 4px;
+      color: #929292;
+      font-weight: lighter;
+    }
+  }
+
+  .date-select-buttons {
+    display: flex;
+    gap: 0 6px;
+  }
 }
 
 .spacer {

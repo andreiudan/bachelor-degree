@@ -1,9 +1,10 @@
 <div class="main-div">
   <div class="info-alignment">
-    <h3>{{ this.currentUTCMonthName }}</h3>
-    <p>{{ this.currentUTCYear }}</p>
+    <div class="date">
+      <h3>{{ this.selectedMonthName }}</h3>
+      <p>{{ this.selectedYear }}</p>
+    </div>
 
-    <span class="spacer"></span>
     <div class="day-week-month">
       <div
         (click)="onDayClicked()"
@@ -42,11 +43,12 @@
         <p>Month</p>
       </div>
     </div>
-    <span class="spacer"></span>
 
-    <button><</button>
-    <button>Today</button>
-    <button>></button>
+    <div class="date-select-buttons">
+      <button (click)="onPreviousClicked()"><</button>
+      <button (click)="onTodayClicked()">Today</button>
+      <button (click)="onNextClicked()">></button>
+    </div>
   </div>
 
   <div class="calendar-display">
@@ -58,7 +60,9 @@
             @for (day of daysInSelectedWeek; track $index) {
             <div
               class="{{
-                this.currentUTCDay == day.date ? 'current-day' : ''
+                (this.currentUTCDay == day.date) && 
+                (this.selectedMonth == this.currentUTCMonth) &&
+                (this.selectedYear == this.currentUTCYear) ? 'current-day' : ''
               }} day"
             >
               <h4>{{ day.date }}</h4>
@@ -75,88 +79,18 @@
         <div class="calendar-alignment">
           <div class="hours-size">
             <div class="hours">
-              <div *ngFor="let hour of hours; let i = index" class="row{{i}}">
+              <div *ngFor="let hour of hours; let i = index" class="row{{ i }}">
                 <div class="hour">
-                  <ng-container *ngIf="i === 0; else nonZeroHour"></ng-container>
+                  <ng-container
+                    *ngIf="i === 0; else nonZeroHour"
+                  ></ng-container>
                   <ng-template #nonZeroHour>
-                    {{ i < 10 ? '0' + i : i }}
+                    {{ i < 10 ? "0" + i : i }}
                   </ng-template>
                 </div>
               </div>
-              <!-- <div class="row0">
-                <div class="hour"></div>
-              </div>
-              <div class="row1">
-                <div class="hour">01</div>
-              </div>
-              <div class="row2">
-                <div class="hour">02</div>
-              </div>
-              <div class="row3">
-                <div class="hour">03</div>
-              </div>
-              <div class="row4">
-                <div class="hour">04</div>
-              </div>
-              <div class="row5">
-                <div class="hour">05</div>
-              </div>
-              <div class="row6">
-                <div class="hour">06</div>
-              </div>
-              <div class="row7">
-                <div class="hour">07</div>
-              </div>
-              <div class="row8">
-                <div class="hour">08</div>
-              </div>
-              <div class="row9">
-                <div class="hour">09</div>
-              </div>
-              <div class="row10">
-                <div class="hour">10</div>
-              </div>
-              <div class="row11">
-                <div class="hour">11</div>
-              </div>
-              <div class="row12">
-                <div class="hour">12</div>
-              </div>
-              <div class="row13">
-                <div class="hour">13</div>
-              </div>
-              <div class="row14">
-                <div class="hour">14</div>
-              </div>
-              <div class="row15">
-                <div class="hour">15</div>
-              </div>
-              <div class="row16">
-                <div class="hour">16</div>
-              </div>
-              <div class="row17">
-                <div class="hour">17</div>
-              </div>
-              <div class="row18">
-                <div class="hour">18</div>
-              </div>
-              <div class="row19">
-                <div class="hour">19</div>
-              </div>
-              <div class="row20">
-                <div class="hour">20</div>
-              </div>
-              <div class="row21">
-                <div class="hour">21</div>
-              </div>
-              <div class="row22">
-                <div class="hour">22</div>
-              </div>
-              <div class="row23">
-                <div class="hour">23</div>
-              </div> -->
               @for (hour of hours; track $index) {
-              <div class="blank-row{{$index}}"></div>  
+              <div class="blank-row{{ $index }}"></div>
               }
             </div>
           </div>

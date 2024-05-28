@@ -16,22 +16,29 @@ interface IInsetInline {
   styleUrl: './calendar.component.scss',
 })
 export class CalendarComponent {
-  private currentUTCDate = new Date();
-  public currentUTCMonthName = this.currentUTCDate.toLocaleString('default', {
-    month: 'long',
-  });
+  public currentUTCDate = new Date();
   public currentUTCYear = this.currentUTCDate.getUTCFullYear();
-  public currentUTCMonth = this.currentUTCDate.getMonth();
-  public currentUTCDay = this.currentUTCDate.getDate();
+  public currentUTCMonth = this.currentUTCDate.getUTCMonth();
+  public currentUTCDay = this.currentUTCDate.getUTCDate();
 
+  public selectedYear: number;
+  public selectedMonth: number;
+  public selectedMonthName: string;
+  public daysInSelectedWeek: ICalendarDay[] = [];
+  public selectedDay: number;
+  public selectedWeekStartDay: number;
   public selectedCalendarType = 'week';
-  public daysInSelectedWeek = this.getCurrentUTCWeekdays();
+
   public hours = new Array(24).fill(0);
 
   private calendarEventsDivs: HTMLElement[] = [];
   @ViewChild('events') calendarEvents: ElementRef;
 
   constructor(private renderer: Renderer2) {}
+
+  ngOnInit(): void {
+    this.initializeCurrentUTCDate();
+  }
 
   public onDayClicked(): void {
     this.selectedCalendarType = 'day';
@@ -40,69 +47,116 @@ export class CalendarComponent {
   public onWeekClicked(): void {
     this.selectedCalendarType = 'week';
 
-    this.daysInSelectedWeek = this.getCurrentUTCWeekdays();
+    this.daysInSelectedWeek = this.getWeekdays();
   }
 
-  private getCurrentUTCWeekdays(): ICalendarDay[] {
-    let daysInCurrentUTCMonth = new Date(
-      this.currentUTCYear,
-      this.currentUTCDate.getMonth() + 1,
+  private initializeCurrentUTCDate(): void {
+    this.currentUTCDate = new Date();
+    this.selectedMonthName = this.currentUTCDate.toLocaleString('default', {
+      month: 'long',
+    });
+    this.selectedYear = this.currentUTCDate.getUTCFullYear();
+    this.selectedMonth = this.currentUTCDate.getMonth();
+    this.selectedDay = this.currentUTCDate.getDate();
+
+    this.selectedWeekStartDay = this.findMondayInWeek();
+
+    this.daysInSelectedWeek = this.getWeekdays();
+  }
+
+  private getNrOfDaysInSelectedMonth(): number {
+    return new Date(
+      this.selectedYear,
+      this.selectedMonth + 1,
       0
     ).getDate();
-    let firstDayOfCurrentUTCWeek =
-      this.currentUTCDay - (this.currentUTCDay % 7) - 1;
-    let lastDayOfCurrentUTCWeek = 7;
-    let currentUTCWeek: ICalendarDay[] = [];
+  }
 
-    if (firstDayOfCurrentUTCWeek + 6 <= daysInCurrentUTCMonth) {
-      lastDayOfCurrentUTCWeek = firstDayOfCurrentUTCWeek + 6;
+  private selectedWeekFromSelectedMonth(): ICalendarDay[] {
+    const weekDays: ICalendarDay[] = [];
+    const selectedWeekEndDay = this.selectedWeekStartDay + 6;
 
-      for (
-        let day = firstDayOfCurrentUTCWeek;
-        day <= lastDayOfCurrentUTCWeek;
-        day++
-      ) {
-        currentUTCWeek.push({
+    for (
+      let day = this.selectedWeekStartDay;
+      day <= selectedWeekEndDay;
+      day++
+    ) {
+      weekDays.push({
+        date: day,
+        name: new Date(
+          this.selectedYear,
+          this.selectedMonth,
+          day
+        ).toLocaleString('default', { weekday: 'short' }),
+      });
+    }
+
+    return weekDays;
+  }
+
+  private selectedWeekFromTwoMonths(daysInSelectedMonth: number): ICalendarDay[] {
+    const weekDays: ICalendarDay[] = [];
+
+    for (
+      let day = this.selectedWeekStartDay;
+      day <= daysInSelectedMonth;
+      day++
+    ) {
+      weekDays.push({
+        date: day,
+        name: new Date(
+          this.selectedYear,
+          this.selectedMonth,
+          day
+        ).toLocaleString('default', { weekday: 'short' }),
+      });
+    }
+
+    if (weekDays.length < 7) {
+      const daysFromNextMonth = 7 - weekDays.length;
+      for (let day = 1; day <= daysFromNextMonth; day++) {
+        weekDays.push({
           date: day,
           name: new Date(
-            this.currentUTCYear,
-            this.currentUTCMonth,
+            this.selectedYear,
+            this.selectedMonth + 1,
             day
           ).toLocaleString('default', { weekday: 'short' }),
         });
-      }
-    } else {
-      for (
-        let day = firstDayOfCurrentUTCWeek;
-        day <= daysInCurrentUTCMonth;
-        day++
-      ) {
-        currentUTCWeek.push({
-          date: day,
-          name: new Date(
-            this.currentUTCYear,
-            this.currentUTCMonth,
-            day
-          ).toLocaleString('default', { weekday: 'short' }),
-        });
-      }
-
-      if (currentUTCWeek.length < 7) {
-        const nextMonthDays = 7 - currentUTCWeek.length;
-        for (let day = 1; day <= nextMonthDays; day++) {
-          currentUTCWeek.push({
-            date: day,
-            name: new Date(
-              this.currentUTCYear,
-              this.currentUTCMonth + 1,
-              day
-            ).toLocaleString('default', { weekday: 'short' }),
-          });
-        }
       }
     }
 
-    return currentUTCWeek;
+    return weekDays;
+  }
+
+  private findMondayInWeek(): number {
+    let mondayDateInSelectedWeek = 1;
+
+    this.selectedWeekStartDay =
+      this.selectedDay - (this.selectedDay % 7) - 1;
+
+    for(let i = this.selectedWeekStartDay; i >= 1; i--) {
+      if(new Date(this.selectedYear, this.selectedMonth, i).getDay() === 1) {
+        mondayDateInSelectedWeek = i;
+        break;
+      }
+    }
+
+    return mondayDateInSelectedWeek;
+  }
+
+  private getWeekdays(): ICalendarDay[] {
+    const weekDays: ICalendarDay[] = [];
+    const daysInSelectedMonth = this.getNrOfDaysInSelectedMonth();
+    
+    let selectedWeekEndDay = 7;
+    let selectedWeekdays: ICalendarDay[] = [];
+
+    if (this.selectedWeekStartDay + 6 <= daysInSelectedMonth) {
+       return this.selectedWeekFromSelectedMonth();
+    }
+
+    return this.selectedWeekFromTwoMonths(daysInSelectedMonth);
   }
 
   public onMonthClicked(): void {
@@ -228,5 +282,130 @@ export class CalendarComponent {
         mouseUpListener();
       }
     );
+  }
+
+  public onNextClicked(): void {
+    switch (this.selectedCalendarType) {
+      case 'day':
+        
+        break;
+
+      case 'week':
+        this.calculateNextWeek();
+        this.daysInSelectedWeek = this.getWeekdays();
+        break;
+
+      case 'month':
+        this.calculateNextMonth();
+        this.selectedDay = 1;
+        break;
+    }
+  }
+
+  private calculateNextMonth(): void {
+    this.selectedMonth += 1;
+
+    if(this.selectedMonth > 11) {
+      this.selectedMonth = 0;
+      this.selectedYear += 1;
+    }
+
+    this.selectedMonthName = new Date(
+      this.selectedYear,
+      this.selectedMonth,
+      1
+    ).toLocaleString('default', { month: 'long' });
+  }
+
+  private calculateNextWeek(): void {
+    if(this.selectedWeekStartDay + 7 <= this.getNrOfDaysInSelectedMonth()) {
+      this.selectedWeekStartDay += 7;
+    } 
+    else {
+      const remainingDays = 7 - (this.getNrOfDaysInSelectedMonth() - this.selectedWeekStartDay);
+
+      if(remainingDays <= 0) {
+        this.selectedWeekStartDay = 1;
+      }
+      else {
+        this.selectedWeekStartDay = remainingDays;
+      }
+
+      this.selectedMonth += 1;
+
+      if(this.selectedMonth > 11) {
+        this.selectedMonth = 0;
+        this.selectedYear += 1;
+      }
+
+      this.selectedMonthName = new Date(
+        this.selectedYear,
+        this.selectedMonth,
+        1
+      ).toLocaleString('default', { month: 'long' });
+    }
+  }
+
+  public onPreviousClicked(): void {
+    switch (this.selectedCalendarType) {
+      case 'day':
+        
+        break;
+
+      case 'week':
+        this.calculatePreviousWeek();
+        this.daysInSelectedWeek = this.getWeekdays();
+        break;
+
+      case 'month':
+        this.calculatePreviousMonth();
+        this.selectedDay = 1;
+        this.daysInSelectedWeek = this.getWeekdays();
+        break;
+    }
+  }
+
+  private calculatePreviousMonth(): void {
+    if(this.selectedMonth === 0) {
+      this.selectedMonth = 11;
+      this.selectedYear -= 1;
+    } 
+    else {
+      this.selectedMonth -= 1;
+    }
+
+    this.selectedMonthName = new Date(
+      this.selectedYear,
+      this.selectedMonth,
+      1
+    ).toLocaleString('default', { month: 'long' });
+  }
+
+  private calculatePreviousWeek(): void {
+    if(this.selectedWeekStartDay - 7 >= 1) {
+      this.selectedWeekStartDay -= 7;
+    }
+    else {
+      const remainingDays = 7 - this.selectedWeekStartDay;
+      this.selectedMonth -= 1;
+
+      if(this.selectedMonth < 0) {
+        this.selectedMonth = 11;
+        this.selectedYear -= 1;
+      }
+
+      this.selectedMonthName = new Date(
+        this.selectedYear,
+        this.selectedMonth,
+        1
+      ).toLocaleString('default', { month: 'long' });
+
+      const daysInSelectedMonth = this.getNrOfDaysInSelectedMonth();
+      this.selectedWeekStartDay = daysInSelectedMonth - remainingDays;
+    }
+  }
+
+  public onTodayClicked(): void {
+    this.initializeCurrentUTCDate();
   }
 }
