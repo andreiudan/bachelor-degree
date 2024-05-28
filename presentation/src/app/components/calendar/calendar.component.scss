@@ -15,7 +15,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 48px 48px 48px;
+  padding: 18px 31px 48px 48px;
+  margin-inline-end: 17px;
 
   .date{
     display: flex;
@@ -175,12 +176,13 @@
     justify-content: flex-start;
     padding-left: 28px;
     padding-bottom: 6px;
+    margin-inline-end: 17px;
   }
 
   mat-divider {
     height: 1px;
     background-color: black;
-    width: 98.7%;
+    width: 100%;
     border: 0;
     align-self: center;
   }
@@ -193,6 +195,11 @@
     p {
       color: #68d8c9 !important;
     }
+  }
+
+  .disable-scroll {
+    overflow: hidden !important;
+    margin-inline-end: 17px;
   }
 
   .calendar {
@@ -570,13 +577,40 @@
               border-color: #45968b;
               border-left-style: solid;
               display: flex;
+              flex-direction: column;
+              justify-items: start;
               width: 100%;
               height: 100%;
               border-radius: 6px;
+
+              .event-button-title {
+                font-size: 12px;
+                font-weight: bold;
+                color: #ffffff;
+                margin: 0 0 0 4px;
+              }
+
+              .event-button-subtitle {
+                font-size: 10px;
+                color: #ffffff;
+                margin: 0 0 0 4px;
+              }
             }
           }
         }
       }
     }
   }
+}
+
+.calendar-event-details {
+  position: absolute;
+  top: 219px;
+  background-color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  border-radius: 12px;
+  bottom: 120px;
+  left: 350px;
+  padding: 12px;
 }

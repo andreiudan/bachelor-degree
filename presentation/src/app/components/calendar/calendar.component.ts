@@ -32,7 +32,14 @@ export class CalendarComponent {
   public hours = new Array(24).fill(0);
 
   private calendarEventsDivs: HTMLElement[] = [];
+  private calendarEventDetailsDiv: HTMLElement | null = null;
   @ViewChild('events') calendarEvents: ElementRef;
+  @ViewChild('calendarEventDetails') calendarEventDetails: ElementRef;
+  @ViewChild('calendar') calendar: ElementRef;
+
+  private documentClickListener: () => void;
+  private documentContextMenuListener: () => void;
+  private documentMouseDownListener: () => void;
 
   constructor(private renderer: Renderer2) {}
 
@@ -186,7 +193,7 @@ export class CalendarComponent {
     return this.selectedWeekFromTwoMonths(daysInSelectedMonth);
   }
 
-  public createEventDiv(event: MouseEvent): void {
+  public createCalendarEventDiv(event: MouseEvent): void {
     if (event.button !== 0) {
       return;
     }
@@ -210,10 +217,8 @@ export class CalendarComponent {
 
     const eventPreviewDiv = this.renderer.createElement('div');
     this.renderer.addClass(eventPreviewDiv, 'event-preview');
-
-    const button = this.renderer.createElement('button');
-    this.renderer.addClass(button, 'event-button');
-    this.renderer.appendChild(eventPreviewDiv, button);
+    
+    this.renderer.appendChild(eventPreviewDiv, this.createCalendarEventButton());
 
     this.renderer.appendChild(eventDiv, eventPreviewDiv);
 
@@ -233,6 +238,83 @@ export class CalendarComponent {
     this.setBottomPercentageOfEventDiv(eventDiv);
 
     this.calendarEventsDivs.push(eventDiv);
+  }
+
+  private createCalendarEventButton(): HTMLElement {
+    const button = this.renderer.createElement('button');
+    this.renderer.addClass(button, 'event-button');
+
+    const buttonTitleDiv = this.renderer.createElement('div');
+    this.renderer.addClass(buttonTitleDiv, 'event-button-title');
+    const buttonTitle = this.renderer.createText('Event title');
+    this.renderer.appendChild(buttonTitleDiv, buttonTitle);
+
+    const buttonSubTitleDiv = this.renderer.createElement('div');
+    this.renderer.addClass(buttonSubTitleDiv, 'event-button-subtitle');
+    const buttonSubTitle = this.renderer.createText('Event subtitle');
+    this.renderer.appendChild(buttonSubTitleDiv, buttonSubTitle);
+
+    this.renderer.appendChild(button, buttonTitleDiv);
+    this.renderer.appendChild(button, buttonSubTitleDiv);
+
+    this.renderer.listen(button, 'dblclick', (event: MouseEvent) => 
+      this.onCalendarEventDoubleClick(event));
+
+    return button;
+  }
+
+  private onCalendarEventDoubleClick(event: MouseEvent): void {
+    this.calendarEventDetailsDiv = this.renderer.createElement('div');
+    this.renderer.addClass(this.calendarEventDetailsDiv, 'calendar-event-details');
+    const calendarEventDetailsTitle = this.renderer.createText('Event Details');
+    this.renderer.appendChild(this.calendarEventDetailsDiv, calendarEventDetailsTitle);
+
+    this.renderer.appendChild(this.calendarEventDetails.nativeElement, this.calendarEventDetailsDiv);
+
+    event.stopPropagation();
+    event.preventDefault();
+      
+    this.documentClickListener = this.renderer.listen('document', 'click', this.onDocumentClick.bind(this));
+    this.documentContextMenuListener = this.renderer.listen('document', 'contextmenu', this.onDocumentClick.bind(this));
+    this.documentMouseDownListener = this.renderer.listen('document', 'mousedown', this.onDocumentClick.bind(this));
+
+    this.renderer.addClass(this.calendar.nativeElement, 'disable-scroll');
+  }
+
+  private onDocumentClick(event: MouseEvent): void {
+    if (this.calendarEventDetailsDiv && !this.calendarEventDetailsDiv.contains(event.target as Node)) {
+      this.renderer.removeChild(this.calendarEventDetails.nativeElement, this.calendarEventDetailsDiv);
+      this.calendarEventDetailsDiv = null;
+
+      if (this.documentClickListener) {
+        this.documentClickListener();
+      }
+
+      this.renderer.removeClass(this.calendar.nativeElement, 'disable-scroll');
+    }
+  }
+
+  private removeDocumentListeners(): void {
+    if (this.documentClickListener) {
+      this.documentClickListener();
+      this.documentClickListener = () => {};
+    }
+    if (this.documentContextMenuListener) {
+      this.documentContextMenuListener();
+      this.documentContextMenuListener = () => {};
+    }
+    if (this.documentMouseDownListener) {
+      this.documentMouseDownListener();
+      this.documentMouseDownListener = () => {};
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.removeDocumentListeners();
+
+    if (this.calendar) {
+      this.renderer.removeClass(this.calendar.nativeElement, 'disable-scroll');
+    }
   }
 
   private getInsetInlineOfEventDiv(

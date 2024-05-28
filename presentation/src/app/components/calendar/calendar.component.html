@@ -79,7 +79,7 @@
 
       <div class="divider"><mat-divider></mat-divider></div>
 
-      <div class="calendar">
+      <div class="calendar" #calendar>
         <div class="calendar-alignment">
           <div class="hours-size">
             <div class="hours">
@@ -125,11 +125,14 @@
               class="calendar-events"
               #events
               tabindex="0"
-              (mousedown)="createEventDiv($event)"
+              (mousedown)="createCalendarEventDiv($event)"
             ></div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div #calendarEventDetails>
+
   </div>
 </div>
