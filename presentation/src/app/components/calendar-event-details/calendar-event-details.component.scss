@@ -1,0 +1,15 @@
+.calendar-event-details {
+    position: absolute;
+    top: var(--top);
+    background-color: #ffffff;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    border-radius: 12px;
+    width: var(--width);
+    height: var(--height);
+    left: var(--left);
+    right: var(--right);
+    padding: var(--padding);
+    margin: var(--margin);
+  }
+  

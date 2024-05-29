@@ -81,7 +81,7 @@
 
       <div class="calendar" #calendar>
         <div class="calendar-alignment">
-          <div [style.width.px]="hoursSize">
+          <div class="hours-size">
             <div class="hours">
               <div *ngFor="let hour of hours; let i = index" class="row{{ i }}">
                 <div class="hour">
@@ -132,7 +132,10 @@
       </div>
     </div>
   </div>
-  <div #calendarEventDetails>
 
+  <div>
+    <div appDynamicHost>
+
+    </div>
   </div>
 </div>

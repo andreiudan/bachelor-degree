@@ -9,6 +9,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SprintComponent } from './components/sprint/sprint.component';
 import { TaskComponent } from './components/task/task.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
+import { CalendarEventDetailsComponent } from './components/calendar-event-details/calendar-event-details.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
   {
     path: 'calendar',
     component: CalendarComponent,
+  },
+  {
+    path: 'calendar-event',
+    component: CalendarEventDetailsComponent,
   }
 ];
 

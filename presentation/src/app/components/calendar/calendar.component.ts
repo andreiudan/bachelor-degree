@@ -1,4 +1,6 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, ComponentRef, ElementRef, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { CalendarEventDetailsComponent } from '../calendar-event-details/calendar-event-details.component';
+import { DynamicHostDirective } from '../../directives/dynamic-host/dynamic-host.directive';
 
 interface ICalendarDay {
   date: number;
@@ -16,9 +18,6 @@ interface IInsetInline {
   styleUrl: './calendar.component.scss',
 })
 export class CalendarComponent {
-  public readonly hoursSize = 85;
-  private readonly scrollBarSize = 17;
-
   public currentUTCDate = new Date();
   public currentUTCYear = this.currentUTCDate.getUTCFullYear();
   public currentUTCMonth = this.currentUTCDate.getUTCMonth();
@@ -35,7 +34,8 @@ export class CalendarComponent {
   public hours = new Array(24).fill(0);
 
   private calendarEventsDivs: HTMLElement[] = [];
-  private calendarEventDetailsDiv: HTMLElement | null = null;
+
+  @ViewChild(DynamicHostDirective, {static: true}) dynamicHost: DynamicHostDirective;
   @ViewChild('events') calendarEvents: ElementRef;
   @ViewChild('calendarEventDetails') calendarEventDetails: ElementRef;
   @ViewChild('calendar') calendar: ElementRef;
@@ -43,6 +43,9 @@ export class CalendarComponent {
   private documentClickListener: () => void;
   private documentContextMenuListener: () => void;
   private documentMouseDownListener: () => void;
+
+  private calendarEventDetailsComponent: CalendarEventDetailsComponent;
+  private viewContainerRef: ViewContainerRef;
 
   constructor(private renderer: Renderer2) {}
 
@@ -267,88 +270,37 @@ export class CalendarComponent {
   }
 
   private onCalendarEventDoubleClick(event: MouseEvent, eventElement: HTMLElement): void {
-    this.createCalendarEventDetailsDiv(event, eventElement);
+    this.viewContainerRef = this.dynamicHost.viewContainerRef;
+    this.viewContainerRef.clear();
+
+    const componentRef = this.viewContainerRef.createComponent(CalendarEventDetailsComponent);
+    this.calendarEventDetailsComponent = componentRef.instance;
+
+    this.calendarEventDetailsComponent.initialize(eventElement, this.calendar, this.calendarEvents);
+
+    this.renderer.addClass(this.calendar.nativeElement, 'disable-scroll');
 
     event.stopPropagation();
     event.preventDefault();
-      
+
+    this.removeDocumentListeners();
+
     this.documentClickListener = this.renderer.listen('document', 'click', this.onDocumentClick.bind(this));
     this.documentContextMenuListener = this.renderer.listen('document', 'contextmenu', this.onDocumentClick.bind(this));
     this.documentMouseDownListener = this.renderer.listen('document', 'mousedown', this.onDocumentClick.bind(this));
-
-    this.renderer.addClass(this.calendar.nativeElement, 'disable-scroll');
-  }
-
-  private createCalendarEventDetailsDiv(event: MouseEvent, eventElement: HTMLElement): void {
-    this.calendarEventDetailsDiv = this.renderer.createElement('div');
-    this.renderer.addClass(this.calendarEventDetailsDiv, 'calendar-event-details');
-  
-    const calendarEventDetailsTitle = this.renderer.createText('Event Details');
-    this.renderer.appendChild(this.calendarEventDetailsDiv, calendarEventDetailsTitle);
-
-    const alignmentAttributes = this.getCalendarEventDetailsDivAlignmentAttributes(eventElement);
-
-    this.renderer.setAttribute(this.calendarEventDetailsDiv, 'style', alignmentAttributes);
-
-    this.renderer.appendChild(this.calendarEventDetails.nativeElement, this.calendarEventDetailsDiv);
-  }
-
-  private getCalendarEventDetailsDivAlignmentAttributes(eventElement: HTMLElement): string{
-    const width = 247;
-    const height = 247;
-    const margin = 6;
-    const padding = 12;
-    const buttonPadding = 4;
-    let top = 200;
-
-    const eventElementRect = eventElement.getBoundingClientRect();
-    const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
-    const calendarRect = this.calendar.nativeElement.getBoundingClientRect();
-
-    const topOffset = (height + 2 * margin + 2 * padding  - eventElementRect.height) / 2;
-    top = eventElementRect.top - topOffset;
-
-    if(top + height + margin >= calendarRect.bottom){
-      top = calendarRect.bottom - height - 2 * margin - 2 * padding;
-    }
-
-    const sizeAttributes = `--width: ${width}px; 
-      --height:${height}px; 
-      --margin: ${margin}px; 
-      --top: ${top}px;
-      --padding: ${padding}px;`;
-
-    const sidenavOffset = calendarRect.left;
-
-    let eventElementLeft: number | null = eventElementRect.right - sidenavOffset + buttonPadding;
-    let eventElementRight: number | null = null;
-
-    let alignmentAttribute = `--left: ${eventElementLeft}px;`;
-
-    const distanceToRight = calendarEventsRect.right - eventElementRect.right;
-    const elementWidth = eventElementRect.right - eventElementRect.left;
-
-    if(eventElementLeft + width > calendarEventsRect.width){
-      eventElementRight = distanceToRight + elementWidth + this.scrollBarSize + buttonPadding;
-      eventElementLeft = null;
-
-      alignmentAttribute = `--right: ${eventElementRight}px;`;
-    }
-
-    return sizeAttributes + alignmentAttribute;
   }
 
   private onDocumentClick(event: MouseEvent): void {
-    if (this.calendarEventDetailsDiv && !this.calendarEventDetailsDiv.contains(event.target as Node)) {
-      this.renderer.removeChild(this.calendarEventDetails.nativeElement, this.calendarEventDetailsDiv);
-      this.calendarEventDetailsDiv = null;
+    const clickedInside = this.calendarEventDetailsComponent.detailsRoot.nativeElement.contains(event.target as Node);
+      if (!clickedInside) {
+        this.viewContainerRef.clear();
 
-      if (this.documentClickListener) {
-        this.documentClickListener();
+        if (this.documentClickListener) {
+          this.documentClickListener();
+        }
+        
+        this.renderer.removeClass(this.calendar.nativeElement, 'disable-scroll');
       }
-
-      this.renderer.removeClass(this.calendar.nativeElement, 'disable-scroll');
-    }
   }
 
   private removeDocumentListeners(): void {
@@ -458,7 +410,6 @@ export class CalendarComponent {
 
       case 'month':
         this.calculateNextMonth();
-        this.selectedDay = 1;
         break;
     }
   }

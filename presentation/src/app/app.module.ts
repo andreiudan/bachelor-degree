@@ -27,6 +27,8 @@ import { SprintComponent } from './components/sprint/sprint.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './components/calendar/calendar.component';
+import { CalendarEventDetailsComponent } from './components/calendar-event-details/calendar-event-details.component';
+import { DynamicHostDirective } from './directives/dynamic-host/dynamic-host.directive';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { CalendarComponent } from './components/calendar/calendar.component';
     TaskComponent,
     SprintComponent,
     CalendarComponent,
+    DynamicHostDirective,
   ],
   imports: [
     BrowserModule,
