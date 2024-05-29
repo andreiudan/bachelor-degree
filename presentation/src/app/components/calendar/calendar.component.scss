@@ -216,10 +216,6 @@
       min-height: 960px;
     }
 
-    .hours-size {
-      width: 85px;
-    }
-
     .hours {
       display: grid;
       grid-template-columns: 90px repeat(1, calc(100% - 90px));
@@ -605,12 +601,15 @@
 
 .calendar-event-details {
   position: absolute;
-  top: 219px;
+  top: var(--top);
   background-color: #ffffff;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
   z-index: 1;
   border-radius: 12px;
-  bottom: 120px;
-  left: 350px;
-  padding: 12px;
+  width: var(--width);
+  height: var(--height);
+  left: var(--left);
+  right: var(--right);
+  padding: var(--padding);
+  margin: var(--margin);
 }

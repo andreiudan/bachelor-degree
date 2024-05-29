@@ -16,6 +16,9 @@ interface IInsetInline {
   styleUrl: './calendar.component.scss',
 })
 export class CalendarComponent {
+  public readonly hoursSize = 85;
+  private readonly scrollBarSize = 17;
+
   public currentUTCDate = new Date();
   public currentUTCYear = this.currentUTCDate.getUTCFullYear();
   public currentUTCMonth = this.currentUTCDate.getUTCMonth();
@@ -258,18 +261,13 @@ export class CalendarComponent {
     this.renderer.appendChild(button, buttonSubTitleDiv);
 
     this.renderer.listen(button, 'dblclick', (event: MouseEvent) => 
-      this.onCalendarEventDoubleClick(event));
+      this.onCalendarEventDoubleClick(event, event.target as HTMLElement));
 
     return button;
   }
 
-  private onCalendarEventDoubleClick(event: MouseEvent): void {
-    this.calendarEventDetailsDiv = this.renderer.createElement('div');
-    this.renderer.addClass(this.calendarEventDetailsDiv, 'calendar-event-details');
-    const calendarEventDetailsTitle = this.renderer.createText('Event Details');
-    this.renderer.appendChild(this.calendarEventDetailsDiv, calendarEventDetailsTitle);
-
-    this.renderer.appendChild(this.calendarEventDetails.nativeElement, this.calendarEventDetailsDiv);
+  private onCalendarEventDoubleClick(event: MouseEvent, eventElement: HTMLElement): void {
+    this.createCalendarEventDetailsDiv(event, eventElement);
 
     event.stopPropagation();
     event.preventDefault();
@@ -279,6 +277,61 @@ export class CalendarComponent {
     this.documentMouseDownListener = this.renderer.listen('document', 'mousedown', this.onDocumentClick.bind(this));
 
     this.renderer.addClass(this.calendar.nativeElement, 'disable-scroll');
+  }
+
+  private createCalendarEventDetailsDiv(event: MouseEvent, eventElement: HTMLElement): void {
+    this.calendarEventDetailsDiv = this.renderer.createElement('div');
+    this.renderer.addClass(this.calendarEventDetailsDiv, 'calendar-event-details');
+  
+    const calendarEventDetailsTitle = this.renderer.createText('Event Details');
+    this.renderer.appendChild(this.calendarEventDetailsDiv, calendarEventDetailsTitle);
+
+    const alignmentAttributes = this.getCalendarEventDetailsDivAlignmentAttributes(eventElement);
+
+    this.renderer.setAttribute(this.calendarEventDetailsDiv, 'style', alignmentAttributes);
+
+    this.renderer.appendChild(this.calendarEventDetails.nativeElement, this.calendarEventDetailsDiv);
+  }
+
+  private getCalendarEventDetailsDivAlignmentAttributes(eventElement: HTMLElement): string{
+    const width = 247;
+    const height = 247;
+    const margin = 6;
+    const padding = 12;
+    const buttonPadding = 4;
+    let top = 200;
+
+    const eventElementRect = eventElement.getBoundingClientRect();
+    const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
+
+    const topOffset = (height + 2 * margin + 2 * padding  - eventElementRect.height) / 2;
+    top = eventElementRect.top - topOffset;
+
+    const calendarRect = this.calendar.nativeElement.getBoundingClientRect();
+
+    if(top + height + margin >= calendarRect.bottom){
+      top = calendarRect.bottom - height - 2 * margin - 2 * padding;
+    }
+
+    const sizeAttributes = `--width: ${width}px; 
+      --height:${height}px; 
+      --margin: ${margin}px; 
+      --top: ${top}px;
+      --padding: ${padding}px;`;
+
+    let eventElementLeft: number | null = eventElementRect.left + (eventElementRect.right - eventElementRect.left) - this.hoursSize + this.scrollBarSize - buttonPadding;
+    let eventElementRight: number | null = null;
+
+    let alignmentAttribute = `--left: ${eventElementLeft}px;`;
+
+    if(eventElementLeft + width > calendarEventsRect.width){
+      eventElementRight = (calendarEventsRect.right - eventElementRect.right) + (eventElementRect.right - eventElementRect.left) + this.scrollBarSize + buttonPadding;
+      eventElementLeft = null;
+
+      alignmentAttribute = `--right: ${eventElementRight}px;`;
+    }
+
+    return sizeAttributes + alignmentAttribute;
   }
 
   private onDocumentClick(event: MouseEvent): void {
