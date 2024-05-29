@@ -1,4 +1,4 @@
-.calendar-event-details {
+.main-div {
     position: absolute;
     top: var(--top);
     background-color: #ffffff;
@@ -11,5 +11,97 @@
     right: var(--right);
     padding: var(--padding);
     margin: var(--margin);
-  }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+    border-bottom: 1px solid #e0e0e0;
+
+    h4{
+        margin: 0;
+    
+    }
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+
+    p{
+        margin: 0;
+        font-size: 14px;
+    }
+
+    div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .time-input {
+        padding: 4px;
+        border: 0.5px solid #818181;
+        border-radius: 5px;
+        font-family: 'Poppins';
+    }
+      
+    .time-input:hover {
+        background-color: #cecece;
+    }
+
+    .time-input:focus {
+        border-color: #31b4c2;
+        outline: none;
+    }
+}
   
+.actions{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    button{
+        font-size: 14px;
+        border: none;
+        padding-inline: 14px;
+        padding-block: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #b3b3b3;
+    }
+
+    .delete-button{
+        background-color: rgb(232, 238, 239);
+        color: #c92c20;
+    }
+
+    .close-save-buttons-div{
+        display: flex;
+        gap: 10px;
+
+        button:hover {
+            background-color: #cdcdcd;
+        }
+
+        .close-button{
+            background-color: rgb(232, 238, 239);
+            color: black;   
+        }
+
+        .save-button{
+            background-color: rgb(232, 238, 239);
+            color: #34a495;
+        }
+    }
+}

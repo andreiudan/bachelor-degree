@@ -1,5 +1,5 @@
 <div #detailsRoot
-    class="calendar-event-details" 
+    class="main-div" 
     style="--left: {{left}}px; 
         --right: {{right}}px;
         --top: {{top}}px;
@@ -8,6 +8,30 @@
         --margin: {{margin}}px;
         --padding: {{padding}}px;"
     >
-    New Event
+    <div class="header">
+        <h4>Edit Event</h4>
+    </div>
+
+    <div class="content">
+        <div>
+            <p>From:</p>
+            <input type="time" class="from-input" class="time-input" value="{{hourFrom}}" />
+        </div>
+        <div>
+            <p>To:</p>
+            <input type="time" class="to-input" class="time-input" value="{{hourTo}}" />
+        </div>
+        <div>
+            <p>Tasks:</p>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="delete-button">Delete</button>
+        <div class="close-save-buttons-div">
+            <button class="close-button">Close</button>
+            <button class="save-button">Save</button>
+        </div>
+    </div>
 </div>
 

@@ -216,10 +216,15 @@ export class CalendarComponent {
       mouseX,
       calendarEventsRect.width
     );
+
     var top = this.getTopPercentageOfEventDiv(
       mouseY,
       calendarEventsRect.height
     );
+
+    if(top < 0) {
+      top = 0;
+    }
 
     const eventPreviewDiv = this.renderer.createElement('div');
     this.renderer.addClass(eventPreviewDiv, 'event-preview');

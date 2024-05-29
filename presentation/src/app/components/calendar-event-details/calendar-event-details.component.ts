@@ -1,8 +1,11 @@
 import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 
 @Component({
   selector: 'app-calendar-event-details',
   standalone: true,
+  imports: [MatInput, MatFormField, MatLabel],
   templateUrl: './calendar-event-details.component.html',
   styleUrl: './calendar-event-details.component.scss'
 })
@@ -20,15 +23,36 @@ export class CalendarEventDetailsComponent {
   public calendar: ElementRef;
   public calendarEvents: ElementRef;
 
+  public hourFrom: string;
+  public hourTo: string;
+
   @ViewChild('detailsRoot', { static: true }) detailsRoot: ElementRef;
 
-  constructor() { }
+  public form: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) { }
+
+  public ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      from: [
+        '',
+      ],
+      to: [
+        '',
+      ],
+    })
+  }
 
   public initialize(eventElement: HTMLElement, calendar: ElementRef, calendarEvents: ElementRef): void {
     this.calendar = calendar;
     this.calendarEvents = calendarEvents;
 
     this.setAlignmentAttributes(eventElement);
+
+    const eventElementRect = eventElement.getBoundingClientRect();
+
+    this.hourFrom = this.calculateTimeFromPositions(eventElementRect.top);
+    this.hourTo = this.calculateTimeFromPositions(eventElementRect.bottom);
   }
 
   private setAlignmentAttributes(eventElement: HTMLElement): void{
@@ -53,5 +77,15 @@ export class CalendarEventDetailsComponent {
       this.right = distanceToRight + elementWidth + this.scrollBarSize + this.buttonPadding;
       this.left = null;
     }
+  }
+
+  private calculateTimeFromPositions(position: number) {
+    const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
+
+    const time = ((position - calendarEventsRect.top) * 24) / calendarEventsRect.height;
+    const hour = Math.floor(time);
+    const minutes = Math.floor((time - hour) * 60);
+
+    return `${hour < 10 ? '0' : ''}${hour}:${minutes < 10 ? '0' : ''}${minutes}`;
   }
 }
