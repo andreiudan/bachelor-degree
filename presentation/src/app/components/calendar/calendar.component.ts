@@ -303,11 +303,10 @@ export class CalendarComponent {
 
     const eventElementRect = eventElement.getBoundingClientRect();
     const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
+    const calendarRect = this.calendar.nativeElement.getBoundingClientRect();
 
     const topOffset = (height + 2 * margin + 2 * padding  - eventElementRect.height) / 2;
     top = eventElementRect.top - topOffset;
-
-    const calendarRect = this.calendar.nativeElement.getBoundingClientRect();
 
     if(top + height + margin >= calendarRect.bottom){
       top = calendarRect.bottom - height - 2 * margin - 2 * padding;
@@ -319,13 +318,18 @@ export class CalendarComponent {
       --top: ${top}px;
       --padding: ${padding}px;`;
 
-    let eventElementLeft: number | null = eventElementRect.left + (eventElementRect.right - eventElementRect.left) - this.hoursSize + this.scrollBarSize - buttonPadding;
+    const sidenavOffset = calendarRect.left;
+
+    let eventElementLeft: number | null = eventElementRect.right - sidenavOffset + buttonPadding;
     let eventElementRight: number | null = null;
 
     let alignmentAttribute = `--left: ${eventElementLeft}px;`;
 
+    const distanceToRight = calendarEventsRect.right - eventElementRect.right;
+    const elementWidth = eventElementRect.right - eventElementRect.left;
+
     if(eventElementLeft + width > calendarEventsRect.width){
-      eventElementRight = (calendarEventsRect.right - eventElementRect.right) + (eventElementRect.right - eventElementRect.left) + this.scrollBarSize + buttonPadding;
+      eventElementRight = distanceToRight + elementWidth + this.scrollBarSize + buttonPadding;
       eventElementLeft = null;
 
       alignmentAttribute = `--right: ${eventElementRight}px;`;
