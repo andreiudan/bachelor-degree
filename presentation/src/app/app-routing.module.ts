@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { WrapperComponent } from './components/wrapper/wrapper.component';
-import { AppComponent } from './app.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SprintComponent } from './components/sprint/sprint.component';
 import { TaskComponent } from './components/task/task.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { CalendarEventDetailsComponent } from './components/calendar-event-details/calendar-event-details.component';
+import { CalendarEventComponent } from './components/calendar-event/calendar-event.component';
 
 const routes: Routes = [
   {
@@ -49,8 +49,12 @@ const routes: Routes = [
     component: CalendarComponent,
   },
   {
-    path: 'calendar-event',
+    path: 'calendar-event-details',
     component: CalendarEventDetailsComponent,
+  },
+  {
+    path: 'calendar-event',
+    component: CalendarEventComponent,
   }
 ];
 

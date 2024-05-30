@@ -1,6 +1,7 @@
 import { Component, ComponentRef, ElementRef, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { CalendarEventDetailsComponent } from '../calendar-event-details/calendar-event-details.component';
 import { DynamicHostDirective } from '../../directives/dynamic-host/dynamic-host.directive';
+import { EventEmitter } from 'node:stream';
 
 interface ICalendarDay {
   date: number;
@@ -10,6 +11,13 @@ interface ICalendarDay {
 interface IInsetInline {
   start: number;
   end: number;
+}
+
+interface ICalendarElement {
+  eventElement: HTMLElement;
+  eventElementButton: HTMLElement;
+  clickListener: () => void;
+  dblClickListener: () => void;
 }
 
 @Component({
@@ -33,7 +41,7 @@ export class CalendarComponent {
 
   public hours = new Array(24).fill(0);
 
-  private calendarEventsDivs: HTMLElement[] = [];
+  private calendarEventsDivs: ICalendarElement[] = [];
 
   @ViewChild(DynamicHostDirective, {static: true}) dynamicHost: DynamicHostDirective;
   @ViewChild('events') calendarEvents: ElementRef;
@@ -229,7 +237,9 @@ export class CalendarComponent {
     const eventPreviewDiv = this.renderer.createElement('div');
     this.renderer.addClass(eventPreviewDiv, 'event-preview');
     
-    this.renderer.appendChild(eventPreviewDiv, this.createCalendarEventButton());
+    let eventButton = this.createCalendarEventButton();
+
+    this.renderer.appendChild(eventPreviewDiv, eventButton.button);
 
     this.renderer.appendChild(eventDiv, eventPreviewDiv);
 
@@ -240,18 +250,21 @@ export class CalendarComponent {
     );
     this.renderer.setStyle(eventDiv, 'top', `${top}%`);
 
-    this.renderer.listen(eventDiv, 'mousedown', (e: MouseEvent) => {
-      e.stopPropagation();
+    this.calendarEventsDivs.push({
+      eventElement: eventDiv,
+      eventElementButton: eventButton.button, 
+      clickListener: this.renderer.listen(eventDiv, 'mousedown', (e: MouseEvent) => {
+        e.stopPropagation();
+      }),
+      dblClickListener: eventButton.dbClickListener
     });
 
     this.renderer.appendChild(this.calendarEvents.nativeElement, eventDiv);
 
     this.setBottomPercentageOfEventDiv(eventDiv);
-
-    this.calendarEventsDivs.push(eventDiv);
   }
 
-  private createCalendarEventButton(): HTMLElement {
+  private createCalendarEventButton(): {button: HTMLElement, dbClickListener: () => void} {
     const button = this.renderer.createElement('button');
     this.renderer.addClass(button, 'event-button');
 
@@ -268,10 +281,10 @@ export class CalendarComponent {
     this.renderer.appendChild(button, buttonTitleDiv);
     this.renderer.appendChild(button, buttonSubTitleDiv);
 
-    this.renderer.listen(button, 'dblclick', (event: MouseEvent) => 
+    const listener = this.renderer.listen(button, 'dblclick', (event: MouseEvent) => 
       this.onCalendarEventDoubleClick(event, event.target as HTMLElement));
 
-    return button;
+    return {button: button, dbClickListener: listener};
   }
 
   private onCalendarEventDoubleClick(event: MouseEvent, eventElement: HTMLElement): void {
@@ -280,6 +293,10 @@ export class CalendarComponent {
 
     const componentRef = this.viewContainerRef.createComponent(CalendarEventDetailsComponent);
     this.calendarEventDetailsComponent = componentRef.instance;
+
+    componentRef.instance.onClose.subscribe(() => this.onCalendarEventDetailsClose());
+    componentRef.instance.onDelete.subscribe(() => this.onCalendarEventDelete());
+    componentRef.instance.onSave.subscribe((event) => this.onCalendarEventModified(event));
 
     this.calendarEventDetailsComponent.initialize(eventElement, this.calendar, this.calendarEvents);
 
@@ -329,7 +346,76 @@ export class CalendarComponent {
     if (this.calendar) {
       this.renderer.removeClass(this.calendar.nativeElement, 'disable-scroll');
     }
+
+    for(let calendarEventDiv of this.calendarEventsDivs) {
+      calendarEventDiv.clickListener;
+      calendarEventDiv.clickListener = () => {};
+      calendarEventDiv.dblClickListener;
+      calendarEventDiv.dblClickListener = () => {};
+
+      this.renderer.removeChild(this.calendarEvents.nativeElement, calendarEventDiv.eventElement);
+    }
+
+    this.calendarEventsDivs = [];
   }
+
+  public onCalendarEventDelete(): void {
+    const divToRemove = this.calendarEventsDivs.filter(
+        (div) => div.eventElementButton === this.calendarEventDetailsComponent.eventElement
+    );
+    this.renderer.removeChild(this.calendarEvents.nativeElement, divToRemove[0].eventElement);
+
+    divToRemove[0].clickListener;
+    divToRemove[0].clickListener = () => {};
+    divToRemove[0].dblClickListener;
+    divToRemove[0].dblClickListener = () => {};
+    
+    const divToRemoveIndex = this.calendarEventsDivs.indexOf(divToRemove[0]);
+    this.calendarEventsDivs.splice(divToRemoveIndex, 1);
+
+    this.onCalendarEventDetailsClose();
+}
+
+  public onCalendarEventModified(event: any): void {
+    const newTimeInterval: { hourFrom: string, hourTo: string } = event;
+    
+    const hourFrom = Number.parseInt(newTimeInterval.hourFrom.split(':')[0]);
+    const minutesFrom = Number.parseInt(newTimeInterval.hourFrom.split(':')[1]);
+
+    const hourTo = Number.parseInt(newTimeInterval.hourTo.split(':')[0]);
+    const minutesTo = Number.parseInt(newTimeInterval.hourTo.split(':')[1]);
+    
+    const divToModify = this.calendarEventsDivs.filter(
+      (div) => div.eventElementButton === this.calendarEventDetailsComponent.eventElement
+    );
+
+    this.setNewPositions(divToModify[0].eventElement, hourFrom, minutesFrom, hourTo, minutesTo);
+  }
+
+  private setNewPositions(eventElement: HTMLElement, hourFrom: number, minutesFrom: number, hourTo: number, minutesTo: number): void {
+    const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
+
+    hourFrom = (hourFrom * 100) / 24;
+    minutesFrom = (minutesFrom * 100) / (60 * 24);
+
+    const top = hourFrom + minutesFrom;
+
+    hourTo = (hourTo * 100) / 24;
+    minutesTo = (minutesTo * 100) / (60 * 24);
+
+    const bottom = 100 - hourTo + minutesTo;
+
+    this.renderer.setStyle(eventElement, 'top', `${top}%`);
+    this.renderer.setStyle(eventElement, 'bottom', `${bottom}%`);
+  }
+
+  public onCalendarEventDetailsClose(): void {
+    this.viewContainerRef.clear();
+
+    this.removeDocumentListeners();
+
+    this.renderer.removeClass(this.calendar.nativeElement, 'disable-scroll');
+  } 
 
   private getInsetInlineOfEventDiv(
     mouseX: number,

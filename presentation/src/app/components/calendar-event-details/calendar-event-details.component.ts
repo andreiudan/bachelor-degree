@@ -1,11 +1,16 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { MatFormField, MatInput } from '@angular/material/input';
+
+export interface IHoursInterval {
+  hourFrom: string;
+  hourTo: string;
+}
 
 @Component({
   selector: 'app-calendar-event-details',
   standalone: true,
-  imports: [MatInput, MatFormField, MatLabel],
+  imports: [MatInput, MatFormField, FormsModule],
   templateUrl: './calendar-event-details.component.html',
   styleUrl: './calendar-event-details.component.scss'
 })
@@ -22,29 +27,29 @@ export class CalendarEventDetailsComponent {
 
   public calendar: ElementRef;
   public calendarEvents: ElementRef;
+  public eventElement: HTMLElement;
 
   public hourFrom: string;
   public hourTo: string;
 
   @ViewChild('detailsRoot', { static: true }) detailsRoot: ElementRef;
 
-  public form: FormGroup;
+  @Output('onEventDetailsClose')
+  onClose: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private formBuilder: FormBuilder) { }
+  @Output('onEventDetailsDelete')
+  onDelete: EventEmitter<boolean> = new EventEmitter();
 
-  public ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      from: [
-        '',
-      ],
-      to: [
-        '',
-      ],
-    })
-  }
+  @Output('onEventDetailsModified')
+  onSave: EventEmitter<{hourFrom: string, hourTo: string}> = new EventEmitter();
+
+  public hoursInterval: IHoursInterval;
+
+  constructor() { }
 
   public initialize(eventElement: HTMLElement, calendar: ElementRef, calendarEvents: ElementRef): void {
     this.calendar = calendar;
+    this.eventElement = eventElement;
     this.calendarEvents = calendarEvents;
 
     this.setAlignmentAttributes(eventElement);
@@ -87,5 +92,24 @@ export class CalendarEventDetailsComponent {
     const minutes = Math.floor((time - hour) * 60);
 
     return `${hour < 10 ? '0' : ''}${hour}:${minutes < 10 ? '0' : ''}${minutes}`;
+  }
+
+  public closeComponent(): void {
+    this.onClose.emit(true);
+  }
+
+  public save(): void {
+    var fromInput = document.getElementById('from');
+    var toInput = document.getElementById('to');
+
+    if(fromInput?.textContent === this.hourFrom && toInput?.textContent === this.hourTo){
+      return;
+    }
+
+    this.onSave.emit({ hourFrom: this.hourFrom, hourTo: this.hourTo });
+  }
+
+  public deleteEvent(): void {
+    this.onDelete.emit();
   }
 }

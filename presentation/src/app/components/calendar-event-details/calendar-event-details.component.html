@@ -15,11 +15,11 @@
     <div class="content">
         <div>
             <p>From:</p>
-            <input type="time" class="from-input" class="time-input" value="{{hourFrom}}" />
+            <input type="time" class="time-input" [(ngModel)]="this.hourFrom" value="{{hourFrom}}" />
         </div>
         <div>
             <p>To:</p>
-            <input type="time" class="to-input" class="time-input" value="{{hourTo}}" />
+            <input type="time" class="time-input" [(ngModel)]="this.hourTo" value="{{hourTo}}" />
         </div>
         <div>
             <p>Tasks:</p>
@@ -27,10 +27,10 @@
     </div>
 
     <div class="actions">
-        <button class="delete-button">Delete</button>
+        <button (click)="deleteEvent()" class="delete-button">Delete</button>
         <div class="close-save-buttons-div">
-            <button class="close-button">Close</button>
-            <button class="save-button">Save</button>
+            <button (click)="closeComponent()" class="close-button">Close</button>
+            <button (click)="save()" class="save-button">Save</button>
         </div>
     </div>
 </div>
