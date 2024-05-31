@@ -102,9 +102,7 @@ export class CalendarEventDetailsComponent {
     var fromInput = document.getElementById('from');
     var toInput = document.getElementById('to');
 
-    if(fromInput?.textContent === this.hourFrom && toInput?.textContent === this.hourTo){
-      return;
-    }
+    
 
     this.onSave.emit({ hourFrom: this.hourFrom, hourTo: this.hourTo });
   }

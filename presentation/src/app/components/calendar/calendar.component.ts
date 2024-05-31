@@ -389,10 +389,10 @@ export class CalendarComponent {
       (div) => div.eventElementButton === this.calendarEventDetailsComponent.eventElement
     );
 
-    this.setNewPositions(divToModify[0].eventElement, hourFrom, minutesFrom, hourTo, minutesTo);
+    this.setNewCalendarEventPositions(divToModify[0].eventElement, hourFrom, minutesFrom, hourTo, minutesTo);
   }
 
-  private setNewPositions(eventElement: HTMLElement, hourFrom: number, minutesFrom: number, hourTo: number, minutesTo: number): void {
+  private setNewCalendarEventPositions(eventElement: HTMLElement, hourFrom: number, minutesFrom: number, hourTo: number, minutesTo: number): void {
     const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
 
     hourFrom = (hourFrom * 100) / 24;
@@ -400,13 +400,15 @@ export class CalendarComponent {
 
     const top = hourFrom + minutesFrom;
 
-    hourTo = (hourTo * 100) / 24;
-    minutesTo = (minutesTo * 100) / (60 * 24);
+    hourTo = (hourTo / 24 ) * 100;
+    minutesTo = (minutesTo / (24 * 60)) * 100;
 
-    const bottom = 100 - hourTo + minutesTo;
+    const bottom = 100 - (hourTo + minutesTo);
 
     this.renderer.setStyle(eventElement, 'top', `${top}%`);
     this.renderer.setStyle(eventElement, 'bottom', `${bottom}%`);
+
+    this.onCalendarEventDetailsClose();
   }
 
   public onCalendarEventDetailsClose(): void {
