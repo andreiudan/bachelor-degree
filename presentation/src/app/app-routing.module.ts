@@ -10,6 +10,7 @@ import { TaskComponent } from './components/task/task.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { CalendarEventDetailsComponent } from './components/calendar-event-details/calendar-event-details.component';
 import { CalendarEventComponent } from './components/calendar-event/calendar-event.component';
+import { BacklogComponent } from './components/backlog/backlog.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
   {
     path: 'calendar',
     component: CalendarComponent,
+  },
+  {
+    path: 'backlog',
+    component: BacklogComponent
   },
   {
     path: 'calendar-event-details',

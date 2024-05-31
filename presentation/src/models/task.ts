@@ -13,5 +13,6 @@ export class Task {
     author: string;
     dueDate: Date;
     createdDate: Date;
+    progress: number;
     keyTasks: SubTask[];
 }

@@ -43,7 +43,11 @@
     </mat-card>
 
     <mat-card class="status-component">
-        <mat-card-header>IN PROGRESS</mat-card-header>
+        <mat-card-header>
+            IN PROGRESS
+            <span class="spacer"></span>
+            <p>{{ toDoTasks.length }}</p>
+        </mat-card-header>
         <mat-card-content>
             @for (task of toDoTasks; track $index) {
                 <mat-card class="task-card">
@@ -71,7 +75,11 @@
     </mat-card>
     
     <mat-card class="status-component">
-        <mat-card-header>IN REVIEW</mat-card-header>
+        <mat-card-header>
+            IN REVIEW
+            <span class="spacer"></span>
+            <p>{{ toDoTasks.length }}</p>
+        </mat-card-header>
         <mat-card-content>
             @for (task of toDoTasks; track $index) {
                 <mat-card class="task-card">
@@ -99,7 +107,11 @@
     </mat-card>
     
     <mat-card class="status-component">
-        <mat-card-header>DONE</mat-card-header>
+        <mat-card-header>
+            DONE
+            <span class="spacer"></span>
+            <p>{{ toDoTasks.length }}</p>
+        </mat-card-header>
         <mat-card-content>
             @for (task of toDoTasks; track $index) {
                 <mat-card class="task-card">

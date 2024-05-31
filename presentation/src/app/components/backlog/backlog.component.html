@@ -1,0 +1,180 @@
+<div class="main-div">
+    <div class="select-alignment">
+        <mat-select disableOptionCentering panelClass="dropDown-seasons-panel">
+            <mat-option value="option1">Option 1</mat-option>
+            <mat-option value="option2">Option 2</mat-option>
+            <mat-option value="option3">Option 3</mat-option>
+        </mat-select>
+        <button class="create-sprint-button">Create Sprint</button>
+    </div>
+    
+    <div class="page-alignment">
+        @for (sprint of sprints; track $index) {
+            <mat-card class="sprint">
+                <mat-card-header>
+                    <h3>{{ sprint.title }}</h3>
+                    <span class="spacer"></span>
+                    <div class="sprint-actions">
+                        <button class="start-sprint-button">Start Sprint</button>
+                        <button class="create-issue-button">Create Issue</button>
+                        <button mat-icon-button>
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </mat-card-header>
+    
+                <mat-card-content>
+                    <div class="task-info-alignment padding-top-legend">
+                        <div class="blank-title-space"></div>
+                        <div class="info-alignment">
+                            <div class="info legend">
+                                <div>
+                                    <p>Status</p>
+                                </div>
+                                <div>
+                                    <p>Type</p>
+                                </div>
+                                <div>
+                                    <p>Progress</p>
+                                </div>
+                                <div>
+                                    <p>Due Date</p>
+                                </div>
+                                <div>
+                                    <p>Assigned To</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blank-story-points-space"></div>
+                    </div>
+    
+                    @for (task of sprint.tasks; track $index) {
+                        <mat-card routerLink="/task" class="task-card">    
+                            <mat-card-content>
+                                <div class="task-info task-info-alignment">
+                                    <div class="blank-title-space">
+                                        <div class="no-legend">
+                                            <div class="title">
+                                                <mat-icon>block</mat-icon>
+                                                <h4>{{ task.title }}</h4>
+                                            </div>
+                                            <mat-card class="task-labels">
+                                                <mat-card-content >
+                                                    <p>{{ task.labels }}</p>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+                                    <div class="info-alignment">
+                                        <div class="info data">
+                                            <div>
+                                                <p>{{ task.status }}</p>
+                                            </div>
+                                            <div>
+                                                <p>{{ task.type }}</p>
+                                            </div>
+                                            <div>
+                                                <div class="progress">
+                                                    <p>{{ task.progress }}%</p>
+                                                    <mat-progress-bar mode="determinate" value="{{task.progress}}"></mat-progress-bar>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p>{{ task.dueDate.toLocaleDateString() }}</p>
+                                            </div>
+                                            <div>
+                                                <p>{{ task.assignee }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="blank-story-points-space">
+                                        <div>
+                                            <div class="story-points">
+                                                {{ task.storyPoints }}
+                                            </div>
+                                        </div>
+                                    </div>      
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    }
+                </mat-card-content>
+                
+                <mat-card-footer>
+                    <div class="sprint-due-date">
+                        <p>Sprint end date: {{ sprint.dueDate }}</p>
+                    </div>  
+                </mat-card-footer>
+            </mat-card>
+        }
+    
+        <mat-card class="backlog">
+            <mat-card-header>
+                <h3>Backlog</h3>
+                <span class="spacer"></span>
+                <div class="backlog-actions">
+                    <button class="create-issue-button">Create Issue</button>
+                    <button mat-icon-button>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </div>
+            </mat-card-header>
+    
+            <mat-card-content>
+                <div class="backlog-task-info-alignment padding-top-legend">
+                    <div class="blank-title-space"></div>
+                    <div class="backlog-info-alignment">
+                        <div class="backlog-info legend">
+                            <div>
+                                <p>Type</p>
+                            </div>
+                            <div>
+                                <p>Due Date</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blank-story-points-space"></div>
+                </div>
+    
+                @for (task of toDoTasks; track $index) {
+                    <mat-card routerLink="/task" class="task-card">    
+                        <mat-card-content>
+                            <div class="task-info backlog-task-info-alignment">
+                                <div class="blank-title-space">
+                                    <div class="no-legend">
+                                        <div class="title">
+                                            <mat-icon>block</mat-icon>
+                                            <h4>{{ task.title }}</h4>
+                                        </div>
+                                        <mat-card class="task-labels">
+                                            <mat-card-content >
+                                                <p>{{ task.labels }}</p>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                                <div class="backlog-info-alignment">
+                                    <div class="backlog-info data">
+                                        <div>
+                                            <p>{{ task.type }}</p>
+                                        </div>
+                                        <div>
+                                            <p>{{ task.dueDate.getDay() }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="blank-story-points-space">
+                                    <div>
+                                        <div class="story-points">
+                                            {{ task.storyPoints }}
+                                        </div>
+                                    </div>
+                                </div>      
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                }
+            </mat-card-content>
+        </mat-card>
+    </div>   
+</div>

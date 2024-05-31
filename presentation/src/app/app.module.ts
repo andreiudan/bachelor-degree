@@ -25,10 +25,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { TaskComponent } from './components/task/task.component';
 import { SprintComponent } from './components/sprint/sprint.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './components/calendar/calendar.component';
-import { CalendarEventDetailsComponent } from './components/calendar-event-details/calendar-event-details.component';
 import { DynamicHostDirective } from './directives/dynamic-host/dynamic-host.directive';
+import { BacklogComponent } from './components/backlog/backlog.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -42,9 +43,11 @@ import { DynamicHostDirective } from './directives/dynamic-host/dynamic-host.dir
     SprintComponent,
     CalendarComponent,
     DynamicHostDirective,
+    BacklogComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     MatFormFieldModule,
@@ -59,6 +62,7 @@ import { DynamicHostDirective } from './directives/dynamic-host/dynamic-host.dir
     MatSelectModule,
     MatGridListModule,
     MatCheckboxModule,
+    MatProgressBarModule,
   ],
   providers: [
     provideClientHydration(),

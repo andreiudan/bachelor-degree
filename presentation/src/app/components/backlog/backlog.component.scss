@@ -1,0 +1,334 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+  
+.main-div {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    padding-inline: 18px;
+    padding-block: 18px;
+    overflow-y: auto;
+}
+
+.mat-mdc-select {
+    width: 15% !important;
+    height: 20px !important;
+    border: 1px solid gray !important;
+    border-radius: 18px !important;
+}
+
+.project-name{
+    padding-top: 12px;
+    margin: 0 0 -8px 18px;
+    color: #B0B0B0;
+    font-weight: lighter;
+    font-size: 12px;
+}
+
+.title-div {
+    display: flex;
+    align-items: center;
+    margin: 0 18px 0 18px;
+}
+
+.spacer{
+    flex: 1 1 auto;
+}
+
+h2{
+    margin: 0 0 0 0;
+}
+
+.select-alignment{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block-start: 18px;
+    padding-block-end: 24px;
+}
+
+.page-alignment{
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.sprint{
+    width: 100%; 
+    align-self: stretch;
+
+    mat-card-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-block: 0;
+        padding-inline: 16px;
+
+        p{
+            display: flex;
+            align-items: flex-start;
+            margin: 0 0 0 0;
+        }
+
+        h3{
+            margin: 0 0 0 0;
+            font-size: 18px;
+        }
+
+        .sprint-actions{
+            display: flex;
+            align-items: center;
+            gap: 0 12px;
+        }
+    }
+
+    mat-card-footer{
+        padding-block: 12px;
+
+        .sprint-due-date {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 100;
+            color: #818181;
+            padding-inline: 18px;
+        }
+    }
+}
+
+.padding-top-legend{
+    padding-top: 12px !important;
+}
+
+.task-info-alignment{
+    display: grid;
+    grid-template-columns: 35% auto 2%;
+    grid-template-rows: 1fr;
+    gap: 0px;
+    padding: 0 8px 0 8px;
+
+    .blank-title-space{
+        grid-area: 1 / 1 / 2 / 2;
+    }
+
+    .info-alignment{
+        grid-area: 1 / 2 / 2 / 3;
+
+        .info{
+            display: grid;
+            align-items: center;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(1, 1fr);
+            gap: 0px;
+
+            div{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding-inline: 6px;
+            }
+        }
+    }
+
+    .blank-story-points-space{
+        grid-area: 1 / 3 / 2 / 4;
+    }
+}
+
+.legend{
+    p{
+        margin: 0 0 0 0;
+        font-size: 12px;
+        color: #a8a8a8;
+    }
+}
+
+.data{
+    p{
+        margin: 0 0 0 0;
+        font-size: 12px;
+    }
+
+    .progress{
+        display: flex;
+        align-items: center;
+        gap: 0 6px;
+        width: 100%;
+
+        p{
+            width: 30%;
+        }
+
+        mat-progress-bar{
+            width: 70%;
+            border-radius: 8px;
+        }
+    }
+}
+
+.task-card{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    background-color: #B0B0B0;
+
+    .task-info{
+        display: grid;
+        align-items: center;
+
+        .no-legend{
+            display: flex;
+            align-items: center;
+            gap: 0 12px;
+            justify-content: space-between;
+
+            .title{
+                display: flex;
+                align-items: center;
+                gap: 0 6px;
+            }
+
+            .task-labels{
+                background-color: red;
+                border-radius: 12px;
+                margin-right: 10%;
+                font-size: 12px;
+                width: fit-content;
+        
+                mat-card-content{
+                    padding: 0px 8px 0px 8px;
+                    border-radius: 20px;
+                    color: white;
+        
+                    p{
+                        margin-top: -1px;
+                    }
+                }        
+            }
+        }
+    }
+
+    mat-card-content{
+        padding: 8px 0 8px 0;
+
+        h4{
+            margin: 0 0 0 0;
+        }
+
+        p{
+            margin: 0 0 0 0;
+            font-size: 14px;
+        }
+    }
+
+    .story-points {
+        background-color: #bebaba;
+        border-radius: 30px;
+        padding: 2px 4px 2px 4px;
+        font-size: 12px;
+        width: fit-content;
+    }
+}
+
+.task-card:hover{
+    background-color: #f0f0f0;
+}
+
+.task-card:active{
+    background-color: #e4e4e4;
+}
+
+.backlog{
+    width: 100%; 
+    align-self: stretch;
+
+    mat-card-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-block: 0;
+        padding-inline: 16px;
+
+        p{
+            display: flex;
+            align-items: flex-start;
+            margin: 0 0 0 0;
+        }
+
+        h3{
+            margin: 0 0 0 0;
+            font-size: 18px;
+        }
+
+        .backlog-actions{
+            display: flex;
+            align-items: center;
+            gap: 0 12px;
+        }
+    }
+
+    mat-card-content{
+        .backlog-task-info-alignment{
+            display: grid;
+            grid-template-columns: 35% auto 2%;
+            grid-template-rows: 1fr;
+            gap: 0px;
+            padding: 0 8px 0 8px;
+        
+            .blank-title-space{
+                grid-area: 1 / 1 / 2 / 2;
+            }
+        
+            .backlog-info-alignment{
+                grid-area: 1 / 2 / 2 / 3;
+        
+                .backlog-info{
+                    display: grid;
+                    align-items: center;
+                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-rows: repeat(1, 1fr);
+                    gap: 0px;
+        
+                    div{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding-inline: 6px;
+                    }
+                }
+            }
+        
+            .blank-story-points-space{
+                grid-area: 1 / 3 / 2 / 4;
+            }
+        }
+    }
+}
+
+button{
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.create-sprint-button{
+    background-color: #2b9ca4;
+}
+
+.start-sprint-button{
+    background-color: #147077;
+}
+
+.create-issue-button{
+    background-color: #85e7ee;
+}

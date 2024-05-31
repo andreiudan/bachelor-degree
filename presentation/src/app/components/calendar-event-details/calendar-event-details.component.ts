@@ -68,7 +68,7 @@ export class CalendarEventDetailsComponent {
     const topOffset = (this.height + 2 * this.margin + 2 * this.padding  - eventElementRect.height) / 2;
     this.top = eventElementRect.top - topOffset;
 
-    if(this.top + this.height + this.margin >= calendarRect.bottom){
+    if(this.top + this.height + 2 * this.margin + 2 * this.padding >= calendarRect.bottom){
       this.top = calendarRect.bottom - this.height - 2 * this.margin - 2 * this.padding;
     }
 
@@ -102,7 +102,9 @@ export class CalendarEventDetailsComponent {
     var fromInput = document.getElementById('from');
     var toInput = document.getElementById('to');
 
-    
+    if(fromInput?.textContent === this.hourFrom && toInput?.textContent === this.hourTo){
+      return;
+    }
 
     this.onSave.emit({ hourFrom: this.hourFrom, hourTo: this.hourTo });
   }

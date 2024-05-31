@@ -1,8 +1,9 @@
 <mat-toolbar color="primary">
     <button *ngIf="isLoggedIn" mat-icon-button class="menu-btn" (click)="this.toggleSidenav()">
-        <mat-icon>menu</mat-icon>
+        <mat-icon *ngIf="isSidenavCollapsed">menu</mat-icon>
+        <mat-icon *ngIf="!isSidenavCollapsed">menu_open</mat-icon>
     </button>
-
+    
     <div class="logo">
         <a routerLink="/landing"><img src="" alt="Logo"></a>
         <h4><a routerLink="/landing">ProjectName</a></h4>
@@ -14,10 +15,10 @@
     </nav>
 
     <button *ngIf="isLoggedIn" mat-icon-button (click)="this.toggleSidenav()">
-        <mat-icon>menu</mat-icon>
+        <mat-icon>person</mat-icon>
     </button>
     <button *ngIf="isLoggedIn" mat-icon-button (click)="this.toggleSidenav()">
-        <mat-icon>menu</mat-icon>
+        <mat-icon>logout</mat-icon>
     </button>
 </mat-toolbar>
 
@@ -26,15 +27,29 @@
         <mat-nav-list>
             <a mat-list-item routerLink="/dashboard">
                 <span class="entry">
-                    <mat-icon>home</mat-icon>
-                    <span *ngIf="!isSidenavCollapsed">Home</span>
+                    <mat-icon>dashboard</mat-icon>
+                    <span *ngIf="!isSidenavCollapsed">Dashboard</span>
+                </span>
+            </a>
+
+            <a mat-list-item routerLink="/backlog">
+                <span class="entry">
+                    <mat-icon>splitscreen</mat-icon>
+                    <span *ngIf="!isSidenavCollapsed">Backlog</span>
+                </span>
+            </a>
+
+            <a mat-list-item routerLink="/sprint">
+                <span class="entry">
+                    <mat-icon>lists</mat-icon>
+                    <span *ngIf="!isSidenavCollapsed">Sprint</span>
                 </span>
             </a>
 
             <a mat-list-item routerLink="/calendar">
                 <span class="entry">
-                    <mat-icon>info</mat-icon>
-                    <span *ngIf="!isSidenavCollapsed">About</span>
+                    <mat-icon>calendar_month</mat-icon>
+                    <span *ngIf="!isSidenavCollapsed">Calendar</span>
                 </span>
             </a>
 
