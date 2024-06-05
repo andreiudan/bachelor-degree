@@ -33,6 +33,24 @@ namespace WorkPlanner.DataAccess
                         .Property(u => u.RegistrationTime)
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("datetime('now')");
+
+            modelBuilder.Entity<Project>()
+                        .HasMany(p => p.Sprints)
+                        .WithOne()
+                        .HasForeignKey(s => s.ProjectId)
+                        .IsRequired();
+
+            modelBuilder.Entity<Sprint>()
+                        .HasMany(s => s.Tasks)
+                        .WithOne()
+                        .HasForeignKey(t => t.SprintId)
+                        .IsRequired();
+
+            modelBuilder.Entity<SprintTask>()
+                        .HasMany(t => t.Subtasks)
+                        .WithOne()
+                        .HasForeignKey(s => s.TaskId)
+                        .IsRequired();
         }
     }
 }

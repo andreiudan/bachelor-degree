@@ -4,11 +4,11 @@ namespace WorkPlanner.Business.Commands
 {
     public class SendValidationEmailCommand : IRequest
     {
-        public int Id { get; set; }
+        public Guid Id { get; }
 
-        public SendValidationEmailCommand(int id)
+        public SendValidationEmailCommand(Guid id)
         {
-            this.Id = id;
+            Id = id;
         }
     }
 }

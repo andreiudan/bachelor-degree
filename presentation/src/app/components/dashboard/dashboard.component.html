@@ -1,144 +1,159 @@
-<mat-select disableOptionCentering panelClass="dropDown-seasons-panel">
-    <mat-option value="option1">Option 1</mat-option>
-    <mat-option value="option2">Option 2</mat-option>
-    <mat-option value="option3">Option 3</mat-option>
-</mat-select>
-
-<mat-grid-list cols="7" gutterSize="12px" rowHeight="125px"> 
-    @for (item of oneColCards; track $index) {
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>{{item.title}}</mat-card-title>
-                </mat-card-header>
-
-                <mat-card-content class="single-info-card">
-                    <p>{{item.data}}</p>
-                </mat-card-content>
-            </mat-card>
-        </mat-grid-tile>
-    }
+<div class="main-div">
+    <div class="loaded-data" *ngIf="dataLoaded | async">
+        <div class="selector">
+            <mat-select disableOptionCentering 
+                        panelClass="dropDown-seasons-panel" 
+                        [(value)]="selectedProject" 
+                        (selectionChange)="onProjectChange($event.value)">
+                <mat-option *ngFor="let project of projects; trackBy: trackByFn" [value]="project">
+                    {{ project.name }}
+                </mat-option>
+            </mat-select>
     
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <mat-card>
-            <mat-card-header class="story-points-title-alignment">
-                <mat-card-title>Story Points</mat-card-title>
-            </mat-card-header>
-
-            <mat-card-content class="story-points-alignment">
-                <div class="story-points-div">
-                    <p class="value">{{this.storyPoints.completedPoints}}</p>
-                    <p>Completed</p>
-                </div>
-
-                <mat-divider vertical class="story-points-divider"></mat-divider>
-                
-                <div class="story-points-div">
-                    <p class="value">{{this.storyPoints.plannedPoints}}</p>
-                    <p>Planned</p>
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </mat-grid-tile>
+            <!-- <div>
+                <p>
+                    Due date: {{ selectedProject.dueDate.toLocaleDateString() }} {{ selectedProject.dueDate.toLocaleTimeString() }}
+                </p>
+            </div> -->
+        </div>
     
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <mat-card>
-            <mat-card-content>
-                <div class="chart-info-div">
-                    <div class="chart-center-div">
-                        {{this.tasksStatus.tasksNumber}} 
-                        <p>Tasks</p>
-                    </div>
-
-                    <div class="chart-legend-alignment">
-                        <div class="to-do-div-color"></div>
-                        <div class="in-progress-div-color"></div>
-                        <div class="in-review-div-color"></div>
-                        <div class="done-div-color"></div>
-                    </div>
-
-                    <div class="chart-legend-alignment">
-                        <p>To do</p>
-                        <p>In Progress</p>
-                        <p>In Review</p>
-                        <p>Done</p>
-                    </div>
-
-                    <div class="chart-legend-alignment">
-                        <p>{{this.tasksStatus.toDoNumber}}</p>
-                        <p>{{this.tasksStatus.inProgressNumber}}</p>
-                        <p>{{this.tasksStatus.inReviewNumber}}</p>
-                        <p>{{this.tasksStatus.doneNumber}}</p>
-                    </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </mat-grid-tile>
-
-    <mat-grid-tile [colspan]="2" [rowspan]="2">
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title>Blockers</mat-card-title>
-            </mat-card-header>
-
-            <mat-card-content class="blockers-grid-card-content">
-                @for (task of blockerTasks; track $index) {
-                    <div class="blockers-div">
-                        <mat-card class="blockers-card">
-                            <mat-card-content class="blockers-alignment">
-                                <p class="task-title">{{task.name}}</p>
-                                <p class="story-points">{{task.storyPoints}}</p>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                }
-            </mat-card-content>
-        </mat-card>
-    </mat-grid-tile>
-
-    <mat-grid-tile [colspan]="3" [rowspan]="2">
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title>Previous Sprints</mat-card-title>
-            </mat-card-header>
-
-            <mat-card-content>
-                <p>??</p>
-            </mat-card-content>
-        </mat-card>
-    </mat-grid-tile>
-
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
-        <mat-card>
-            <mat-card-content>
-                <div class="chart-info-div">
-                    <div class="chart-center-div">
-                        {{this.tasksPrioritiy.tasksNumber}} 
-                        <p>Tasks</p>
-                    </div>
-
-                    <div class="chart-legend-alignment">
-                        <div class="to-do-div-color"></div>
-                        <div class="in-progress-div-color"></div>
-                        <div class="in-review-div-color"></div>
-                        <div class="done-div-color"></div>
-                    </div>
-
-                    <div class="chart-legend-alignment">
-                        <p>Blockers</p>
-                        <p>High</p>
-                        <p>Medium</p>
-                        <p>Low</p>
-                    </div>
-
-                    <div class="chart-legend-alignment">
-                        <p>{{this.tasksPrioritiy.blockersNumber}}</p>
-                        <p>{{this.tasksPrioritiy.highPriorityNumber}}</p>
-                        <p>{{this.tasksPrioritiy.mediumPriorityNumber}}</p>
-                        <p>{{this.tasksPrioritiy.lowPriorityNumber}}</p>
-                    </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </mat-grid-tile> 
-</mat-grid-list>
+        <mat-grid-list cols="7" gutterSize="12px" rowHeight="125px"> 
+            @for (item of oneColCards; track $index) {
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-card>
+                        <mat-card-header>
+                            <mat-card-title>{{item.title}}</mat-card-title>
+                        </mat-card-header>
+        
+                        <mat-card-content class="single-info-card">
+                            <p>{{item.data}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+            }
+            
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+                <mat-card>
+                    <mat-card-header class="story-points-title-alignment">
+                        <mat-card-title>Story Points</mat-card-title>
+                    </mat-card-header>
+        
+                    <mat-card-content class="story-points-alignment">
+                        <div class="story-points-div">
+                            <p class="value">{{ this.completedStoryPoints }}</p>
+                            <p>Completed</p>
+                        </div>
+        
+                        <mat-divider vertical class="story-points-divider"></mat-divider>
+                        
+                        <div class="story-points-div">
+                            <p class="value">{{ this.plannedStoryPoints }}</p>
+                            <p>Planned</p>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+            
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+                <mat-card>
+                    <mat-card-content>
+                        <div class="chart-info-div">
+                            <div class="chart-center-div">
+                                {{ this.tasksNumber }} 
+                                <p>Tasks</p>
+                            </div>
+        
+                            <div class="chart-legend-alignment">
+                                <div class="to-do-div-color"></div>
+                                <div class="in-progress-div-color"></div>
+                                <div class="in-review-div-color"></div>
+                                <div class="done-div-color"></div>
+                            </div>
+        
+                            <div class="chart-legend-alignment">
+                                <p>To do</p>
+                                <p>In Progress</p>
+                                <p>In Review</p>
+                                <p>Done</p>
+                            </div>
+        
+                            <div class="chart-legend-alignment">
+                                <p>{{ this.toDoTasksNumber }}</p>
+                                <p>{{ this.inProgressTasksNumber }}</p>
+                                <p>{{ this.inReviewTasksNumber }}</p>
+                                <p>{{ this.doneTasksNumber }}</p>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+        
+            <mat-grid-tile [colspan]="2" [rowspan]="2">
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title>Blockers</mat-card-title>
+                    </mat-card-header>
+        
+                    <mat-card-content class="blockers-grid-card-content">
+                        @for (task of blockerTasks; track $index) {
+                            <div class="blockers-div">
+                                <mat-card class="blockers-card">
+                                    <mat-card-content class="blockers-alignment">
+                                        <p class="task-title">{{ task.name }}</p>
+                                        <p class="story-points">{{ task.storyPoints }}</p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        }
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+        
+            <mat-grid-tile [colspan]="3" [rowspan]="2">
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title>Previous Sprints</mat-card-title>
+                    </mat-card-header>
+        
+                    <mat-card-content>
+                        <p>??</p>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+        
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+                <mat-card>
+                    <mat-card-content>
+                        <div class="chart-info-div">
+                            <div class="chart-center-div">
+                                {{ this.tasksNumber }} 
+                                <p>Tasks</p>
+                            </div>
+        
+                            <div class="chart-legend-alignment">
+                                <div class="to-do-div-color"></div>
+                                <div class="in-progress-div-color"></div>
+                                <div class="in-review-div-color"></div>
+                                <div class="done-div-color"></div>
+                            </div>
+        
+                            <div class="chart-legend-alignment">
+                                <p>Blockers</p>
+                                <p>High</p>
+                                <p>Medium</p>
+                                <p>Low</p>
+                            </div>
+        
+                            <div class="chart-legend-alignment">
+                                <p>{{ this.blockerPriorityTasksNumber }}</p>
+                                <p>{{ this.highPriorityTasksNumber }}</p>
+                                <p>{{ this.mediumPriorityTasksNumber }}</p>
+                                <p>{{ this.lowPriorityTasksNumber }}</p>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile> 
+        </mat-grid-list>
+    </div>
+</div>

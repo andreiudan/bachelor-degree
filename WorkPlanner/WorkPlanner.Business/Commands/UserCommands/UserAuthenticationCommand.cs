@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using WorkPlanner.Domain.Dtos;
 
-namespace WorkPlanner.Business.Commands
+namespace WorkPlanner.Business.Commands.UserCommands
 {
     public class UserAuthenticationCommand : IRequest<string>
     {
@@ -9,7 +9,7 @@ namespace WorkPlanner.Business.Commands
 
         public UserAuthenticationCommand(UserAuthenticationDto user)
         {
-            this.User = user;
+            User = user ?? throw new ArgumentNullException(nameof(user));
         }
     }
 }

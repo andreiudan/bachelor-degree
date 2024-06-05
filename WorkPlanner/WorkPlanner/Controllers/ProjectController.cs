@@ -1,5 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WorkPlanner.Business.Commands.ProjectCommands;
+using WorkPlanner.Business.Queries.ProjectQueries;
+using WorkPlanner.Domain.Dtos;
+using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Api.Controllers
 {
@@ -15,21 +19,53 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create([FromBody] ProjectCreationDto project)
         {
+            ProjectCreationCommand request = new ProjectCreationCommand(project);
+
+            Project result = await mediator.Send(request);
+
             return Created();
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok();
+            GetAllProjectsQuery request = new GetAllProjectsQuery();
+
+            List<Project> result = await mediator.Send(request);
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string id)
         {
-            return Ok();
+            GetProjectQuery request = new GetProjectQuery(id);
+
+            Project result = await mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        [HttpGet("getAllChildren")]
+        public async Task<IActionResult> GetAllWithAllChildren()
+        {
+            GetAllProjectsQuery request = new GetAllProjectsQuery();
+
+            List<Project> result = await mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{projectId}/sprints")]
+        public async Task<IActionResult> GetSprintsForProject(string projectId)
+        {
+            GetSprintsForProjectQuery request = new GetSprintsForProjectQuery(projectId);
+
+            List<Sprint> response = await mediator.Send(request);
+
+            return Ok(response);
         }
     }
 }

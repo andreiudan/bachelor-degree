@@ -1,8 +1,8 @@
 import { SubTask } from "./subTask";
 
 export class Task {
-    id: number;
-    title: string;
+    id: string;
+    name: string;
     description: string;
     priority: string;
     type: string;

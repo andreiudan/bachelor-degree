@@ -59,6 +59,10 @@ body {
   background-color: #F5FFFA;
 }
 
+.active-entry{
+  color: #2b9ca4 !important;
+}
+
 .dropDown-seasons-panel {
   border-radius: 10px !important;
   border: 1px solid gray !important;
@@ -71,7 +75,7 @@ body {
 }
 
 .mat-mdc-select-value{
-  padding-inline-start: 3px !important;
+  padding-inline-start: 6px !important;
 }
 
 .mdc-checkbox__background {

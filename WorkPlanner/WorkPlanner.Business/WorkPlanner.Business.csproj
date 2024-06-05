@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="CommandHandlers\TimesheetHandlers\" />
+    <Folder Include="Commands\TimesheetCommands\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="Queries\TimesheetQueries\" />
+    <Folder Include="QueryHandlers\TimesheetHandlers\" />
   </ItemGroup>
 
   <ItemGroup>

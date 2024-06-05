@@ -56,6 +56,10 @@
   </div>
 
   <div class="calendar-display">
+    <div *ngIf="this.selectedCalendarType === 'day'" class="day-calendar">
+
+    </div>
+
     <div *ngIf="this.selectedCalendarType === 'week'" class="week-calendar">
       <div class="week-names-alignment">
         <div class="blank-space"></div>
@@ -131,6 +135,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div *ngIf="this.selectedCalendarType === 'month'" class="month-calendar">
+
     </div>
   </div>
 

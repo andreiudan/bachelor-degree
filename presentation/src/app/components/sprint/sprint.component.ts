@@ -11,8 +11,8 @@ export class SprintComponent {
   
   subTasks: SubTask[] = [
     {
-      id: 1,
-      title: 'Sub Task 1',
+      id: "1",
+      name: 'Sub Task 1',
       description: 'Description 1',
       isDone: false
     }
@@ -20,8 +20,8 @@ export class SprintComponent {
 
   toDoTasks: Task[] = [
     {
-      id: 1,
-      title: 'Login API Integration',
+      id: "1",
+      name: 'Login API Integration',
       description: 'Description 1',
       priority: 'High',
       type: 'Task',
@@ -36,8 +36,40 @@ export class SprintComponent {
       progress: 28,
     },
     {
-      id: 2,
-      title: 'Login page',
+      id: "2",
+      name: 'Login page',
+      description: 'Description 1',
+      priority: 'High',
+      type: 'Task',
+      labels: 'Label 1',
+      status: 'To Do',
+      storyPoints: 5,
+      assignee: 'Assignee 1',
+      author: 'Author 1',
+      dueDate: new Date(),
+      createdDate: new Date(),
+      keyTasks: this.subTasks,
+      progress: 0,
+    },
+    {
+      id: "2",
+      name: 'Login page',
+      description: 'Description 1',
+      priority: 'High',
+      type: 'Task',
+      labels: 'Label 1',
+      status: 'To Do',
+      storyPoints: 5,
+      assignee: 'Assignee 1',
+      author: 'Author 1',
+      dueDate: new Date(),
+      createdDate: new Date(),
+      keyTasks: this.subTasks,
+      progress: 0,
+    },
+    {
+      id: "2",
+      name: 'Login page',
       description: 'Description 1',
       priority: 'High',
       type: 'Task',

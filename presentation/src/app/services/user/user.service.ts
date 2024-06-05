@@ -7,12 +7,14 @@ import { User } from '../../../models/user';
   providedIn: 'root'
 })
 export class UserService {
-  private registerUrl = "User/register";
+  private baseUrl = "User/";
 
   constructor(private httpClient: HttpClient) { 
   }
 
   public register(user: User) : Observable<string> {
-    return this.httpClient.post(this.registerUrl, user, {responseType: 'text'});
+    const registerUrl = this.baseUrl + 'register';
+
+    return this.httpClient.post(registerUrl, user, {responseType: 'text'});
   }
 }

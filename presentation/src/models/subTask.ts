@@ -1,6 +1,6 @@
 export class SubTask{
-    id: number;
-    title: string;
+    id: string;
+    name: string;
     description: string;
     isDone: boolean;
 }

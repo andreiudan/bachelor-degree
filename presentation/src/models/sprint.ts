@@ -1,9 +1,9 @@
 import { Task } from "./task";
 
 export class Sprint{
-    id: number;
-    title: string;
+    id: string;
+    name: string;
     dueDate: Date;
-    createdDate: Date;
+    startDate: Date;
     tasks: Task[];
 }

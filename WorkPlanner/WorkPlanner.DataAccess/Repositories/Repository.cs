@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess.Repositories;
 
 namespace WorkPlanner.DataAccess.Repositories

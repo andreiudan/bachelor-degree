@@ -2,7 +2,6 @@ using WorkPlanner.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using WorkPlanner.Interfaces.DataAccess;
 using WorkPlanner.Interfaces.Business;
-using WorkPlanner.Business.Commands;
 using AutoMapper;
 using WorkPlanner.Business;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,6 +12,7 @@ using WorkPlanner.Interfaces.Notification;
 using WorkPlanner.Notification;
 using WorkPlanner.Domain.EmailTypes;
 using WorkPlanner.Domain.Configurations;
+using WorkPlanner.Business.Commands.UserCommands;
 
 var builder = WebApplication.CreateBuilder(args);
 

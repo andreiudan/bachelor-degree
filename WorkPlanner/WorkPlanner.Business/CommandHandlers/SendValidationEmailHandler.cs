@@ -35,7 +35,7 @@ namespace WorkPlanner.Business.CommandHandlers
             await emailService.SendEmailAsync(email);
         }
 
-        private string GenerateValidationToken(int id)
+        private string GenerateValidationToken(Guid id)
         {
             string[] urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS").Split(';');
 

@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using WorkPlanner.Domain.Dtos;
 
-namespace WorkPlanner.Business.Commands
+namespace WorkPlanner.Business.Commands.UserCommands
 {
-    public class UserRegistrationCommand : IRequest<int>
+    public class UserRegistrationCommand : IRequest<Guid>
     {
         public UserRegistrationDto User { get; }
 

@@ -23,14 +23,14 @@ namespace WorkPlanner.DataAccess.Repositories
             return lastUserWithSameUsername;
         }
 
-        public Task<int> ValidateUser(int id)
+        public Task<int> ValidateUser(Guid id)
         {
             return Context.Set<User>()
                           .Where(u => u.Id.Equals(id))
                           .ExecuteUpdateAsync(u => u.SetProperty(x => x.Verified, true));
         }
 
-        public Task<int> UpdateUsername(int id, string newUsername)
+        public Task<int> UpdateUsername(Guid id, string newUsername)
         {
             return Context.Set<User>()
                           .Where(u => u.Id.Equals(id))

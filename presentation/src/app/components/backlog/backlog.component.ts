@@ -12,8 +12,8 @@ export class BacklogComponent {
 
   subTasks: SubTask[] = [
     {
-      id: 1,
-      title: 'Sub Task 1',
+      id: "1",
+      name: 'Sub Task 1',
       description: 'Description 1',
       isDone: false
     }
@@ -21,8 +21,8 @@ export class BacklogComponent {
 
   toDoTasks: Task[] = [
     {
-      id: 1,
-      title: 'Login API Integration',
+      id: "1",
+      name: 'Login API Integration',
       description: 'Description 1',
       priority: 'High',
       type: 'Task',
@@ -37,8 +37,8 @@ export class BacklogComponent {
       progress: 23,
     },
     {
-      id: 2,
-      title: 'Login page',
+      id: "2",
+      name: 'Login page',
       description: 'Description 1',
       priority: 'High',
       type: 'Task',
@@ -56,18 +56,18 @@ export class BacklogComponent {
 
   sprints: Sprint[] = [
     {
-      id: 1,
-      title: 'Sprint 1',
+      id: "1",
+      name: 'Sprint 1',
       tasks: this.toDoTasks,
       dueDate: new Date(),
-      createdDate: new Date(),
+      startDate: new Date(),
     },
     {
-      id: 2,
-      title: 'Sprint 2',
+      id: "2",
+      name: 'Sprint 2',
       tasks: this.toDoTasks,
       dueDate: new Date(),
-      createdDate: new Date(),
+      startDate: new Date(),
     }
   ]
 }

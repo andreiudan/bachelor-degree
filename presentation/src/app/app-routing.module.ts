@@ -11,6 +11,7 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { CalendarEventDetailsComponent } from './components/calendar-event-details/calendar-event-details.component';
 import { CalendarEventComponent } from './components/calendar-event/calendar-event.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
+import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
   {
@@ -38,7 +39,7 @@ const routes: Routes = [
     component: RegisterComponent,
   },
   {
-    path: 'task',
+    path: 'task/:taskId',
     component: TaskComponent,
   },
   {
@@ -51,7 +52,11 @@ const routes: Routes = [
   },
   {
     path: 'backlog',
-    component: BacklogComponent
+    component: BacklogComponent,
+  },
+  {
+    path: 'user/:userId',
+    component: UserComponent,
   },
   {
     path: 'calendar-event-details',

@@ -27,4 +27,9 @@ export class AppComponent {
     this.sidenav.open();
     this.isSidenavCollapsed = !this.isSidenavCollapsed;
   }
+
+  public logout(): void {
+    localStorage.setItem('jwtToken', "");
+    this.router.navigate(['/login']);
+  }
 }

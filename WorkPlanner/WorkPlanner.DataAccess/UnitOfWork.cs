@@ -6,7 +6,7 @@ namespace WorkPlanner.DataAccess
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public ITaskRepository Tasks { get; }
+        public ISprintTaskRepository Tasks { get; }
         public ISprintRepository Sprints { get; }
         public ITimesheetRepository Timesheets { get; }
         public IProjectRepository Projects { get; }
@@ -18,7 +18,7 @@ namespace WorkPlanner.DataAccess
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
 
-            Tasks = new TaskRepository(Context);    
+            Tasks = new SprintTaskRepository(Context);    
             Sprints = new SprintRepository(Context);
             Timesheets = new TimesheetRepository(Context);
             Projects = new ProjectRepository(Context);

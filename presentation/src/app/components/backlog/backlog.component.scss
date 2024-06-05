@@ -89,6 +89,10 @@ h2{
         }
     }
 
+    mat-card-content{
+        padding-inline: 16px;
+    }
+
     mat-card-footer{
         padding-block: 12px;
 
@@ -193,6 +197,7 @@ h2{
                 display: flex;
                 align-items: center;
                 gap: 0 6px;
+                font-size: 14px;
             }
 
             .task-labels{
@@ -275,6 +280,8 @@ h2{
     }
 
     mat-card-content{
+        padding-inline: 16px;
+
         .backlog-task-info-alignment{
             display: grid;
             grid-template-columns: 35% auto 2%;

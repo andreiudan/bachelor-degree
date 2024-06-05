@@ -1,6 +1,6 @@
 ﻿using Moq;
-using WorkPlanner.Business.CommandHandlers;
-using WorkPlanner.Business.Commands;
+using WorkPlanner.Business.CommandHandlers.UserHandlers;
+using WorkPlanner.Business.Commands.UserCommands;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
@@ -14,16 +14,18 @@ namespace WorkPlanner.UnitTests.Business.CommandHandlers
         private UserValidationHandler emailValidationHandler;
         private UserValidationCommand emailValidationCommand;
         private User user;
+        private Guid Id;
 
         [SetUp]
         public void Setup()
         {
             unitOfWorkMock = new Mock<IUnitOfWork>();
             usernameGeneratorMock = new Mock<IUsernameGenerator>();
+            Id = Guid.NewGuid(); 
 
             user = new User
             {
-                Id = 1,
+                Id = Id,
                 FirstName = "John",
                 LastName = "Doe",
                 Email = "john_doe@gmail.com",
@@ -33,7 +35,7 @@ namespace WorkPlanner.UnitTests.Business.CommandHandlers
                 Verified = false
             };
 
-            emailValidationCommand = new UserValidationCommand(user.Id);
+            emailValidationCommand = new UserValidationCommand(user.Id.ToString());
             emailValidationHandler = new UserValidationHandler(unitOfWorkMock.Object,
                                                                 usernameGeneratorMock.Object)
 ;

@@ -12,7 +12,7 @@
         @for (sprint of sprints; track $index) {
             <mat-card class="sprint">
                 <mat-card-header>
-                    <h3>{{ sprint.title }}</h3>
+                    <h3>{{ sprint.name }}</h3>
                     <span class="spacer"></span>
                     <div class="sprint-actions">
                         <button class="start-sprint-button">Start Sprint</button>
@@ -49,14 +49,14 @@
                     </div>
     
                     @for (task of sprint.tasks; track $index) {
-                        <mat-card routerLink="/task" class="task-card">    
+                        <mat-card [routerLink]="['/task', task.id]" class="task-card">    
                             <mat-card-content>
                                 <div class="task-info task-info-alignment">
                                     <div class="blank-title-space">
                                         <div class="no-legend">
                                             <div class="title">
                                                 <mat-icon>block</mat-icon>
-                                                <h4>{{ task.title }}</h4>
+                                                <h4>{{ task.name }}</h4>
                                             </div>
                                             <mat-card class="task-labels">
                                                 <mat-card-content >
@@ -102,7 +102,7 @@
                 
                 <mat-card-footer>
                     <div class="sprint-due-date">
-                        <p>Sprint end date: {{ sprint.dueDate }}</p>
+                        <p>Sprint end date: {{ sprint.dueDate.toLocaleDateString() }}</p>
                     </div>  
                 </mat-card-footer>
             </mat-card>
@@ -137,14 +137,14 @@
                 </div>
     
                 @for (task of toDoTasks; track $index) {
-                    <mat-card routerLink="/task" class="task-card">    
+                    <mat-card [routerLink]="['/task', task.id]" class="task-card">    
                         <mat-card-content>
                             <div class="task-info backlog-task-info-alignment">
                                 <div class="blank-title-space">
                                     <div class="no-legend">
                                         <div class="title">
                                             <mat-icon>block</mat-icon>
-                                            <h4>{{ task.title }}</h4>
+                                            <h4>{{ task.name }}</h4>
                                         </div>
                                         <mat-card class="task-labels">
                                             <mat-card-content >
@@ -159,7 +159,7 @@
                                             <p>{{ task.type }}</p>
                                         </div>
                                         <div>
-                                            <p>{{ task.dueDate.getDay() }}</p>
+                                            <p>{{ task.dueDate.toLocaleDateString() }}</p>
                                         </div>
                                     </div>
                                 </div>

@@ -1,6 +1,8 @@
-﻿namespace WorkPlanner.Interfaces.DataAccess.Repositories
+﻿using WorkPlanner.Domain.Entities;
+
+namespace WorkPlanner.Interfaces.DataAccess.Repositories
 {
-    public interface ITimesheetRepository
+    public interface ITimesheetRepository : IRepository<Timesheet>
     {
     }
 }

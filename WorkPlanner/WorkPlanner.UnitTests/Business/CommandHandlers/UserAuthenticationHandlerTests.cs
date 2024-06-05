@@ -1,6 +1,6 @@
 ﻿using Moq;
-using WorkPlanner.Business.CommandHandlers;
-using WorkPlanner.Business.Commands;
+using WorkPlanner.Business.CommandHandlers.UserHandlers;
+using WorkPlanner.Business.Commands.UserCommands;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;

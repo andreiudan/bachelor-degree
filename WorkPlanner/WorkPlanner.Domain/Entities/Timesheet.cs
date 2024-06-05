@@ -7,10 +7,10 @@ namespace WorkPlanner.Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [ForeignKey("User")]
-        public int AccountId { get; set; }
+        public Guid AccountId { get; set; }
 
         [Required]
         public DateOnly Date { get; set; }

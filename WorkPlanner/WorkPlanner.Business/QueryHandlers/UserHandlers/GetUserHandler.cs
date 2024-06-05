@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using WorkPlanner.Business.Queries;
+using WorkPlanner.Business.Queries.UserQueries;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
 
-namespace WorkPlanner.Business.QueryHandlers
+namespace WorkPlanner.Business.QueryHandlers.UserHandlers
 {
     internal class GetUserHandler : IRequestHandler<GetUserQuery, User>
     {
@@ -16,7 +16,9 @@ namespace WorkPlanner.Business.QueryHandlers
 
         public async Task<User> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            User user = await unitOfWork.Users.FindAsync(u => u.Id.Equals(request.Id));
+            Guid Id = Guid.Parse(request.Id);
+
+            User user = await unitOfWork.Users.FindAsync(u => u.Id.Equals(Id));
 
             return user;
         }

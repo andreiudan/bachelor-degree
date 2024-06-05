@@ -1,21 +1,21 @@
 ﻿using AutoMapper;
 using MediatR;
-using WorkPlanner.Business.Commands;
+using WorkPlanner.Business.Commands.UserCommands;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
 
-namespace WorkPlanner.Business.CommandHandlers
+namespace WorkPlanner.Business.CommandHandlers.UserHandlers
 {
-    public class UserRegistrationHandler : IRequestHandler<UserRegistrationCommand, int>
+    public class UserRegistrationHandler : IRequestHandler<UserRegistrationCommand, Guid>
     {
         private const int saltLength = 16;
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
         private readonly IPasswordHasher passwordHasher;
 
-        public UserRegistrationHandler(IMapper mapper, 
-                                       IUnitOfWork unitOfWork, 
+        public UserRegistrationHandler(IMapper mapper,
+                                       IUnitOfWork unitOfWork,
                                        IPasswordHasher passwordHasher)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -23,9 +23,9 @@ namespace WorkPlanner.Business.CommandHandlers
             this.passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         }
 
-        public async Task<int> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
         {
-            if(await unitOfWork.Users.FindAsync(u => u.Email == request.User.Email) is not null)
+            if (await unitOfWork.Users.FindAsync(u => u.Email == request.User.Email) is not null)
             {
                 throw new InvalidOperationException("User with this email already exists");
             }

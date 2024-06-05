@@ -6,8 +6,8 @@ namespace WorkPlanner.Interfaces.DataAccess.Repositories
     {
         public Task<User> GetLastUserWithSameUsername(string username);
 
-        public Task<int> ValidateUser(int id);
+        public Task<int> ValidateUser(Guid id);
 
-        public Task<int> UpdateUsername(int id, string newUsername);
+        public Task<int> UpdateUsername(Guid id, string newUsername);
     }
 }

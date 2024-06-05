@@ -30,6 +30,7 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { DynamicHostDirective } from './directives/dynamic-host/dynamic-host.directive';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     CalendarComponent,
     DynamicHostDirective,
     BacklogComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,

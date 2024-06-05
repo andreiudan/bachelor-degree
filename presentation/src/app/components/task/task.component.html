@@ -1,7 +1,7 @@
 <p class="project-name">ProjectName</p>
 
 <div class="title-div">
-    <h2>Login API Integration</h2>
+    <h2>{{ task.name }}</h2>
     <p class="sprint-name"> - SprintName</p>
     <span class="spacer"></span>
     <button mat-icon-button>
@@ -15,21 +15,16 @@
             <h4>Description</h4>
             <mat-divider></mat-divider>
         </div>
-        <p class="description">
-            Lorem ipsum dolor sit amet, 
-            consectetur adipisicing elit. Veniam doloremque 
-            earum cum nisi deleniti facere cumque doloribus, 
-            numquam eligendi, voluptas quis, voluptates tenetur 
-            impedit assumenda eaque ea eos itaque. Error!
-        </p>
+        <p class="description">{{ task.description }}</p>
         
         <div class="info-divider">
             <h4>Key Tasks</h4>
             <mat-divider></mat-divider>
         </div>
         <div class="subtasks">
-            <mat-checkbox class="custom-checkbox">Subtask name 1</mat-checkbox>
-            <mat-checkbox class="custom-checkbox">Subtask name 2</mat-checkbox>
+            @for(subtask of task.keyTasks; track $index) {
+                <mat-checkbox class="custom-checkbox" [(ngModel)]="subtask.isDone">{{ subtask.name }}</mat-checkbox>
+            }
         </div>
     </div>
     
@@ -46,20 +41,18 @@
                 <p>Priority:</p>
                 <p>Type:</p>
                 <p>Labels:</p>
-                <br>
                 <p>Status:</p>
                 <p>Story Points:</p>
             </div>
             <div class="properties-values">
                 <div class="priority-property">
                     <mat-icon>home</mat-icon>
-                    <p>PriorityType</p>
+                    <p>{{ task.priority }}</p>
                 </div>
-                <p>TaskType</p>
-                <p>Label1</p>
-                <p>Label2</p>
-                <p>TaskStatus</p>
-                <p>StoryPoints</p>
+                <p>{{ task.type }}</p>
+                <p>{{ task.labels }}</p>
+                <p>{{ task.status }}</p>
+                <p>{{ task.storyPoints }}</p>
             </div>
         </div>
     
@@ -74,8 +67,8 @@
                 <p>Author:</p>
             </div>
             <div class="properties-values">
-                <p>AssigneeName</p>
-                <p>AuthorName</p>
+                <p>{{ task.assignee }}</p>
+                <p>{{ task.author }}</p>
             </div>
         </div>
     
@@ -90,8 +83,8 @@
                 <p>Created:</p>
             </div>
             <div class="properties-values">
-                <p>DueDate</p>
-                <p>CreatedDate</p>
+                <p>{{ task.dueDate.toLocaleDateString() }} {{task.dueDate.toLocaleTimeString()}}</p>
+                <p>{{ task.createdDate.toLocaleDateString() }} {{ task.createdDate.toLocaleTimeString() }}</p>
             </div>
         </div>
     </div>

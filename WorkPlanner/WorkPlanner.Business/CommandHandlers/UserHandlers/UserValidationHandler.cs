@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using System.Text;
-using WorkPlanner.Business.Commands;
+using WorkPlanner.Business.Commands.UserCommands;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
 
-namespace WorkPlanner.Business.CommandHandlers
+namespace WorkPlanner.Business.CommandHandlers.UserHandlers
 {
     public class UserValidationHandler : IRequestHandler<UserValidationCommand, string>
     {
@@ -15,12 +15,12 @@ namespace WorkPlanner.Business.CommandHandlers
         public UserValidationHandler(IUnitOfWork unitOfWork, IUsernameGenerator usernameGenerator)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            this.usernameGenerator = usernameGenerator ?? throw new ArgumentNullException(nameof(usernameGenerator));        
+            this.usernameGenerator = usernameGenerator ?? throw new ArgumentNullException(nameof(usernameGenerator));
         }
 
         public async Task<string> Handle(UserValidationCommand request, CancellationToken cancellationToken)
         {
-            int idToBeActivated = decodeId(request.validationToken);
+            Guid idToBeActivated = DecodeId(request.ValidationToken);
 
             User userToValidate = await unitOfWork.Users.FindAsync(u => u.Id.Equals(idToBeActivated));
 
@@ -29,7 +29,7 @@ namespace WorkPlanner.Business.CommandHandlers
             User lastUserWithSameUsername = await unitOfWork.Users.GetLastUserWithSameUsername(newUsername);
 
             userToValidate.Username = newUsername;
-            if(lastUserWithSameUsername is not null)
+            if (lastUserWithSameUsername is not null)
             {
                 userToValidate.Username += usernameGenerator.GetFirstUsableUsernameId(lastUserWithSameUsername);
             }
@@ -43,13 +43,13 @@ namespace WorkPlanner.Business.CommandHandlers
             return "Activated!"; //TO DO: redirect to success activation page
         }
 
-        private int decodeId(string encodedId)
+        private Guid DecodeId(string encodedId)
         {
             byte[] decodedIdBytes = Convert.FromBase64String(encodedId);
 
             string id = Encoding.UTF8.GetString(decodedIdBytes);
 
-            return int.Parse(id);
+            return Guid.Parse(id);
         }
     }
 }

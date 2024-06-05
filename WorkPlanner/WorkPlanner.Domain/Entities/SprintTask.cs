@@ -8,13 +8,13 @@ namespace WorkPlanner.Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [ForeignKey("ProjectLabel")]
         public int LabelId { get; set; }
 
         [ForeignKey("Sprint")]
-        public int SprintId { get; set; }
+        public Guid SprintId { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -23,10 +23,10 @@ namespace WorkPlanner.Domain.Entities
         public string Description { get; set; }
 
         [ForeignKey("User")]
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
         [ForeignKey("User")]
-        public int AssigneeId { get; set; }
+        public Guid AssigneeId { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }
@@ -48,6 +48,9 @@ namespace WorkPlanner.Domain.Entities
 
         [Required]
         public int StoryPoints { get; set; }
+
+        [Required]
+        public List<Subtask> Subtasks { get; set; } = new List<Subtask>();
 
         public override bool Equals(object? obj)
         {
@@ -78,7 +81,8 @@ namespace WorkPlanner.Domain.Entities
                 this.Priority == obj.Priority &&
                 this.Status == obj.Status &&
                 this.Type.CompareTo(obj.Type) == 0 &&
-                this.StoryPoints.CompareTo(obj.StoryPoints) == 0;
+                this.StoryPoints.CompareTo(obj.StoryPoints) == 0 &&
+                this.Subtasks == obj.Subtasks;
         }
 
         public override int GetHashCode()
@@ -98,6 +102,7 @@ namespace WorkPlanner.Domain.Entities
             hash.Add(Status);
             hash.Add(Type);
             hash.Add(StoryPoints);
+            hash.Add(Subtasks);
             
             return hash.ToHashCode();
         }

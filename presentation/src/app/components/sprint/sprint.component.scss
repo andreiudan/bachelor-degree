@@ -6,6 +6,21 @@ p{
     margin: 3px 0 3px 0;
 }
 
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.main-div{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding-inline: 12px;
+    padding-block: 12px;
+}
+
 .project-name{
     padding-top: 12px;
     margin: 0 0 -8px 18px;
@@ -33,23 +48,42 @@ h2{
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 73%;
-    margin-top: 12px;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
+    height: 100%;
+    padding-block: 12px;
+    box-sizing: border-box;
+    min-height: 0;
 }
 
-.status-component{
-    width: 23%; 
+.status-component {
+    width: 23%;
+    height: 100%; 
     align-self: stretch;
     margin-left: 14px;
     margin-right: 14px;
 
-    mat-card-header{
+    mat-card-header {
         p{
             display: flex;
             align-items: flex-start;
             margin: 0 0 0 0;
+        }
+    }
+
+    mat-card-content {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        overflow-y: auto;
+        margin-top: 12px;
+        padding-inline-end: 10px;
+        padding-inline-start: 16px;
+
+        .tasks{
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 0 0 0 0;
+            
         }
     }
 }
@@ -63,8 +97,6 @@ mat-card{
 }
 
 .task-card{
-    margin-top: 8px;
-    margin-bottom: 8px;
     cursor: pointer;
 
     .task-info{
@@ -81,6 +113,7 @@ mat-card{
             font-size: 14px;
             padding: 0 0 0 0;
             color: black;
+            white-space: nowrap;
         }
     
         mat-card-subtitle{
@@ -118,6 +151,7 @@ mat-card{
             padding: 0px 8px 0px 8px;
             border-radius: 20px;
             color: white;
+            margin: 0 !important; 
 
             p{
                 margin-top: -1px;

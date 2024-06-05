@@ -19,18 +19,14 @@ namespace WorkPlanner.DataAccess.Migrations
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Project", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DueDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Labels")
-                        .IsRequired()
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DueDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -47,12 +43,12 @@ namespace WorkPlanner.DataAccess.Migrations
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Sprint", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("TEXT");
@@ -61,28 +57,30 @@ namespace WorkPlanner.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProjectId");
+
                     b.ToTable("Sprints");
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.SprintTask", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("AssigneeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("AssigneeId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -101,8 +99,8 @@ namespace WorkPlanner.DataAccess.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SprintId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("SprintId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
@@ -118,14 +116,16 @@ namespace WorkPlanner.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SprintId");
+
                     b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Subtask", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("Done")
                         .HasColumnType("INTEGER");
@@ -134,22 +134,24 @@ namespace WorkPlanner.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TaskId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
 
                     b.ToTable("Subtasks");
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Timesheet", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("TEXT");
@@ -167,9 +169,9 @@ namespace WorkPlanner.DataAccess.Migrations
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -206,6 +208,48 @@ namespace WorkPlanner.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("WorkPlanner.Domain.Entities.Sprint", b =>
+                {
+                    b.HasOne("WorkPlanner.Domain.Entities.Project", null)
+                        .WithMany("Sprints")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WorkPlanner.Domain.Entities.SprintTask", b =>
+                {
+                    b.HasOne("WorkPlanner.Domain.Entities.Sprint", null)
+                        .WithMany("Tasks")
+                        .HasForeignKey("SprintId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WorkPlanner.Domain.Entities.Subtask", b =>
+                {
+                    b.HasOne("WorkPlanner.Domain.Entities.SprintTask", null)
+                        .WithMany("Subtasks")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WorkPlanner.Domain.Entities.Project", b =>
+                {
+                    b.Navigation("Sprints");
+                });
+
+            modelBuilder.Entity("WorkPlanner.Domain.Entities.Sprint", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("WorkPlanner.Domain.Entities.SprintTask", b =>
+                {
+                    b.Navigation("Subtasks");
                 });
 #pragma warning restore 612, 618
         }

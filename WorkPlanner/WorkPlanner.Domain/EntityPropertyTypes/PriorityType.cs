@@ -3,10 +3,8 @@
     public enum PriorityType
     {
         Blocker,
-        Highest,
         High,
         Medium,
-        Low,
-        Lowest
+        Low
     }
 }

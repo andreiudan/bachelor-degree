@@ -13,11 +13,13 @@ namespace WorkPlanner.UnitTests.Business.CommandHandlers
         private Mock<IEmailService> emailServiceMock;
         private SendValidationEmailCommand sendValidationEmailCommand;
         private SendValidationEmailHandler sendValidationEmailHandler;
-        private int registratedUserId = 1;
+        private Guid registratedUserId;
 
         [SetUp]
         public void Setup()
         {
+            registratedUserId = Guid.NewGuid();
+
             unitOfWorkMock = new Mock<IUnitOfWork>();
             emailMessageFactoryMock = new Mock<IEmailMessageFactory>();
             emailServiceMock = new Mock<IEmailService>();

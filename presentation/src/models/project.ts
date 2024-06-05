@@ -1,10 +1,10 @@
 import { Sprint } from "./sprint";
 
 export class Project{
-    id: number;
-    title: string;
-    description: string;
+    id: string;
+    name: string;
+    creatorId: string;
     dueDate: Date;
-    createdDate: Date;
+    startDate: Date;
     sprints: Sprint[];
 }

@@ -7,22 +7,25 @@ namespace WorkPlanner.Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [ForeignKey("Project")]
-        public int ProjectId { get; set; }
+        public Guid ProjectId { get; set; }
 
         [Required]
         public string Name { get; set; }
 
         [ForeignKey("User")]
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }
 
         [Required]
         public DateTime DueDate { get; set; }
+
+        [Required]
+        public List<SprintTask> Tasks { get; set; } = new List<SprintTask>();
 
         public override bool Equals(object? obj)
         {
@@ -46,12 +49,13 @@ namespace WorkPlanner.Domain.Entities
                 this.Name == obj.Name &&
                 this.CreatorId.CompareTo(obj.CreatorId) == 0 &&
                 this.StartDate == obj.StartDate &&
-                this.DueDate == obj.DueDate;
+                this.DueDate == obj.DueDate &&
+                this.Tasks == obj.Tasks;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, ProjectId, Name, CreatorId, StartDate, DueDate);
+            return HashCode.Combine(Id, ProjectId, Name, CreatorId, StartDate, DueDate, Tasks);
         }
     }
 }

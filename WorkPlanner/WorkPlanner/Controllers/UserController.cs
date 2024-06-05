@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using WorkPlanner.Business.Commands;
-using WorkPlanner.Business.Queries;
+using WorkPlanner.Business.Commands.UserCommands;
+using WorkPlanner.Business.Queries.UserQueries;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
 
@@ -34,7 +34,7 @@ namespace WorkPlanner.Api.Controllers
         {
             UserRegistrationCommand registerRequest = new UserRegistrationCommand(user);
 
-            int result = await mediator.Send(registerRequest);
+            Guid result = await mediator.Send(registerRequest);
 
             SendValidationEmailCommand emailRequest = new SendValidationEmailCommand(result);
 

@@ -7,10 +7,10 @@ namespace WorkPlanner.Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [ForeignKey("SprintTask")]
-        public int TaskId { get; set; }
+        public Guid TaskId { get; set; }
 
         [Required]
         public string Name { get; set; }
