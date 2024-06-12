@@ -59,11 +59,21 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpGet("{projectId}/sprints")]
-        public async Task<IActionResult> GetSprintsForProject(string projectId)
+        public async Task<IActionResult> GetSprints(string projectId)
         {
             GetSprintsForProjectQuery request = new GetSprintsForProjectQuery(projectId);
 
             List<Sprint> response = await mediator.Send(request);
+
+            return Ok(response);
+        }
+
+        [HttpGet("{projectId}/activeSprint")]
+        public async Task<IActionResult> GetActiveSprint(string projectId)
+        {
+            GetActiveSprintForProjectQuery request = new GetActiveSprintForProjectQuery(projectId);
+
+            Sprint response = await mediator.Send(request);
 
             return Ok(response);
         }

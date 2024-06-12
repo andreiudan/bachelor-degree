@@ -82,3 +82,7 @@ body {
   border: 1.5px solid #000000 !important;
   border-radius: 5px !important;
 }
+
+.mdc-text-field__input::-webkit-calendar-picker-indicator {
+  display: block !important;
+}

@@ -60,44 +60,44 @@ namespace WorkPlanner.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{sprintId}/tasks/{taskPriority}")]
+        [HttpGet("{sprintId}/tasks/priority/{taskPriority}")]
         public async Task<IActionResult> GetTasksByTaskPriorityForSprint(string sprintId, PriorityType taskPriority)
         {
-            GetBlockerTasksForSprintQuery request = new GetBlockerTasksForSprintQuery(sprintId, taskPriority);
+            GetTasksByTaskPriorityForSprintQuery request = new GetTasksByTaskPriorityForSprintQuery(sprintId, taskPriority);
 
             List<SprintTask> response = await mediator.Send(request);
 
             return Ok(response);
         }
 
-        //[HttpGet("{sprintId}/highPriorityTasks")]
-        //public async Task<IActionResult> GetTasksForSprint(string sprintId)
-        //{
-        //    GetTasksForSprintQuery request = new GetTasksForSprintQuery(sprintId);
+        [HttpGet("{sprintId}/tasks/status/{taskStatus}")]
+        public async Task<IActionResult> GetTasksByTaskStatusForSprint(string sprintId, StatusType taskStatus)
+        {
+            GetTasksByTaskStatusForSprintQuery request = new GetTasksByTaskStatusForSprintQuery(sprintId, taskStatus);
 
-        //    List<SprintTask> response = await mediator.Send(request);
+            List<SprintTask> response = await mediator.Send(request);
 
-        //    return Ok(response);
-        //}
+            return Ok(response);
+        }
 
-        //[HttpGet("{sprintId}/mediumPriorityTasks")]
-        //public async Task<IActionResult> GetTasksForSprint(string sprintId)
-        //{
-        //    GetTasksForSprintQuery request = new GetTasksForSprintQuery(sprintId);
+        [HttpGet("projectId={projectId}/active")]
+        public async Task<IActionResult> GetActiveSprintForProject(string projectId)
+        {
+            GetActiveSprintForProjectQuery request = new GetActiveSprintForProjectQuery(projectId);
 
-        //    List<SprintTask> response = await mediator.Send(request);
+            Sprint response = await mediator.Send(request);
 
-        //    return Ok(response);
-        //}
+            return Ok(response);
+        }
 
-        //[HttpGet("{sprintId}/lowPriorityTasks")]
-        //public async Task<IActionResult> GetTasksForSprint(string sprintId)
-        //{
-        //    GetTasksForSprintQuery request = new GetTasksForSprintQuery(sprintId);
+        [HttpGet("projectId={projectId}/inactive")]
+        public async Task<IActionResult> GetInactiveSprintsForProject(string projectId)
+        {
+            GetInactiveSprintsForProjectQuery request = new GetInactiveSprintsForProjectQuery(projectId);
 
-        //    List<SprintTask> response = await mediator.Send(request);
+            List<Sprint> response = await mediator.Send(request);
 
-        //    return Ok(response);
-        //}
+            return Ok(response);
+        }
     }
 }

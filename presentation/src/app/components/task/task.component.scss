@@ -1,3 +1,19 @@
+.main-div{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+
+.task-loaded{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+
 .title-div {
     display: flex;
     align-items: center;
@@ -11,6 +27,7 @@
 
     h4 {
         width: 10%;
+        white-space: nowrap;
     }
 
     mat-divider {

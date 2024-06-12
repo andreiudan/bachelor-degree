@@ -1,91 +1,103 @@
-<p class="project-name">ProjectName</p>
+<div class="main-div">
+    <div class="task-loaded" *ngIf="(taskLoaded | async); else loading">
+        <p class="project-name">{{  this.projectName }}</p>
 
-<div class="title-div">
-    <h2>{{ task.name }}</h2>
-    <p class="sprint-name"> - SprintName</p>
-    <span class="spacer"></span>
-    <button mat-icon-button>
-        <mat-icon>edit</mat-icon>
-    </button>
-</div>
+        <div class="title-div">
+            <h2>{{ task.name }}</h2>
+            <p class="sprint-name"> - {{ this.sprintName }}</p>
+            <span class="spacer"></span>
+            <button mat-icon-button>
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
 
-<div class="page-alignment">
-    <div class="task-info">
-        <div class="info-divider">
-            <h4>Description</h4>
-            <mat-divider></mat-divider>
-        </div>
-        <p class="description">{{ task.description }}</p>
-        
-        <div class="info-divider">
-            <h4>Key Tasks</h4>
-            <mat-divider></mat-divider>
-        </div>
-        <div class="subtasks">
-            @for(subtask of task.keyTasks; track $index) {
-                <mat-checkbox class="custom-checkbox" [(ngModel)]="subtask.isDone">{{ subtask.name }}</mat-checkbox>
-            }
-        </div>
-    </div>
-    
-    <mat-divider vertical class="vertical-divider"></mat-divider>
-    
-    <div class="task-properties">
-        <div class="info-divider">
-            <button (click)="this.toggleDetails()">></button>
-            <h4>Details</h4>
-            <mat-divider></mat-divider>
-        </div>
-        <div *ngIf="showDetails" class="properties-alignment">
-            <div class="properties-names">
-                <p>Priority:</p>
-                <p>Type:</p>
-                <p>Labels:</p>
-                <p>Status:</p>
-                <p>Story Points:</p>
-            </div>
-            <div class="properties-values">
-                <div class="priority-property">
-                    <mat-icon>home</mat-icon>
-                    <p>{{ task.priority }}</p>
+        <div class="page-alignment">
+            <div class="task-info">
+                <div class="info-divider">
+                    <h4>Description</h4>
+                    <mat-divider></mat-divider>
                 </div>
-                <p>{{ task.type }}</p>
-                <p>{{ task.labels }}</p>
-                <p>{{ task.status }}</p>
-                <p>{{ task.storyPoints }}</p>
+                <p class="description">{{ task.description }}</p>
+                
+                <div class="info-divider">
+                    <h4>Key Tasks</h4>
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="subtasks">
+                    @for(subtask of task.keyTasks; track $index) {
+                        <mat-checkbox class="custom-checkbox" [(ngModel)]="subtask.isDone">{{ subtask.name }}</mat-checkbox>
+                    }
+                </div>
             </div>
-        </div>
-    
-        <div class="info-divider">
-            <button (click)="this.togglePeople()">></button>
-            <h4>People</h4>
-            <mat-divider></mat-divider>
-        </div>
-        <div *ngIf="showPeople" class="properties-alignment">
-            <div class="properties-names">
-                <p>Assignees:</p>
-                <p>Author:</p>
-            </div>
-            <div class="properties-values">
-                <p>{{ task.assignee }}</p>
-                <p>{{ task.author }}</p>
-            </div>
-        </div>
-    
-        <div class="info-divider">
-            <button (click)="this.toggleDates()">></button>
-            <h4>Dates</h4>
-            <mat-divider></mat-divider>
-        </div>
-        <div *ngIf="showDates" class="properties-alignment">
-            <div class="properties-names">
-                <p>Due:</p>
-                <p>Created:</p>
-            </div>
-            <div class="properties-values">
-                <p>{{ task.dueDate.toLocaleDateString() }} {{task.dueDate.toLocaleTimeString()}}</p>
-                <p>{{ task.createdDate.toLocaleDateString() }} {{ task.createdDate.toLocaleTimeString() }}</p>
+            
+            <mat-divider vertical class="vertical-divider"></mat-divider>
+            
+            <div class="task-properties">
+                <div class="info-divider">
+                    <button (click)="this.toggleDetails()">></button>
+                    <h4>Details</h4>
+                    <mat-divider></mat-divider>
+                </div>
+                <div *ngIf="showDetails" class="properties-alignment">
+                    <div class="properties-names">
+                        <p>Priority:</p>
+                        <p>Type:</p>
+                        <p>Labels:</p>
+                        <p>Status:</p>
+                        <p>Story Points:</p>
+                    </div>
+                    <div class="properties-values">
+                        <div class="priority-property">
+                            <mat-icon>home</mat-icon>
+                            <p>{{ task.priority }}</p>
+                        </div>
+                        <p>{{ task.type }}</p>
+                        <p>{{ task.labels }}</p>
+                        <p>{{ task.status }}</p>
+                        <p>{{ task.storyPoints }}</p>
+                    </div>
+                </div>
+            
+                <div class="info-divider">
+                    <button (click)="this.togglePeople()">></button>
+                    <h4>People</h4>
+                    <mat-divider></mat-divider>
+                </div>
+                <div *ngIf="showPeople" class="properties-alignment">
+                    <div class="properties-names">
+                        <p>Assignees:</p>
+                        <p>Author:</p>
+                    </div>
+                    <div class="properties-values">
+                        <p>{{ task.assignee }}</p>
+                        <p>{{ task.author }}</p>
+                    </div>
+                </div>
+            
+                <div class="info-divider">
+                    <button (click)="this.toggleDates()">></button>
+                    <h4>Dates</h4>
+                    <mat-divider></mat-divider>
+                </div>
+                <div *ngIf="showDates" class="properties-alignment">
+                    <div class="properties-names">
+                        <p>Due:</p>
+                        <p>Created:</p>
+                    </div>
+                    <div class="properties-values">
+                        <p>{{ task.dueDate.toLocaleDateString() }} {{task.dueDate.toLocaleTimeString()}}</p>
+                        <p>{{ task.startDate.toLocaleDateString() }} {{ task.startDate.toLocaleTimeString() }}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <ng-template #loading>
+        <div class="loading">
+            <p>
+                Task loading, please wait...
+            </p>
+        </div>
+    </ng-template>
 </div>

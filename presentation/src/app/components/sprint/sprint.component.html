@@ -1,152 +1,160 @@
 <div class="main-div">
-    <div>
-        <p class="project-name">ProjectName</p>
-    </div>
-
-    <div class="title-div">
-        <h2>SprintName</h2>
-        <span class="spacer"></span>
-        <button mat-raised-button color="accent">Release</button>
-        <button mat-icon-button>
-            <mat-icon>edit</mat-icon>
-        </button>
+    <div class="data-loaded" *ngIf="(sprintLoaded | async); else loading">
+        <div>
+            <p class="project-name">ProjectName</p>
+        </div>
+    
+        <div class="title-div">
+            <h2>{{ this.activeSprint.name }}</h2>
+            <span class="spacer"></span>
+            <button mat-raised-button color="accent">Release</button>
+            <button mat-icon-button>
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+        
+        <div class="page-alignment">
+            <mat-card class="status-component">
+                <mat-card-header>
+                    TO DO
+                    <span class="spacer"></span>
+                    <p>{{ toDoTasks.length }}</p>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="tasks">
+                        @for (task of toDoTasks; track $index) {
+                            <mat-card [routerLink]="['/task', task.id]" class="task-card">
+                                <mat-card-header>
+                                    <mat-card-title>{{ task.name }}</mat-card-title>
+                                    <mat-card-subtitle>{{ task.assignee }}</mat-card-subtitle>
+                                </mat-card-header>
+            
+                                <mat-card-content>
+                                    <mat-card class="task-labels">
+                                        <mat-card-content >
+                                            <p>{{ task.labels }}</p>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <div class="task-info">
+                                        <mat-icon>block</mat-icon>
+                                        <div class="story-points">{{ task.storyPoints }}</div>
+                                        <span class="spacer"></span>
+                                        <p class="task-id">{{ task.id }}</p>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        }
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        
+            <mat-card class="status-component">
+                <mat-card-header>
+                    IN PROGRESS
+                    <span class="spacer"></span>
+                    <p>{{ inProgressTasks.length }}</p>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="tasks">
+                        @for (task of inProgressTasks; track $index) {
+                            <mat-card [routerLink]="['/task', task.id]" class="task-card">
+                                <mat-card-header>
+                                    <mat-card-title>{{ task.name }}</mat-card-title>
+                                    <mat-card-subtitle>{{ task.assignee }}</mat-card-subtitle>
+                                </mat-card-header>
+            
+                                <mat-card-content>
+                                    <mat-card class="task-labels">
+                                        <mat-card-content >
+                                            <p>{{ task.labels }}</p>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <div class="task-info">
+                                        <mat-icon>block</mat-icon>
+                                        <div class="story-points">{{ task.storyPoints }}</div>
+                                        <span class="spacer"></span>
+                                        <p class="task-id">{{ task.id }}</p>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        }
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            
+            <mat-card class="status-component">
+                <mat-card-header>
+                    IN REVIEW
+                    <span class="spacer"></span>
+                    <p>{{ inReviewTasks.length }}</p>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="tasks">
+                        @for (task of inReviewTasks; track $index) {
+                            <mat-card [routerLink]="['/task', task.id]" class="task-card">
+                                <mat-card-header>
+                                    <mat-card-title>{{ task.name }}</mat-card-title>
+                                    <mat-card-subtitle>{{ task.assignee }}</mat-card-subtitle>
+                                </mat-card-header>
+            
+                                <mat-card-content>
+                                    <mat-card class="task-labels">
+                                        <mat-card-content >
+                                            <p>{{ task.labels }}</p>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <div class="task-info">
+                                        <mat-icon>block</mat-icon>
+                                        <div class="story-points">{{ task.storyPoints }}</div>
+                                        <span class="spacer"></span>
+                                        <p class="task-id">{{ task.id }}</p>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        }
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            
+            <mat-card class="status-component">
+                <mat-card-header>
+                    DONE
+                    <span class="spacer"></span>
+                    <p>{{ doneTasks.length }}</p>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="tasks">
+                        @for (task of doneTasks; track $index) {
+                            <mat-card [routerLink]="['/task', task.id]" class="task-card">
+                                <mat-card-header>
+                                    <mat-card-title>{{ task.name }}</mat-card-title>
+                                    <mat-card-subtitle>{{ task.assignee }}</mat-card-subtitle>
+                                </mat-card-header>
+            
+                                <mat-card-content>
+                                    <mat-card class="task-labels">
+                                        <mat-card-content >
+                                            <p>{{ task.labels }}</p>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <div class="task-info">
+                                        <mat-icon>block</mat-icon>
+                                        <div class="story-points">{{ task.storyPoints }}</div>
+                                        <span class="spacer"></span>
+                                        <p class="task-id">{{ task.id }}</p>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        }
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
     </div>
     
-    <div class="page-alignment">
-        <mat-card class="status-component">
-            <mat-card-header>
-                TO DO
-                <span class="spacer"></span>
-                <p>{{ toDoTasks.length }}</p>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="tasks">
-                    @for (task of toDoTasks; track $index) {
-                        <mat-card [routerLink]="['/task', task.id]" class="task-card">
-                            <mat-card-header>
-                                <mat-card-title>{{ task.name }}</mat-card-title>
-                                <mat-card-subtitle>{{ task.assignee }}</mat-card-subtitle>
-                            </mat-card-header>
-        
-                            <mat-card-content>
-                                <mat-card class="task-labels">
-                                    <mat-card-content >
-                                        <p>{{ task.labels }}</p>
-                                    </mat-card-content>
-                                </mat-card>
-                                <div class="task-info">
-                                    <mat-icon>block</mat-icon>
-                                    <div class="story-points">{{ task.storyPoints }}</div>
-                                    <span class="spacer"></span>
-                                    <p class="task-id">{{ task.id }}</p>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    }
-                </div>
-            </mat-card-content>
-        </mat-card>
-    
-        <mat-card class="status-component">
-            <mat-card-header>
-                IN PROGRESS
-                <span class="spacer"></span>
-                <p>{{ toDoTasks.length }}</p>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="tasks">
-                    @for (task of toDoTasks; track $index) {
-                        <mat-card [routerLink]="['/task', task.id]" class="task-card">
-                            <mat-card-header>
-                                <mat-card-title>{{ task.name }}</mat-card-title>
-                                <mat-card-subtitle>{{ task.assignee }}</mat-card-subtitle>
-                            </mat-card-header>
-        
-                            <mat-card-content>
-                                <mat-card class="task-labels">
-                                    <mat-card-content >
-                                        <p>{{ task.labels }}</p>
-                                    </mat-card-content>
-                                </mat-card>
-                                <div class="task-info">
-                                    <mat-icon>block</mat-icon>
-                                    <div class="story-points">{{ task.storyPoints }}</div>
-                                    <span class="spacer"></span>
-                                    <p class="task-id">{{ task.id }}</p>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    }
-                </div>
-            </mat-card-content>
-        </mat-card>
-        
-        <mat-card class="status-component">
-            <mat-card-header>
-                IN REVIEW
-                <span class="spacer"></span>
-                <p>{{ toDoTasks.length }}</p>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="tasks">
-                    @for (task of toDoTasks; track $index) {
-                        <mat-card [routerLink]="['/task', task.id]" class="task-card">
-                            <mat-card-header>
-                                <mat-card-title>{{ task.name }}</mat-card-title>
-                                <mat-card-subtitle>{{ task.assignee }}</mat-card-subtitle>
-                            </mat-card-header>
-        
-                            <mat-card-content>
-                                <mat-card class="task-labels">
-                                    <mat-card-content >
-                                        <p>{{ task.labels }}</p>
-                                    </mat-card-content>
-                                </mat-card>
-                                <div class="task-info">
-                                    <mat-icon>block</mat-icon>
-                                    <div class="story-points">{{ task.storyPoints }}</div>
-                                    <span class="spacer"></span>
-                                    <p class="task-id">{{ task.id }}</p>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    }
-                </div>
-            </mat-card-content>
-        </mat-card>
-        
-        <mat-card class="status-component">
-            <mat-card-header>
-                DONE
-                <span class="spacer"></span>
-                <p>{{ toDoTasks.length }}</p>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="tasks">
-                    @for (task of toDoTasks; track $index) {
-                        <mat-card [routerLink]="['/task', task.id]" class="task-card">
-                            <mat-card-header>
-                                <mat-card-title>{{ task.name }}</mat-card-title>
-                                <mat-card-subtitle>{{ task.assignee }}</mat-card-subtitle>
-                            </mat-card-header>
-        
-                            <mat-card-content>
-                                <mat-card class="task-labels">
-                                    <mat-card-content >
-                                        <p>{{ task.labels }}</p>
-                                    </mat-card-content>
-                                </mat-card>
-                                <div class="task-info">
-                                    <mat-icon>block</mat-icon>
-                                    <div class="story-points">{{ task.storyPoints }}</div>
-                                    <span class="spacer"></span>
-                                    <p class="task-id">{{ task.id }}</p>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    }
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </div>    
+    <ng-template #loading>
+        <div class="data-loading">
+            <p>Data is loading, please wait...</p>
+        </div>
+    </ng-template>
 </div>

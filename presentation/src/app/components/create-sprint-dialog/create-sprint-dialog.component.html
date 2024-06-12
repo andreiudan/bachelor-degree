@@ -1,0 +1,19 @@
+<div class="title">
+    <h2 mat-dialog-title>Create Sprint</h2>
+</div>
+<mat-dialog-content>
+    <mat-form-field hideRequiredMarker>
+        <input matInput type="text" [(ngModel)]="sprint.name" placeholder="Sprint Name" name="sprintName" required cdkFocusInitial #name="ngModel">
+        <mat-label>Sprint name</mat-label>
+    </mat-form-field>
+
+    <mat-form-field hideRequiredMarker>
+        <input matInput type="datetime" [(ngModel)]="sprint.dueDate" placeholder="Due Date" name="startDate" required #name="ngModel">
+        <mat-label>Due Date</mat-label>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="onNoClick()">Close</button>
+    <button mat-button [mat-dialog-close]="sprint" (click)="closeDialog()">Create</button>
+</mat-dialog-actions>
+

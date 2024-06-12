@@ -12,6 +12,8 @@ namespace WorkPlanner.Domain.Entities
         [ForeignKey("SprintTask")]
         public Guid TaskId { get; set; }
 
+        public SprintTask Task { get; set; } = null!;
+
         [Required]
         public string Name { get; set; }
 
@@ -37,13 +39,14 @@ namespace WorkPlanner.Domain.Entities
         {
             return this.Id.CompareTo(obj.Id) == 0 &&
                 this.TaskId.CompareTo(obj.TaskId) == 0 &&
+                this.Task.Equals(obj.Task) &&
                 this.Name == obj.Name &&
                 this.Done.CompareTo(obj.Done) == 0;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, TaskId, Name, Done);
+            return HashCode.Combine(Id, TaskId, Task, Name, Done);
         }
     }
 }

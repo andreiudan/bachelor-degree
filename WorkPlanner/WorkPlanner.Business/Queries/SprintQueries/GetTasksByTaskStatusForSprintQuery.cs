@@ -4,15 +4,15 @@ using WorkPlanner.Domain.EntityPropertyTypes;
 
 namespace WorkPlanner.Business.Queries.SprintQueries
 {
-    public class GetBlockerTasksForSprintQuery : IRequest<List<SprintTask>>
+    public class GetTasksByTaskStatusForSprintQuery : IRequest<List<SprintTask>>
     {
         public string ProjectId { get; set; }
-        public PriorityType TaskPriority { get; set; }
+        public StatusType TaskStatus { get; set; }
 
-        public GetBlockerTasksForSprintQuery(string projectId, PriorityType taskPriority)
+        public GetTasksByTaskStatusForSprintQuery(string projectId, StatusType taskStatus)
         {
             this.ProjectId = projectId;
-            this.TaskPriority = taskPriority;
+            this.TaskStatus = taskStatus;
         }
     }
 }

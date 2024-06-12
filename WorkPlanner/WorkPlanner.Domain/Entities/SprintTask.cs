@@ -10,11 +10,17 @@ namespace WorkPlanner.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        [ForeignKey("ProjectLabel")]
         public int LabelId { get; set; }
 
         [ForeignKey("Sprint")]
-        public Guid SprintId { get; set; }
+        public Guid? SprintId { get; set; } = null!;
+
+        public Sprint Sprint { get; set; } = null!;
+
+        [ForeignKey("Backlog")]
+        public Guid? BacklogId { get; set; } = null!;
+
+        public Backlog Backlog { get; set; } = null!;
 
         [Required]
         public string Name { get; set; }
@@ -26,7 +32,7 @@ namespace WorkPlanner.Domain.Entities
         public Guid CreatorId { get; set; }
 
         [ForeignKey("User")]
-        public Guid AssigneeId { get; set; }
+        public Guid AssigneeId { get; set; } = Guid.Empty;
 
         [Required]
         public DateTime StartDate { get; set; }
@@ -71,7 +77,10 @@ namespace WorkPlanner.Domain.Entities
         {
             return this.Id.CompareTo(obj.Id) == 0 &&
                 this.LabelId.CompareTo(obj.LabelId) == 0 &&
-                this.SprintId.CompareTo(obj.SprintId) == 0 &&
+                this.SprintId.Equals(obj.SprintId) &&
+                this.Sprint.Equals(obj.Sprint) &&
+                this.BacklogId.Equals(obj.BacklogId) &&
+                this.Backlog.Equals(obj.Backlog) &&
                 this.Name == obj.Name &&
                 this.Description == obj.Description &&
                 this.CreatorId.CompareTo(obj.CreatorId) == 0 &&
@@ -92,6 +101,9 @@ namespace WorkPlanner.Domain.Entities
             hash.Add(Id);
             hash.Add(LabelId);
             hash.Add(SprintId);
+            hash.Add(Sprint);
+            hash.Add(BacklogId);
+            hash.Add(Backlog);
             hash.Add(Name);
             hash.Add(Description);
             hash.Add(CreatorId);

@@ -17,6 +17,23 @@ namespace WorkPlanner.DataAccess.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
 
+            modelBuilder.Entity("WorkPlanner.Domain.Entities.Backlog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId")
+                        .IsUnique();
+
+                    b.ToTable("Backlogs", (string)null);
+                });
+
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Project", b =>
                 {
                     b.Property<Guid>("Id")
@@ -38,7 +55,7 @@ namespace WorkPlanner.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Sprint", b =>
@@ -67,7 +84,7 @@ namespace WorkPlanner.DataAccess.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Sprints");
+                    b.ToTable("Sprints", (string)null);
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.SprintTask", b =>
@@ -77,6 +94,9 @@ namespace WorkPlanner.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("AssigneeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("BacklogId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("CreatorId")
@@ -99,7 +119,7 @@ namespace WorkPlanner.DataAccess.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("SprintId")
+                    b.Property<Guid?>("SprintId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartDate")
@@ -116,9 +136,11 @@ namespace WorkPlanner.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BacklogId");
+
                     b.HasIndex("SprintId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Subtask", b =>
@@ -141,7 +163,7 @@ namespace WorkPlanner.DataAccess.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("Subtasks");
+                    b.ToTable("Subtasks", (string)null);
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Timesheet", b =>
@@ -164,7 +186,7 @@ namespace WorkPlanner.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Timesheets");
+                    b.ToTable("Timesheets", (string)null);
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.User", b =>
@@ -207,38 +229,69 @@ namespace WorkPlanner.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("WorkPlanner.Domain.Entities.Backlog", b =>
+                {
+                    b.HasOne("WorkPlanner.Domain.Entities.Project", "Project")
+                        .WithOne("Backlog")
+                        .HasForeignKey("WorkPlanner.Domain.Entities.Backlog", "ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Sprint", b =>
                 {
-                    b.HasOne("WorkPlanner.Domain.Entities.Project", null)
+                    b.HasOne("WorkPlanner.Domain.Entities.Project", "Project")
                         .WithMany("Sprints")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.SprintTask", b =>
                 {
-                    b.HasOne("WorkPlanner.Domain.Entities.Sprint", null)
+                    b.HasOne("WorkPlanner.Domain.Entities.Backlog", "Backlog")
+                        .WithMany("Tasks")
+                        .HasForeignKey("BacklogId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WorkPlanner.Domain.Entities.Sprint", "Sprint")
                         .WithMany("Tasks")
                         .HasForeignKey("SprintId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Backlog");
+
+                    b.Navigation("Sprint");
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Subtask", b =>
                 {
-                    b.HasOne("WorkPlanner.Domain.Entities.SprintTask", null)
+                    b.HasOne("WorkPlanner.Domain.Entities.SprintTask", "Task")
                         .WithMany("Subtasks")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Task");
+                });
+
+            modelBuilder.Entity("WorkPlanner.Domain.Entities.Backlog", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("WorkPlanner.Domain.Entities.Project", b =>
                 {
+                    b.Navigation("Backlog")
+                        .IsRequired();
+
                     b.Navigation("Sprints");
                 });
 

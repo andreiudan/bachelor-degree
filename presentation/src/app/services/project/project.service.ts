@@ -19,7 +19,13 @@ export class ProjectService {
   public get(id: string): Observable<any> {
     const getUrl = this.baseUrl + id;
 
-    return this.httpClient.get<Project>(getUrl);
+    return this.httpClient.get<Project>(getUrl).pipe(
+      map(project => ({
+        ...project,
+        dueDate: new Date(project.dueDate),
+        startDate: new Date(project.startDate),
+      }))
+    );
   }
 
   public getAll(): Observable<Project[]> {
@@ -53,6 +59,18 @@ export class ProjectService {
         dueDate: new Date(sprint.dueDate),
         startDate: new Date(sprint.startDate)
       })))
+    );
+  }
+
+  public getActiveSprint(projectId: string): Observable<any> {
+    const getActiveSprintUrl = this.baseUrl + '/' + projectId + '/activeSprint';
+    
+    return this.httpClient.get<Sprint>(getActiveSprintUrl).pipe(
+      map(sprint => ({
+       ...sprint,
+        dueDate: new Date(sprint.dueDate),
+        startDate: new Date(sprint.startDate)
+      }))
     );
   }
 }

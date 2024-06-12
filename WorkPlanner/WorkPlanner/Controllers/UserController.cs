@@ -62,5 +62,15 @@ namespace WorkPlanner.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            GetAllUsersQuery request = new GetAllUsersQuery();
+
+            IEnumerable<User> result = await mediator.Send(request);
+
+            return Ok(result);
+        }
     }
 }

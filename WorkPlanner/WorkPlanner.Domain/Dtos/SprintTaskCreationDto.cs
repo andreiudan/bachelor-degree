@@ -11,8 +11,9 @@ namespace WorkPlanner.Domain.Dtos
         [Required]
         public string Description { get; set; }
 
-        [Required]
         public Guid SprintId { get; set; }
+
+        public Guid ProjectId { get; set; }
 
         [Required]
         public Guid CreatorId { get; set; }

@@ -1,0 +1,33 @@
+.main-div {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+
+mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+h2{
+    align-items: center;
+    justify-content: center;
+}
+
+mat-dialog-actions {
+    gap: 0 6px;
+
+    button{
+        border-radius: 12px;
+    }
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0 6px;
+}

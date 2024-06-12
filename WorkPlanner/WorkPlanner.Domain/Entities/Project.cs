@@ -22,6 +22,9 @@ namespace WorkPlanner.Domain.Entities
         public DateTime DueDate { get; set; }
 
         [Required]
+        public Backlog? Backlog { get; set; }
+
+        [Required]
         public List<Sprint> Sprints { get; set; } = new List<Sprint>();
 
         public override bool Equals(object? obj)
@@ -46,12 +49,13 @@ namespace WorkPlanner.Domain.Entities
                 this.CreatorId.CompareTo(obj.CreatorId) == 0 &&
                 this.StartDate == obj.StartDate &&
                 this.DueDate == obj.DueDate &&
-                this.Sprints == obj.Sprints;
+                this.Sprints == obj.Sprints &&
+                this.Backlog == obj.Backlog;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Name, CreatorId, StartDate, DueDate, Sprints);
+            return HashCode.Combine(Id, Name, CreatorId, StartDate, DueDate, Sprints, Backlog);
         }
     }
 }

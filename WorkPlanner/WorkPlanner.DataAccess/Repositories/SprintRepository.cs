@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Linq.Expressions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Domain.EntityPropertyTypes;
 using WorkPlanner.Interfaces.DataAccess.Repositories;
@@ -32,32 +34,26 @@ namespace WorkPlanner.DataAccess.Repositories
                                 .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public async Task<Sprint> GetWithBlockerTasks(Guid id)
+        public async Task<Sprint> GetWithTasksByTaskStatus(Guid id, StatusType status)
         {
             return await Context.Set<Sprint>()
-                                .Include(s => s.Tasks.Where(t => t.Type.Equals(PriorityType.Blocker)))
+                                .Include(s => s.Tasks.Where(t => t.Status == status))
                                 .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public async Task<Sprint> GetWithHighPriorityTasks(Guid id)
+        public async Task<Sprint> GetActiveSprintForProject(Guid projectId)
         {
             return await Context.Set<Sprint>()
-                                .Include(s => s.Tasks.Where(t => t.Type.Equals(PriorityType.High)))
-                                .FirstOrDefaultAsync(x => x.Id.Equals(id));
+                                .Include(s => s.Tasks)
+                                .FirstOrDefaultAsync(x => x.ProjectId.Equals(projectId) && x.StartDate <= DateTime.UtcNow);
         }
 
-        public async Task<Sprint> GetWithMediumPriorityTasks(Guid id)
+        public async Task<List<Sprint>> GetInactiveSprintsForProject(Guid projectId)
         {
             return await Context.Set<Sprint>()
-                                .Include(s => s.Tasks.Where(t => t.Type.Equals(PriorityType.Medium)))
-                                .FirstOrDefaultAsync(x => x.Id.Equals(id));
-        }
-
-        public async Task<Sprint> GetWithLowPriorityTasks(Guid id)
-        {
-            return await Context.Set<Sprint>()
-                                .Include(s => s.Tasks.Where(t => t.Type.Equals(PriorityType.Low)))
-                                .FirstOrDefaultAsync(x => x.Id.Equals(id));
+                                .Include(s => s.Tasks)
+                                .Where(x => x.ProjectId.Equals(projectId) && (x.StartDate > DateTime.UtcNow || x.DueDate < DateTime.UtcNow))
+                                .ToListAsync();
         }
     }
 }

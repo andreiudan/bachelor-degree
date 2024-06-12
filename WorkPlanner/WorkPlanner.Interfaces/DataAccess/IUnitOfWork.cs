@@ -9,6 +9,7 @@ namespace WorkPlanner.Interfaces.DataAccess
         public ITimesheetRepository Timesheets { get; }
         public IProjectRepository Projects { get; }
         public IUserRepository Users { get; }
+        public IBacklogRepository Backlogs { get; }
 
         public Task<int> CompleteAsync();
     }

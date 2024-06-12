@@ -8,10 +8,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SprintComponent } from './components/sprint/sprint.component';
 import { TaskComponent } from './components/task/task.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
-import { CalendarEventDetailsComponent } from './components/calendar-event-details/calendar-event-details.component';
-import { CalendarEventComponent } from './components/calendar-event/calendar-event.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { UserComponent } from './components/user/user.component';
+import { CreateIssueComponent } from './components/create-issue/create-issue.component';
 
 const routes: Routes = [
   {
@@ -59,12 +58,9 @@ const routes: Routes = [
     component: UserComponent,
   },
   {
-    path: 'calendar-event-details',
-    component: CalendarEventDetailsComponent,
-  },
-  {
-    path: 'calendar-event',
-    component: CalendarEventComponent,
+    path: 'createIssue/:sprintId',
+    component: CreateIssueComponent,
+    data: { sprintId: '' }
   }
 ];
 

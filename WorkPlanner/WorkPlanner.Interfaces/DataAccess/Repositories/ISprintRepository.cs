@@ -11,12 +11,10 @@ namespace WorkPlanner.Interfaces.DataAccess.Repositories
 
         public Task<Sprint> GetWithTasksByTaskPriority(Guid id, PriorityType priority);
 
-        public Task<Sprint> GetWithBlockerTasks(Guid id);
+        public Task<Sprint> GetWithTasksByTaskStatus(Guid id, StatusType status);
 
-        public Task<Sprint> GetWithHighPriorityTasks(Guid id);
+        public Task<Sprint> GetActiveSprintForProject(Guid projectId);
 
-        public Task<Sprint> GetWithMediumPriorityTasks(Guid id);
-
-        public Task<Sprint> GetWithLowPriorityTasks(Guid id);
+        public Task<List<Sprint>> GetInactiveSprintsForProject(Guid projectId);
     }
 }

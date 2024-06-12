@@ -3,11 +3,11 @@ using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Business.Queries.SprintQueries
 {
-    public class GetHighPriorityTasksForSprintQuery : IRequest<List<SprintTask>>
+    public class GetActiveSprintForProjectQuery : IRequest<Sprint>
     {
         public string ProjectId { get; set; }
 
-        public GetHighPriorityTasksForSprintQuery(string projectId)
+        public GetActiveSprintForProjectQuery(string projectId)
         {
             this.ProjectId = projectId;
         }

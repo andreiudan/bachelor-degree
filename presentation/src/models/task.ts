@@ -1,18 +1,21 @@
+import { PriorityTypes } from "./priorityTypes";
+import { StatusTypes } from "./statusTypes";
 import { SubTask } from "./subTask";
+import { TaskTypes } from "./taskTypes";
 
 export class Task {
     id: string;
     name: string;
     description: string;
-    priority: string;
-    type: string;
+    priority: PriorityTypes;
+    type: TaskTypes;
     labels: string;
-    status: string;
+    status: StatusTypes;
     storyPoints: number;
     assignee: string;
     author: string;
     dueDate: Date;
-    createdDate: Date;
+    startDate: Date;
     progress: number;
     keyTasks: SubTask[];
 }

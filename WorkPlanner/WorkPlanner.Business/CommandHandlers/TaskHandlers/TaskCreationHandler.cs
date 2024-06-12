@@ -20,12 +20,20 @@ namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
         public async Task<SprintTask> Handle(TaskCreationCommand request, CancellationToken cancellationToken)
         {
             SprintTask task = mapper.Map<SprintTask>(request.Task);
+            SprintTask taskAdded = null;
 
-            SprintTask addedTask = await unitOfWork.Tasks.AddAsync(task);
+            if (request.Task.SprintId == Guid.Empty)
+            {
+                taskAdded = await unitOfWork.Tasks.AddOnBacklog(request.Task.ProjectId, task);
+            }
+            else
+            {
+                taskAdded = await unitOfWork.Tasks.AddOnSprint(request.Task.SprintId, task);
+            }
 
             await unitOfWork.CompleteAsync();
 
-            return addedTask;
+            return taskAdded;
         }
     }
 }

@@ -6,8 +6,9 @@ import { Project } from '../../../models/project';
 import { error } from 'node:console';
 import { SprintService } from '../../services/sprint/sprint.service';
 import { Sprint } from '../../../models/sprint';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 import { PriorityTypes } from '../../../models/priorityTypes';
+import { StatusTypes } from '../../../models/statusTypes';
 
 export interface OneColCard{
   data: number;
@@ -44,18 +45,12 @@ export class DashboardComponent {
   public dataLoaded: Promise<boolean>;
   public sprintsFetched: Promise<boolean>;
 
-  oneColCards: OneColCard[] = [
-    {title: 'Days left until release', data: 0},
-    {title: 'Days left in this sprint', data: 0},
-    {title: 'Hours worked on this project', data: 0},
-    {title: 'Meetings today?', data: 2},
-  ];
-
-  
+  oneColCards: OneColCard[] = [];
 
   constructor(private projectService: ProjectService, private sprintService: SprintService) { }
 
   ngOnInit() {
+    this.initializeData();
     this.getAllProjects();
   }
 
@@ -69,15 +64,29 @@ export class DashboardComponent {
       (projects) => {
         this.projects = projects;
         
-        if(this.projects.length != 0){
+        if(this.projects.length === 0){
+          localStorage.setItem('selectedProjectId', '');
+          return;
+        }
+
+        if(localStorage.getItem('selectedProjectId') === null || localStorage.getItem('selectedProjectId') === ''){
           this.selectedProject = this.projects[0];
           this.getSprints().then(() => this.calculateData());
+          localStorage.setItem('selectedProjectId', this.selectedProject.id);
+        }
+        else{
+          const selectedProject$ = this.projects.find(project => project.id === localStorage.getItem('selectedProjectId'));
+
+          if(selectedProject$ !== undefined){
+            this.selectedProject = selectedProject$;
+            this.getSprints().then(() => this.calculateData());
+          }
         }
 
         this.dataLoaded = Promise.resolve(true);
       },
       (error) => {
-        this.dataLoaded = Promise.resolve(true);
+        this.dataLoaded = Promise.resolve(false);
       }
     );
   }
@@ -97,11 +106,61 @@ export class DashboardComponent {
 
   onProjectChange(selectedProject: any) {
     this.selectedProject = selectedProject;
+    localStorage.setItem('selectedProjectId', this.selectedProject.id);
+    this.initializeData();
     this.getSprints().then(() => this.calculateData());
   }
 
-  private setStatusTasksNumbers() {
+  private async setToDoTasksNumber() {
+    const sprintToDoTasks = this.sprintService.getTasksByTaskStatusForSprint(this.selectedProject.sprints[0].id, StatusTypes.ToDo);
+    const toDoTasks = await lastValueFrom(sprintToDoTasks);
 
+    this.toDoTasksNumber = toDoTasks.length;
+
+    toDoTasks.forEach((task: Task) => {
+      this.plannedStoryPoints += task.storyPoints;
+    });
+  }
+
+  private async setInProgressTasksNUmber() {
+    const sprintInProgressTasks = this.sprintService.getTasksByTaskStatusForSprint(this.selectedProject.sprints[0].id, StatusTypes.InProgress);
+    const inProgressTasks = await lastValueFrom(sprintInProgressTasks);
+
+    this.inProgressTasksNumber = inProgressTasks.length;
+
+    inProgressTasks.forEach((task: Task) => {
+      this.plannedStoryPoints += task.storyPoints;
+    });
+  }
+
+  private async setInReviewTasksNumber() {
+    const sprintInReviewTasks = this.sprintService.getTasksByTaskStatusForSprint(this.selectedProject.sprints[0].id, StatusTypes.InReview);
+    const inReviewTasks = await lastValueFrom(sprintInReviewTasks);
+
+    this.inReviewTasksNumber = inReviewTasks.length;
+
+    inReviewTasks.forEach((task: Task) => {
+      this.plannedStoryPoints += task.storyPoints;
+    });
+  }
+
+  private async setDoneTasksNumber() {
+    const sprintDoneTasks = this.sprintService.getTasksByTaskStatusForSprint(this.selectedProject.sprints[0].id, StatusTypes.Done);
+    const doneTasks = await lastValueFrom(sprintDoneTasks);
+
+    this.doneTasksNumber = doneTasks.length;
+
+    doneTasks.forEach((task: Task) => {
+      this.completedStoryPoints += task.storyPoints;
+      this.plannedStoryPoints += task.storyPoints;
+    });
+  }
+
+  private setStatusTasksNumbers() {
+    this.setDoneTasksNumber();
+    this.setToDoTasksNumber();
+    this.setInProgressTasksNUmber();
+    this.setInReviewTasksNumber();
   }
 
   private async setBlockerTasksNumber() {
@@ -139,19 +198,33 @@ export class DashboardComponent {
     this.setLowPriorityTasksNumber();
   }
 
-  private setplannedStoryPoints() {
+  private initializeData() {
+    this.blockerTasks = [];
+    
+    this.blockerPriorityTasksNumber = 0;
+    this.highPriorityTasksNumber = 0;
+    this.mediumPriorityTasksNumber = 0;
+    this.lowPriorityTasksNumber = 0;
+    
+    this.toDoTasksNumber = 0;
+    this.inProgressTasksNumber = 0;
+    this.inReviewTasksNumber = 0;
+    this.doneTasksNumber = 0;
 
-  }
+    this.completedStoryPoints = 0;
+    this.plannedStoryPoints = 0
 
-  private setCompletedStoryPoints() {
-
+    this.oneColCards = [
+      {title: 'Days left until release', data: 0},
+      {title: 'Days left in this sprint', data: 0},
+      {title: 'Hours worked on this project', data: 0},
+      {title: 'Meetings today?', data: 0},
+    ]
   }
 
   private calculateData() {
     this.calculateOneCollumCardData();
-    // this.setCompletedStoryPoints();
-    // this.setplannedStoryPoints();
-    // this.setStatusTasksNumbers();
+    this.setStatusTasksNumbers();
     this.setPriorityTasksNumbers();
   }
 
@@ -187,48 +260,4 @@ export class DashboardComponent {
       {title: 'Meetings today?', data: 2},
     ];
   }
-
-  subTasks: SubTask[] = [
-    {
-      id: "1",
-      name: 'Sub Task 1',
-      description: 'Description 1',
-      isDone: false
-    }
-  ];
-
-  toDoTasks: Task[] = [
-    {
-      id: "1",
-      name: 'Login API Integration',
-      description: 'Description 1',
-      priority: 'High',
-      type: 'Task',
-      labels: 'Label 1',
-      status: 'To Do',
-      storyPoints: 5,
-      assignee: 'Assignee 1',
-      author: 'Author 1',
-      dueDate: new Date(),
-      createdDate: new Date(),
-      keyTasks: this.subTasks,
-      progress: 28,
-    },
-    {
-      id: "2",
-      name: 'Login page',
-      description: 'Description 1',
-      priority: 'High',
-      type: 'Task',
-      labels: 'Label 1',
-      status: 'To Do',
-      storyPoints: 5,
-      assignee: 'Assignee 1',
-      author: 'Author 1',
-      dueDate: new Date(),
-      createdDate: new Date(),
-      keyTasks: this.subTasks,
-      progress: 0,
-    }
-  ];
 }

@@ -23,6 +23,13 @@ namespace WorkPlanner.Business.CommandHandlers.ProjectHandlers
 
             Project addedProject = await unitOfWork.Projects.AddAsync(project);
 
+            Backlog backlog = new Backlog
+            {
+                ProjectId = addedProject.Id,
+            };
+
+            await unitOfWork.Backlogs.AddAsync(backlog);
+
             await unitOfWork.CompleteAsync();
 
             return addedProject;

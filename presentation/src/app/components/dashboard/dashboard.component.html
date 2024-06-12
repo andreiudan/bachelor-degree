@@ -1,5 +1,5 @@
 <div class="main-div">
-    <div class="loaded-data" *ngIf="dataLoaded | async">
+    <div class="loaded-data" *ngIf="(dataLoaded | async); else loading">
         <div class="selector">
             <mat-select disableOptionCentering 
                         panelClass="dropDown-seasons-panel" 
@@ -96,7 +96,7 @@
         
                     <mat-card-content class="blockers-grid-card-content">
                         @for (task of blockerTasks; track $index) {
-                            <div class="blockers-div">
+                            <div [routerLink]="['/task', task.id]" class="blockers-div">
                                 <mat-card class="blockers-card">
                                     <mat-card-content class="blockers-alignment">
                                         <p class="task-title">{{ task.name }}</p>
@@ -156,4 +156,12 @@
             </mat-grid-tile> 
         </mat-grid-list>
     </div>
+
+    <ng-template #loading>
+        <div class="data-loading">
+            <p>
+                Loading data, please wait...
+            </p>
+        </div>
+    </ng-template>
 </div>

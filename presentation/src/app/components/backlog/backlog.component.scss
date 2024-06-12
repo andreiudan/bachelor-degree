@@ -14,6 +14,23 @@
     overflow-y: auto;
 }
 
+.data-loaded {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.data-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
 .mat-mdc-select {
     width: 15% !important;
     height: 20px !important;
@@ -253,6 +270,7 @@ h2{
 .backlog{
     width: 100%; 
     align-self: stretch;
+    margin-bottom: 12px;
 
     mat-card-header{
         display: flex;
@@ -317,6 +335,23 @@ h2{
             }
         }
     }
+}
+
+.inactive-sprints{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    gap: 36px;
+}
+
+.active-sprint{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
 button{

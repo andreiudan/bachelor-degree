@@ -12,6 +12,8 @@ namespace WorkPlanner.Domain.Entities
         [ForeignKey("Project")]
         public Guid ProjectId { get; set; }
 
+        public Project Project { get; set; } = null!;
+
         [Required]
         public string Name { get; set; }
 
@@ -46,6 +48,7 @@ namespace WorkPlanner.Domain.Entities
         {
             return this.Id.CompareTo(obj.Id) == 0 &&
                 this.ProjectId.CompareTo(obj.ProjectId) == 0 &&
+                this.Project.Equals(obj.Project) &&
                 this.Name == obj.Name &&
                 this.CreatorId.CompareTo(obj.CreatorId) == 0 &&
                 this.StartDate == obj.StartDate &&
@@ -55,7 +58,7 @@ namespace WorkPlanner.Domain.Entities
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, ProjectId, Name, CreatorId, StartDate, DueDate, Tasks);
+            return HashCode.Combine(Id, ProjectId, Project, Name, CreatorId, StartDate, DueDate, Tasks);
         }
     }
 }

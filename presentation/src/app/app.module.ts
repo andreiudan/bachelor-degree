@@ -6,8 +6,8 @@ import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { WrapperComponent } from './components/wrapper/wrapper.component'
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
@@ -31,6 +31,7 @@ import { DynamicHostDirective } from './directives/dynamic-host/dynamic-host.dir
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { UserComponent } from './components/user/user.component';
+import { CreateIssueComponent } from './components/create-issue/create-issue.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { UserComponent } from './components/user/user.component';
     DynamicHostDirective,
     BacklogComponent,
     UserComponent,
+    CreateIssueComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +67,8 @@ import { UserComponent } from './components/user/user.component';
     MatGridListModule,
     MatCheckboxModule,
     MatProgressBarModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [
     provideClientHydration(),

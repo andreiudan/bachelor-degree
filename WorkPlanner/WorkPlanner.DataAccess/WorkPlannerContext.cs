@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.DataAccess
@@ -14,13 +15,15 @@ namespace WorkPlanner.DataAccess
 
         public DbSet<Project> Projects { get; set; }
 
+        public DbSet<Backlog> Backlogs { get; set; }
+
+        public DbSet<Sprint> Sprints { get; set; }
+
         public DbSet<SprintTask> Tasks { get; set; }
 
         public DbSet<Subtask> Subtasks { get; set; }
 
         public DbSet<Timesheet> Timesheets { get; set; }
-
-        public DbSet<Sprint> Sprints { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -34,21 +37,36 @@ namespace WorkPlanner.DataAccess
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("datetime('now')");
 
+
             modelBuilder.Entity<Project>()
                         .HasMany(p => p.Sprints)
-                        .WithOne()
+                        .WithOne(s => s.Project)
                         .HasForeignKey(s => s.ProjectId)
                         .IsRequired();
 
+            modelBuilder.Entity<Project>()
+                        .HasOne(p => p.Backlog)
+                        .WithOne(b => b.Project)
+                        .HasForeignKey<Backlog>(b => b.ProjectId)
+                        .IsRequired();
+
+            modelBuilder.Entity<Backlog>()
+                        .HasMany(b => b.Tasks)
+                        .WithOne(t => t.Backlog)
+                        .HasForeignKey(t => t.BacklogId)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired(false);
+
             modelBuilder.Entity<Sprint>()
                         .HasMany(s => s.Tasks)
-                        .WithOne()
+                        .WithOne(t => t.Sprint)
                         .HasForeignKey(t => t.SprintId)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired(false);
 
             modelBuilder.Entity<SprintTask>()
                         .HasMany(t => t.Subtasks)
-                        .WithOne()
+                        .WithOne(s => s.Task)
                         .HasForeignKey(s => s.TaskId)
                         .IsRequired();
         }

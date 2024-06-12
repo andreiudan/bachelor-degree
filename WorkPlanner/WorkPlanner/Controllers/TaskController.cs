@@ -48,5 +48,25 @@ namespace WorkPlanner.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("{taskId}/sprintName")]
+        public async Task<IActionResult> GetSprintName(string taskId)
+        {
+            GetSprintNameForTaskQuery request = new GetSprintNameForTaskQuery(taskId);
+
+            string result = await mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{taskId}/projectName")]
+        public async Task<IActionResult> GetProjectName(string taskId)
+        {
+            GetProjectNameForTaskQuery request = new GetProjectNameForTaskQuery(taskId);
+
+            string result = await mediator.Send(request);
+
+            return Ok(result);
+        }
     }
 }
