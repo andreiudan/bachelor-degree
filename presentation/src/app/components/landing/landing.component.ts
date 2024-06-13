@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class LandingComponent {
 
-  constructor(private router:Router) {}
+  constructor(private router: Router) {}
 
   public navigateToRegister(): void {
     this.router.navigate(['/register']);

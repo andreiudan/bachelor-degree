@@ -1,13 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkPlanner.Business.Commands.TaskCommands;
-using WorkPlanner.Business.Queries.SprintQueries;
 using WorkPlanner.Business.Queries.TaskQueries;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TaskController : Controller

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from '../../../models/user';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,9 @@ export class LoginComponent implements OnInit{
   public loginForm: FormGroup;
   public user = new User();
 
-  public constructor(private formBuilder: FormBuilder, private authService: AuthenticationService) {
+  public constructor(private formBuilder: FormBuilder, 
+                     private authService: AuthenticationService,
+                     private router: Router) {
   }
 
   public ngOnInit(): void {
@@ -39,8 +42,11 @@ export class LoginComponent implements OnInit{
   }
 
   private login(user: User){
-    this.authService.login(user).subscribe((token: string) => {
-      localStorage.setItem('jwtToken', token);
+    this.authService.login(user).subscribe(() => {
+      this.router.navigate(['/dashboard']);
+    }, (error) => {
+      alert('Login failed');
+      this.ngOnInit();
     });
   }
 

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkPlanner.Business.Commands.SprintCommands;
 using WorkPlanner.Business.Queries.SprintQueries;
@@ -9,6 +10,7 @@ using WorkPlanner.Domain.EntityPropertyTypes;
 
 namespace WorkPlanner.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class SprintController : Controller

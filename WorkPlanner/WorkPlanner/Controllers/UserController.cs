@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkPlanner.Business.Commands;
 using WorkPlanner.Business.Commands.UserCommands;
@@ -53,6 +54,7 @@ namespace WorkPlanner.Api.Controllers
             return Redirect(result);
         }
 
+        [Authorize]
         [HttpGet("get")]
         public async Task<IActionResult> GetUsers(string id)
         {
@@ -64,6 +66,7 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             GetAllUsersQuery request = new GetAllUsersQuery();

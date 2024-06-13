@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { AuthenticationService } from './services/authentication/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -9,18 +10,30 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   @ViewChild(MatSidenav)
-  sidenav!: MatSidenav;
-  title = 'presentation';
-  isSidenavCollapsed = true;
-  isLoggedIn = true;
+  public sidenav!: MatSidenav;
+  public title = 'presentation';
+  public isSidenavCollapsed = true;
+  public isLoggedIn: boolean;
 
-  constructor(private router: Router) {
-    // if (!this.isLoggedIn) {
-    //   this.router.navigate(['/login']);
-    // }
-    // else {
-    //   this.router.navigate(['/landing']);
-    // }
+  constructor(private router: Router, private authService: AuthenticationService) {
+    this.authService.currentLoggedInState.subscribe((loggedInState) => {
+      this.isLoggedIn = loggedInState;
+      this.setFirstPage();
+    });
+  }
+
+  private async setFirstPage() {
+    this.router.events.subscribe((val) => {
+      if(val instanceof NavigationStart){
+        if(val.url == '/' || val.url == ''){
+          if(this.isLoggedIn){
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.router.navigate(['/landing']);
+          }
+        }
+      }
+    });
   }
 
   public toggleSidenav(): void {
@@ -29,7 +42,7 @@ export class AppComponent {
   }
 
   public logout(): void {
-    localStorage.setItem('jwtToken', "");
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

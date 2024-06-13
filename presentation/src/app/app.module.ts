@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { WrapperComponent } from './components/wrapper/wrapper.component'
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { HttpInterceptorService } from './services/interceptor/http-interceptor.service';
 import { LandingComponent } from './components/landing/landing.component';
 import { MatCardModule } from '@angular/material/card';
@@ -32,6 +32,7 @@ import { BacklogComponent } from './components/backlog/backlog.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { UserComponent } from './components/user/user.component';
 import { CreateIssueComponent } from './components/create-issue/create-issue.component';
+import { authInterceptor } from './services/interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,7 @@ import { CreateIssueComponent } from './components/create-issue/create-issue.com
   providers: [
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimations(),
     {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}
   ],

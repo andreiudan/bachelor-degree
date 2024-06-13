@@ -11,6 +11,8 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { BacklogComponent } from './components/backlog/backlog.component';
 import { UserComponent } from './components/user/user.component';
 import { CreateIssueComponent } from './components/create-issue/create-issue.component';
+import { authGuard } from './guards/auth.guard';
+import { guestGuard } from './guards/guest.guard';
 
 const routes: Routes = [
   {
@@ -20,10 +22,12 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [ guestGuard ]
   },
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [ guestGuard ]
   },
   {
     path: 'landing',
@@ -32,34 +36,42 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'registerSuccessful',
     component: RegisterComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'task/:taskId',
     component: TaskComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'sprint',
     component: SprintComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'calendar',
     component: CalendarComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'backlog',
     component: BacklogComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'user/:userId',
     component: UserComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'createIssue/:sprintId',
     component: CreateIssueComponent,
+    canActivate: [authGuard],
     data: { sprintId: '' }
   }
 ];
