@@ -19,7 +19,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     }
     
     request = request.clone({
-      url: environment.apiUrl + request.url
+      url: environment.apiUrl + request.url,
     });
 
     return next.handle(request).pipe(catchError(error => throwError(() => error)));

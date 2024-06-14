@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -33,6 +33,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { UserComponent } from './components/user/user.component';
 import { CreateIssueComponent } from './components/create-issue/create-issue.component';
 import { authInterceptor } from './services/interceptor/auth.interceptor';
+import { ErrorHandlingService } from './services/error-handling/error-handling.service';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { authInterceptor } from './services/interceptor/auth.interceptor';
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimations(),
-    {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true},
+    {provide: ErrorHandler, useClass: ErrorHandlingService},
   ],
   bootstrap: [AppComponent]
 })

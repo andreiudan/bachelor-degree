@@ -401,7 +401,7 @@ export class CalendarComponent {
     const minutes = Math.floor((time - hour) * 60);
 
     return `${hour < 10 ? '0' : ''}${hour}:${minutes < 10 ? '0' : ''}${minutes}`;
-  }
+  } //floating point precision problem
 
   public onCalendarEventDelete(): void {
     const divToRemove = this.calendarEventsDivs.filter(
