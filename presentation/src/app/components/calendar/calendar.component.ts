@@ -1,7 +1,12 @@
 import { Component, ComponentRef, ElementRef, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { CalendarEventDetailsComponent } from '../calendar-event-details/calendar-event-details.component';
 import { DynamicHostDirective } from '../../directives/dynamic-host/dynamic-host.directive';
-import { EventEmitter } from 'node:stream';
+import { TimesheetService } from '../../services/timesheet/timesheet.service';
+import { StorageService } from '../../services/storage/storage.service';
+import { JwtService } from '../../services/authentication/jwt.service';
+import { Timesheet } from '../../../models/timesheet';
+import { TimesheetCreation } from '../../../models/timesheetCreation';
+import { lastValueFrom } from 'rxjs';
 
 interface ICalendarDay {
   date: number;
@@ -18,6 +23,7 @@ interface ICalendarElement {
   eventElementButton: HTMLElement;
   clickListener: () => void;
   dblClickListener: () => void;
+  timesheetId: string;
 }
 
 @Component({
@@ -55,7 +61,10 @@ export class CalendarComponent {
   private calendarEventDetailsComponent: CalendarEventDetailsComponent;
   private viewContainerRef: ViewContainerRef;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, 
+              private timesheetService: TimesheetService,
+              private storageService: StorageService,
+              private jwtService: JwtService) {}
 
   ngOnInit(): void {
     this.initializeCurrentUTCDate();
@@ -207,7 +216,7 @@ export class CalendarComponent {
     return this.selectedWeekFromTwoMonths(daysInSelectedMonth);
   }
 
-  public createCalendarEventDiv(event: MouseEvent): void {
+  public async createCalendarEventDiv(event: MouseEvent): Promise<void> {
     if (event.button !== 0) {
       return;
     }
@@ -248,7 +257,15 @@ export class CalendarComponent {
       'inset-inline',
       `calc(${insetInline.start}%) calc(${insetInline.end}%)`
     );
-    this.renderer.setStyle(eventDiv, 'top', `${top}%`);
+    this.renderer.setStyle(eventDiv, 'top', `calc(${top}%)`);
+
+    this.renderer.appendChild(this.calendarEvents.nativeElement, eventDiv);
+
+    const bottom = await this.getBottomPercentageOfEventDiv(eventDiv); //how do I await this?
+
+    let newTimesheetId = await this.addNewTimesheet(top, bottom);
+
+    newTimesheetId = newTimesheetId.replace(/"/g, '');
 
     this.calendarEventsDivs.push({
       eventElement: eventDiv,
@@ -256,12 +273,9 @@ export class CalendarComponent {
       clickListener: this.renderer.listen(eventDiv, 'mousedown', (e: MouseEvent) => {
         e.stopPropagation();
       }),
-      dblClickListener: eventButton.dbClickListener
+      dblClickListener: eventButton.dbClickListener,
+      timesheetId: newTimesheetId,
     });
-
-    this.renderer.appendChild(this.calendarEvents.nativeElement, eventDiv);
-
-    this.setBottomPercentageOfEventDiv(eventDiv);
   }
 
   private createCalendarEventButton(): {button: HTMLElement, dbClickListener: () => void} {
@@ -359,6 +373,36 @@ export class CalendarComponent {
     this.calendarEventsDivs = [];
   }
 
+  private async addNewTimesheet(top: number, bottom: number): Promise<string> {
+    const jwtToken = this.storageService.getJwtToken();
+    const username = this.jwtService.getClaim(jwtToken, 'username');
+    let timesheetId = '';
+
+    const timesheet: TimesheetCreation = {
+      username: username,
+      date: new Date(this.selectedYear, this.selectedMonth, this.selectedDay).toDateString(),
+      startTime: this.calculateTimeFromPositions(top),
+      endTime: this.calculateTimeFromPositions(100 - bottom),
+    };
+
+    const createTimesheet = this.timesheetService.create(timesheet);
+    timesheetId = await lastValueFrom(createTimesheet);
+
+    return timesheetId;
+  }
+
+  private calculateTimeFromPositions(position: number) {
+    const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
+
+    const positionAsPx = (position / 100) * calendarEventsRect.height;
+
+    const time = (positionAsPx * 24) / calendarEventsRect.height;
+    const hour = Math.floor(time);
+    const minutes = Math.floor((time - hour) * 60);
+
+    return `${hour < 10 ? '0' : ''}${hour}:${minutes < 10 ? '0' : ''}${minutes}`;
+  }
+
   public onCalendarEventDelete(): void {
     const divToRemove = this.calendarEventsDivs.filter(
         (div) => div.eventElementButton === this.calendarEventDetailsComponent.eventElement
@@ -374,11 +418,17 @@ export class CalendarComponent {
     this.calendarEventsDivs.splice(divToRemoveIndex, 1);
 
     this.onCalendarEventDetailsClose();
-}
+
+    this.timesheetService.delete(divToRemove[0].timesheetId).subscribe(
+      error => {
+        console.log(error);
+      }
+    );
+  }
 
   public onCalendarEventModified(event: any): void {
     const newTimeInterval: { hourFrom: string, hourTo: string } = event;
-    
+
     const hourFrom = Number.parseInt(newTimeInterval.hourFrom.split(':')[0]);
     const minutesFrom = Number.parseInt(newTimeInterval.hourFrom.split(':')[1]);
 
@@ -387,6 +437,20 @@ export class CalendarComponent {
     
     const divToModify = this.calendarEventsDivs.filter(
       (div) => div.eventElementButton === this.calendarEventDetailsComponent.eventElement
+    );
+
+    const timesheet: Timesheet = {
+      id: divToModify[0].timesheetId,
+      username: this.jwtService.getClaim(this.storageService.getJwtToken(), 'username'),
+      date: new Date(this.selectedYear, this.selectedMonth, this.selectedDay).toDateString(),
+      startTime: newTimeInterval.hourFrom,
+      endTime: newTimeInterval.hourTo,
+    }
+
+    this.timesheetService.update(timesheet).subscribe(
+      error => {
+        console.log(error);
+      }
     );
 
     this.setNewCalendarEventPositions(divToModify[0].eventElement, hourFrom, minutesFrom, hourTo, minutesTo);
@@ -446,49 +510,55 @@ export class CalendarComponent {
     const maxTopPercentage =
       fiveMinuesSegments * oneFiveMinuteSegmentPercentage;
 
-    const topPercentage = (mouseY / calendarEventsHeight) * 100;
+    const topPercentage = (mouseY * 100) / calendarEventsHeight;
     const topSegment = (topPercentage * fiveMinuesSegments) / maxTopPercentage;
     const top = Math.floor(topSegment) * oneFiveMinuteSegmentPercentage;
 
     return top;
   }
 
-  private setBottomPercentageOfEventDiv(eventDiv: any): void {
-    const mouseMoveListener = this.renderer.listen(
-      this.calendarEvents.nativeElement,
-      'mousemove',
-      (moveEvent: MouseEvent) => {
-        const calendarEventsRectMove =
-          this.calendarEvents.nativeElement.getBoundingClientRect();
-        const fiveMinuesSegments = 24 * 12;
-        const oneFiveMinuteSegmentPercentage = 100 / fiveMinuesSegments;
-        const maxBottomPercentage =
-          fiveMinuesSegments * oneFiveMinuteSegmentPercentage;
+  private async getBottomPercentageOfEventDiv(eventDiv: any): Promise<number> {
+    return new Promise<number>((resolve) => {
+      let finalBottom = 0; 
 
-        const mouseYMove = moveEvent.clientY - calendarEventsRectMove.top;
+      const mouseMoveListener = this.renderer.listen(
+        this.calendarEvents.nativeElement,
+        'mousemove',
+        (moveEvent: MouseEvent) => {
+          const calendarEventsRectMove =
+            this.calendarEvents.nativeElement.getBoundingClientRect();
+          const fiveMinuesSegments = 24 * 12;
+          const oneFiveMinuteSegmentPercentage = 100 / fiveMinuesSegments;
+          const maxBottomPercentage =
+            fiveMinuesSegments * oneFiveMinuteSegmentPercentage;
 
-        const bottomPercentage =
-          ((calendarEventsRectMove.height - mouseYMove) /
-            calendarEventsRectMove.height) *
-          100;
-        const bottomSegment =
-          (bottomPercentage * fiveMinuesSegments) / maxBottomPercentage;
+          const mouseYMove = moveEvent.clientY - calendarEventsRectMove.top;
 
-        const bottom =
-          Math.floor(bottomSegment) * oneFiveMinuteSegmentPercentage;
+          const bottomPercentage =
+            ((calendarEventsRectMove.height - mouseYMove) /
+              calendarEventsRectMove.height) *
+            100;
+          const bottomSegment =
+            (bottomPercentage * fiveMinuesSegments) / maxBottomPercentage;
 
-        this.renderer.setStyle(eventDiv, 'bottom', `${bottom}%`);
-      }
-    );
+          const bottom =
+            Math.floor(bottomSegment) * oneFiveMinuteSegmentPercentage;
 
-    const mouseUpListener = this.renderer.listen(
-      this.calendarEvents.nativeElement,
-      'mouseup',
-      () => {
-        mouseMoveListener();
-        mouseUpListener();
-      }
-    );
+            finalBottom = bottom;
+            this.renderer.setStyle(eventDiv, 'bottom', `${bottom}%`);
+        }
+      );
+
+      const mouseUpListener = this.renderer.listen(
+        this.calendarEvents.nativeElement,
+        'mouseup',
+        () => {
+          mouseMoveListener();
+          mouseUpListener();
+          resolve(finalBottom)
+        }
+      );
+    });
   }
 
   public onNextClicked(): void {

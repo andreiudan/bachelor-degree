@@ -33,6 +33,8 @@ namespace WorkPlanner.Domain.Entities
         [Required]
         public bool Verified { get; set; }
 
+        public List<Timesheet> Timesheets { get; set; } = new List<Timesheet>();
+
         public override bool Equals(object? obj)
         {
             if (obj == null)

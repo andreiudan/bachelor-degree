@@ -12,6 +12,8 @@ namespace WorkPlanner.Domain.Entities
         [ForeignKey("User")]
         public Guid AccountId { get; set; }
 
+        public User Account { get; set; }
+
         [Required]
         public DateOnly Date { get; set; }
 

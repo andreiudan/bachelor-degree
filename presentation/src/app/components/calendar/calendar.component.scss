@@ -566,11 +566,13 @@
         .event {
           position: absolute;
           resize: vertical;
+          box-sizing: border-box;
         
           .event-preview {
             display: flex;
             width: 100%;
             height: 100%;
+            box-sizing: border-box;
         
             .event-button {
               background-color: #68d8c9;
@@ -584,6 +586,7 @@
               width: 100%;
               height: 100%;
               border-radius: 6px;
+              box-sizing: border-box;
         
               .event-button-title {
                 font-size: 12px;

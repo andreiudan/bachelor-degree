@@ -54,9 +54,11 @@ export class CalendarEventDetailsComponent {
 
     this.setAlignmentAttributes(eventElement);
 
+    const computedStyle = getComputedStyle(eventElement);
+
     const eventElementRect = eventElement.getBoundingClientRect();
 
-    this.hourFrom = this.calculateTimeFromPositions(eventElementRect.top);
+    this.hourFrom = this.calculateTimeFromPositions(eventElementRect.top + 0.0118);
     this.hourTo = this.calculateTimeFromPositions(eventElementRect.bottom);
   }
 

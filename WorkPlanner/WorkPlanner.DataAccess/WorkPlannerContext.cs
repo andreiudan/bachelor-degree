@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.DataAccess
@@ -37,6 +36,12 @@ namespace WorkPlanner.DataAccess
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("datetime('now')");
 
+            modelBuilder.Entity<User>()
+                        .HasMany(u => u.Timesheets)
+                        .WithOne(t => t.Account)
+                        .HasForeignKey(t => t.AccountId)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();  
 
             modelBuilder.Entity<Project>()
                         .HasMany(p => p.Sprints)

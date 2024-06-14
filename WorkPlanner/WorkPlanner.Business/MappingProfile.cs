@@ -36,6 +36,39 @@ namespace WorkPlanner.Business
             CreateMap<SubtaskCreationDto, Subtask>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Done, opt => opt.Ignore());
+
+            CreateMap<TimesheetCreationDto, Timesheet>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Account, opt => opt.Ignore())
+                .ForMember(dest => dest.AccountId, opt => opt.Ignore())
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(t => ConvertStringToDateOnly(t.Date)))
+                .ForMember(dest => dest.StartTime, opt => opt.MapFrom(t => ConvertStringToTimeOnly(t.StartTime)))
+                .ForMember(dest => dest.EndTime, opt => opt.MapFrom(t => ConvertStringToTimeOnly(t.EndTime)));
+
+            CreateMap<TimesheetUpdateDto, Timesheet>()
+                .ForMember(dest => dest.Account, opt => opt.Ignore())
+                .ForMember(dest => dest.AccountId, opt => opt.Ignore())
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(t => ConvertStringToDateOnly(t.Date)))
+                .ForMember(dest => dest.StartTime, opt => opt.MapFrom(t => ConvertStringToTimeOnly(t.StartTime)))
+                .ForMember(dest => dest.EndTime, opt => opt.MapFrom(t => ConvertStringToTimeOnly(t.EndTime)));
+        }
+
+        private DateOnly ConvertStringToDateOnly(string date)
+        {
+            DateTime dateTime = DateTime.Parse(date);
+
+            DateOnly dateOnly = DateOnly.FromDateTime(dateTime);
+
+            return dateOnly;
+        }
+
+        private TimeOnly ConvertStringToTimeOnly(string time)
+        {
+            TimeOnly timeOnly = new TimeOnly();
+
+            TimeOnly.TryParse(time, out timeOnly);
+
+            return timeOnly;
         }
     }
 }
