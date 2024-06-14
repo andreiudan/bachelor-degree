@@ -10,7 +10,8 @@ import { Task } from '../../../models/task';
 import { StatusTypes } from '../../../models/statusTypes';
 import { TaskCreation } from '../../../models/taskCreation';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from '../../input-validation/custom-validators';
 
 @Component({
   selector: 'app-create-issue',
@@ -52,15 +53,38 @@ export class CreateIssueComponent {
     this.usersLoaded = Promise.resolve(this.loadAssignees());
 
     this.taskCreationForm = this.formBuilder.group({
-      name: [''],
+      name: [
+        '',
+        [
+          Validators.required,
+          CustomValidators.nameMinimumLengthValidator,
+        ],
+      ],
       description: [''],
-      sprintId: [''],
-      projectId: [''],
-      creatorId: [''],
-      dueDate: [''],
-      priority: [''],
-      type: [''],
-      storyPoints: ['']
+      dueDate: [
+        '',
+        [
+          Validators.required,
+        ],
+      ],
+      priority: [
+        '',
+        [
+          Validators.required,
+        ],
+      ],
+      type: [
+        '',
+        [
+          Validators.required,
+        ],
+      ],
+      storyPoints: [
+        '',
+        [
+          Validators.required,
+        ],
+      ]
     });
   }
 

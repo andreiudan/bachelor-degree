@@ -60,7 +60,7 @@ export class ErrorHandlingService extends ErrorHandler {
     }
 
     this.zone.run(() => {
-      alert(errorMessage);
+      console.error(errorMessage);
     });
 
     super.handleError(error);

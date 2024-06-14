@@ -20,23 +20,6 @@ $presentation-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$presentation-theme: mat.define-light-theme((
-  color: (
-    primary: $presentation-primary,
-    accent: $presentation-accent,
-    warn: $presentation-warn,
-  ),
-  typography: mat.define-typography-config(),
-  density: 0
-));
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($presentation-theme);
-
-/* You can add global styles to this file, and also import other style files */
-
 @font-face {
   font-family: 'Poppins';
   src: url('/assets/fonts/Poppins/Poppins-Regular.ttf');
@@ -46,6 +29,73 @@ $presentation-theme: mat.define-light-theme((
   font-family: 'Poppins-Medium';
   src: url('/assets/fonts/Poppins/Poppins-Medium.ttf');
 }
+
+@font-face {
+  font-family: 'Poppins-Bold';
+  src: url('/assets/fonts/Poppins/Poppins-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins-Black';
+  src: url('/assets/fonts/Poppins/Poppins-Black.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins-ExtraBold';
+  src: url('/assets/fonts/Poppins/Poppins-ExtraBold.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins-ExtraLight';
+  src: url('/assets/fonts/Poppins/Poppins-ExtraLight.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins-Light';
+  src: url('/assets/fonts/Poppins/Poppins-Light.ttf');
+}
+
+$my-custom-level: mat.define-typography-level(
+  $font-family: "'Poppins', 'sans-serif'",
+  $font-weight: 400,
+  $font-size: 1rem,
+  $line-height: 1,
+  $letter-spacing: normal,
+);
+
+$regular-font-family: "'Poppins', 'sans-serif'";
+
+$my-custom-typography-config: mat.define-typography-config(
+  $font-family: $regular-font-family,
+  $headline-1: mat.define-typography-level($font-family: $regular-font-family, $font-size: 112px),
+  $headline-2: mat.define-typography-level($font-family: $regular-font-family, $font-size: 56px),
+  $headline-3: mat.define-typography-level($font-family: $regular-font-family, $font-size: 45px, $line-height: 48px),
+  $headline-4: mat.define-typography-level($font-family: $regular-font-family, $font-size: 34px, $line-height: 40px),
+  $headline-5: mat.define-typography-level($font-family: $regular-font-family, $font-size: 24px, $line-height: 32px),
+  $headline-6: mat.define-typography-level($font-family: $regular-font-family, $font-size: 20px, $line-height: 32px),
+  $subtitle-1: mat.define-typography-level($font-family: $regular-font-family, $font-size: 18px, $line-height: 28px),
+  $subtitle-2: mat.define-typography-level($font-family: $regular-font-family, $font-size: 18px, $line-height: 24px),
+  $body-2: mat.define-typography-level($font-size: 16px),
+  $body-1: mat.define-typography-level($font-size: 16px),
+  $button: mat.define-typography-level($font-size: 16px),
+);
+
+$presentation-theme: mat.define-light-theme((
+  color: (
+    primary: $presentation-primary,
+    accent: $presentation-accent,
+    warn: $presentation-warn,
+  ),
+  typography: $my-custom-typography-config,
+  density: 0
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($presentation-theme);
+
+/* You can add global styles to this file, and also import other style files */
 
 html, body { 
   height: 100%; 

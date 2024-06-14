@@ -7,7 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldControl, MatFormFieldDefaultOptions, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { WrapperComponent } from './components/wrapper/wrapper.component'
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
@@ -34,6 +34,13 @@ import { UserComponent } from './components/user/user.component';
 import { CreateIssueComponent } from './components/create-issue/create-issue.component';
 import { authInterceptor } from './services/interceptor/auth.interceptor';
 import { ErrorHandlingService } from './services/error-handling/error-handling.service';
+import { DATE_FORMATS } from './date-formats';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+const matFormFieldOptions: MatFormFieldDefaultOptions = {
+  hideRequiredMarker: true,
+}
 
 @NgModule({
   declarations: [
@@ -71,14 +78,17 @@ import { ErrorHandlingService } from './services/error-handling/error-handling.s
     MatProgressBarModule,
     ReactiveFormsModule,
     FormsModule,
+    MatTooltipModule
   ],
   providers: [
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimations(),
-    {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true},
-    {provide: ErrorHandler, useClass: ErrorHandlingService},
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,useValue: matFormFieldOptions },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
+    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS },
+    { provide: ErrorHandler, useClass: ErrorHandlingService },
   ],
   bootstrap: [AppComponent]
 })

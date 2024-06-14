@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../../models/user';
 import { UserService } from '../../services/user/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RegistrationSuccessfulDialogComponent } from '../registration-successful-dialog/registration-successful-dialog.component';
+import { PasswordsErrorStateMatcher } from '../../input-validation/error-state-matcher';
+import { CustomValidators } from '../../input-validation/custom-validators';
+import { INPUT_VALIDATION_RULES } from '../../input-validation/input-validation-rules';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +16,8 @@ import { RegistrationSuccessfulDialogComponent } from '../registration-successfu
 export class RegisterComponent implements OnInit {
   public registerForm: FormGroup;
   public user = new User();
+  public isPasswordVisible: boolean = false;
+  public matcher = new PasswordsErrorStateMatcher();
 
   public constructor(private formBuilder: FormBuilder, private userService: UserService, private dialog: MatDialog){
   }
@@ -20,34 +25,66 @@ export class RegisterComponent implements OnInit {
   public ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
       firstName: [
-        ''
+        '',
+        [
+          Validators.required,
+          CustomValidators.nameContainsNumbersValidator,
+          CustomValidators.nameInvalidCharacterValidator,
+          CustomValidators.nameMinimumLengthValidator,
+        ]
       ],
       lastName: [
-        ''
+        '',
+        [
+          Validators.required,
+          CustomValidators.nameContainsNumbersValidator,
+          CustomValidators.nameInvalidCharacterValidator,
+          CustomValidators.nameMinimumLengthValidator,
+        ]
       ],
       email: [
-        ''
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          CustomValidators.emailDomainValidator
+        ]
       ],
       password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(INPUT_VALIDATION_RULES.password.minLength),
+          CustomValidators.passwordStrengthValidator
+        ],
+      ],
+      confirmPassword: [
         ''
-      ]
-    })
+      ],
+    },
+    { 
+      validator: CustomValidators.matchingPasswordsValidator
+    });
   }
 
   public get firstName(){
-    return this.formBuilder.control('firstName');
+    return this.registerForm.get('firstName');
   }
 
   public get lastName(){
-    return this.formBuilder.control('lastName');
+    return this.registerForm.get('lastName');
   }
 
   public get email(){
-    return this.formBuilder.control('email');
+    return this.registerForm.get('email');
   }
 
   public get password(){
-    return this.formBuilder.control('password');
+    return this.registerForm.get('password');
+  }
+
+  public get confirmPassword(){
+    return this.registerForm.get('confirmPassword');
   }
 
   public onSubmit(): void {
@@ -55,23 +92,25 @@ export class RegisterComponent implements OnInit {
   }
 
   private register(user: User): void {
-    this.userService.register(user).subscribe((response: string) => {
-      this.openDialog();
-    });
+    if(this.registerForm.valid){
+      let userWithEncodedPassword: User = {
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        email: this.user.email,
+        password: btoa(this.user.password)
+      };
+
+      this.userService.register(user).subscribe((response: string) => {
+        this.openDialog();
+      }, (error) => {
+        alert('Registration failed');
+        this.ngOnInit();
+      });
+    }
   }
 
-  public setPasswordVisibility(inputName: string): void {
-    const input = document.querySelector('input[name="' + inputName + '"]');
-
-    if(input === null){
-      return;
-    }
-
-    if(input.getAttribute('type') === 'password'){
-      input.setAttribute('type', 'text');
-    } else {
-      input.setAttribute('type', 'password');
-    }
+  public togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 
   private openDialog(): void {

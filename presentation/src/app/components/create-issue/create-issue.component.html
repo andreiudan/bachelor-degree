@@ -4,33 +4,33 @@
     </div>
     
     <div class="form">
-        <form (ngSubmit)="onSubmit()">
-            <mat-form-field hideRequiredMarker>
-                <input matInput type="text" placeholder="Title" name="name" [(ngModel)]="newTask.name" required>
+        <form [formGroup]="taskCreationForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Title" formControlName="name">
                 <mat-label>Title</mat-label>
             </mat-form-field>
         
-            <mat-form-field hideRequiredMarker>
-                <input matInput type="text" placeholder="Description" name="description" [(ngModel)]="newTask.description" required>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Description" formControlName="description">
                 <mat-label>Description</mat-label>
             </mat-form-field>
             
             <div class="two-col-alignment">
-                <mat-form-field hideRequiredMarker>
-                    <input matInput type="number" placeholder="Story Points" name="storyPoints" [(ngModel)]="newTask.storyPoints" required>
+                <mat-form-field>
+                    <input matInput type="number" placeholder="Story Points" formControlName="storyPoints">
                     <mat-label>Story Points</mat-label>
                 </mat-form-field>
                 
                 <mat-form-field>
                     <mat-label>Assignee</mat-label>
                     <mat-select *ngIf="(usersLoaded | async)" [formControl]="assigneeControl">
-                        <mat-option *ngFor="let assignee of users; trackBy: trackByFn" [value]="assignee" name="assignee">{{ assignee.firstName }}</mat-option>
+                        <mat-option *ngFor="let assignee of users; trackBy: trackByFn" [value]="assignee" formControlName="assignee">{{ assignee.firstName }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         
-            <mat-form-field hideRequiredMarker>
-                <input matInput type="datetime-local" placeholder="Due Date" name="dueDate" [(ngModel)]="newTask.dueDate" required>
+            <mat-form-field>
+                <input matInput type="datetime-local" placeholder="Due Date" formControlName="dueDate">
                 <mat-label>Due date</mat-label>
             </mat-form-field>
             
@@ -38,14 +38,14 @@
                 <mat-form-field>
                     <mat-label>Type</mat-label>
                     <mat-select [formControl]="typesControl">
-                        <mat-option *ngFor="let type of taskTypes" [value]="type" [(ngModel)]="newTask.type" name="type">{{ type }}</mat-option>
+                        <mat-option *ngFor="let type of taskTypes" [value]="type" formControlName="type">{{ type }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             
                 <mat-form-field>
                     <mat-label>Priority</mat-label>
                     <mat-select [formControl]="priorityControl">
-                        <mat-option *ngFor="let priority of priorityTypes" [value]="priority" [(ngModel)]="newTask.priority" name="priority">{{ priority }}</mat-option>
+                        <mat-option *ngFor="let priority of priorityTypes" [value]="priority" formControlName="priority">{{ priority }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

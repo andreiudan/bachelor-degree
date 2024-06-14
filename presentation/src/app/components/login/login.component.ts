@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../../models/user';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { Router } from '@angular/router';
+import { CustomValidators } from '../../input-validation/custom-validators';
+import { INPUT_VALIDATION_RULES } from '../../input-validation/input-validation-rules';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +14,9 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit{
   public loginForm: FormGroup;
   public user = new User();
+  public isPasswordVisible: boolean = false;
+  public passwordRequirements: string = 
+      "Password should contain at least 8 characters.\nPassword should contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
 
   public constructor(private formBuilder: FormBuilder, 
                      private authService: AuthenticationService,
@@ -22,9 +27,19 @@ export class LoginComponent implements OnInit{
     this.loginForm = this.formBuilder.group({
       email: [
         '',
+        [
+          Validators.required,
+          Validators.email,
+          CustomValidators.emailDomainValidator
+        ]
       ],
       password: [
         '',
+        [
+          Validators.required,
+          Validators.minLength(INPUT_VALIDATION_RULES.password.minLength),
+          CustomValidators.passwordStrengthValidator
+        ]
       ],
     })
   }
@@ -42,25 +57,37 @@ export class LoginComponent implements OnInit{
   }
 
   private login(user: User){
-    this.authService.login(user).subscribe(() => {
-      this.router.navigate(['/dashboard']);
-    }, (error) => {
-      alert('Login failed');
-      this.ngOnInit();
-    });
-  }
+    if(this.loginForm.valid){
+      let userWithEncodedPassword: User = {
+        firstName: '',
+        lastName: '',
+        email: user.email,
+        password: btoa(user.password)
+      };
 
-  public setPasswordVisibility(): void {
-    const input = document.querySelector('input[name="password"]');
-
-    if(input === null){
-      return;
-    }
-
-    if(input.getAttribute('type') === 'password'){
-      input.setAttribute('type', 'text');
-    } else {
-      input.setAttribute('type', 'password');
+      this.authService.login(userWithEncodedPassword).subscribe(() => {
+        this.router.navigate(['/dashboard']);
+      }, (error) => {
+        alert('Login failed');
+        this.ngOnInit();
+      });
     }
   }
+
+  public togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
+
+  public checkPasswordInputErrors(): boolean | null {
+    return this.password && (this.password.hasError('required') || 
+                            this.password.hasError('minlength') || 
+                            (this.password.dirty && this.password.hasError('passwordStrength')));
+  }
+
+  public checkEmailInputErrors(): boolean | null {
+    return this.email && (this.email.hasError('required') || 
+                          this.email.hasError('email') || 
+                          this.email.hasError('missingDomain'));
+  }
+
 }

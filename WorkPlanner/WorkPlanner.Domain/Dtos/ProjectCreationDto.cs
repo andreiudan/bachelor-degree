@@ -6,6 +6,7 @@ namespace WorkPlanner.Domain.Dtos
     public class ProjectCreationDto
     {
         [Required]
+        [MinLength(2, ErrorMessage = ValidationConstants.NameLengthErrorMessage)]
         public string Name { get; set; }
 
         [ForeignKey("User")]

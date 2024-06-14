@@ -1,63 +1,120 @@
 <div class="main-div">
-    <div class="presentation-div">
-        <h2>Join the innovation journey.</h2>
-        <p>Create your account now!</p>
-    </div>
-
-    <mat-card>
-        <mat-card-title>
-            <h2>Register</h2>
-        </mat-card-title>
-
-        <mat-card-content>
-            <form (ngSubmit)="onSubmit()">
-                <div class="name-input-div">
-                    <mat-form-field ngClass="firstname-input">
-                        <mat-label>First Name</mat-label>
-                        <input matInput type="text" [(ngModel)]="user.firstName" name="firstName">
-                    </mat-form-field>
+    <div class="main-components-alignment">
+        <div class="presentation-div">
+            <h2>Join the innovation journey.</h2>
+            <p>Create your account now!</p>
+        </div>
+    
+        <div class="card-div">
+            <mat-card>
+                <mat-card-title>
+                    <h2>Register</h2>
+                </mat-card-title>
+        
+                <mat-card-content>
+                    <div class="content-div">
+                        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                            <div class="form-div">
+                                <div class="name-input-div">
+                                    <mat-form-field>
+                                        <mat-label for="firstName">First Name</mat-label>
                 
-                    <mat-form-field ngClass="lastname-input">
-                        <mat-label>Last Name</mat-label>
-                        <input matInput type="text" [(ngModel)]="user.lastName" name="lastName">
-                    </mat-form-field>
-                </div>
-            
-                <mat-form-field>
-                    <mat-label>Email</mat-label>
-                    <input matInput type="email" [(ngModel)]="user.email" name="email">
-                </mat-form-field>
-            
-                <mat-form-field>
-                    <mat-label>Password</mat-label>
-                    <input matInput type="password" [(ngModel)]="user.password" name="password">
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="this.setPasswordVisibility('password')">
-                        <mat-icon>remove_red_eye</mat-icon>
-                    </button>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <mat-label>Repeat Password</mat-label>
-                    <input matInput type="password" name="repeatPassword">
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="this.setPasswordVisibility('repeatPassword')">
-                        <mat-icon>remove_red_eye</mat-icon>
-                    </button>
-                </mat-form-field>
-
-                <button mat-raised-button color="primary" type="submit">
-                    Register
-                </button>
-            </form>        
-        </mat-card-content>
-
-        <mat-card-actions>
-            <div class="separator-div">
-                <hr class="separation-line">
-                <p>Or</p>
-                <hr class="separation-line">
-            </div>
-
-            <a routerLink="/login">Already have an account?</a>
-        </mat-card-actions>
-    </mat-card>        
+                                        <input matInput type="text" formControlName="firstName">
+                
+                                        <mat-error *ngIf="firstName && firstName.touched && (firstName.hasError('required') || firstName.hasError('invalidCharacters'))">
+                                            Please enter your name.
+                                        </mat-error>
+                                        <mat-error *ngIf="firstName && firstName.dirty && firstName.hasError('containsNumbers')">
+                                            Name should not contain numbers.
+                                        </mat-error>
+                                        <mat-error
+                                            class="name-error"
+                                            *ngIf="firstName && firstName.dirty && firstName.hasError('minLength')"
+                                        >
+                                            Name should be at least 2 characters long.
+                                        </mat-error>
+                                    </mat-form-field>
+                                
+                                    <mat-form-field>
+                                        <mat-label for="lastName">Last Name</mat-label>
+                
+                                        <input matInput type="text" formControlName="lastName">
+                
+                                        <mat-error *ngIf="lastName && lastName.touched && (lastName.hasError('required') || lastName.hasError('invalidCharacters'))">
+                                            Please enter your name.
+                                        </mat-error>
+                                        <mat-error *ngIf="lastName && lastName.dirty && lastName.hasError('containsNumbers')">
+                                            Name should not contain numbers.
+                                        </mat-error>
+                                        <mat-error
+                                            class="name-error"
+                                            *ngIf="lastName && lastName.dirty && lastName.hasError('minLength')"
+                                        >
+                                            Name should be at least 2 characters long.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            
+                                <mat-form-field>
+                                    <mat-label for="email">Email</mat-label>
+                
+                                    <input matInput type="email" formControlName="email">
+                
+                                    <mat-error *ngIf="email && (email.hasError('required') || email.hasError('email') || email.hasError('missingDomain') || email.hasError('maxlength'))">
+                                        Please enter a valid email address.
+                                    </mat-error>
+                                </mat-form-field>
+                            
+                                <mat-form-field>
+                                    <mat-label for="password">Password</mat-label>
+                                    <input matInput [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password">
+                                    <mat-icon matSuffix *ngIf="!isPasswordVisible" (click)="togglePasswordVisibility()">visibility</mat-icon>
+                                    <mat-icon matSuffix *ngIf="isPasswordVisible" (click)="togglePasswordVisibility()">visibility_off</mat-icon>
+                                    <mat-error *ngIf="password && password.hasError('required')">
+                                        Please enter a password.
+                                    </mat-error>
+                                    <mat-error *ngIf="password && password.hasError('minlength')">
+                                        Password should be at least 8 characters long.
+                                    </mat-error>
+                                    <mat-error
+                                        class="password-error"
+                                        *ngIf="
+                                        password && password.dirty && password.hasError('passwordStrength')"
+                                    > 
+                                        Password should contain at least one uppercase letter, one lowercase
+                                        letter, one number, and one special character.
+                                    </mat-error>
+                                </mat-form-field>
+                
+                                <mat-form-field>
+                                    <mat-label for="confirmPassword">Repeat Password</mat-label>
+                                    <input matInput [type]="isPasswordVisible ? 'text' : 'password'" formControlName="confirmPassword" [errorStateMatcher]="matcher">
+                                    <mat-icon matSuffix *ngIf="!isPasswordVisible" (click)="togglePasswordVisibility()">visibility</mat-icon>
+                                    <mat-icon matSuffix *ngIf="isPasswordVisible" (click)="togglePasswordVisibility()">visibility_off</mat-icon>
+                                    <mat-error *ngIf="confirmPassword && confirmPassword.dirty && registerForm.hasError('notSame')">
+                                        Passwords do not match.
+                                    </mat-error>
+                                </mat-form-field>
+                
+                                <button mat-raised-button color="primary" type="submit">
+                                    Register
+                                </button>
+                            </div>
+                        </form>  
+                    </div>
+                          
+                </mat-card-content>
+        
+                <mat-card-actions>
+                    <div class="separator-div">
+                        <hr class="separation-line">
+                        <p>Or</p>
+                        <hr class="separation-line">
+                    </div>
+        
+                    <a routerLink="/login">Already have an account?</a>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
 </div>

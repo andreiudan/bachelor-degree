@@ -24,15 +24,14 @@
 }
 
 mat-card{
-    width: 36svw;
-    height: 66svh;
+    width: 35svw;
     align-items: center;
     justify-content: center;
 
     mat-card-title{
         h2{
             font-size: 32px;
-            margin: 12px 0 30px 0;
+            margin: 32px 0 32px 0;
         }
     }
 
@@ -41,7 +40,9 @@ mat-card{
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 30svw;
+        box-sizing: border-box;
+        width: 100%;
+        padding-inline: 36px;
     
         form{
             width: 100%;
@@ -52,6 +53,7 @@ mat-card{
 
             button{
                 width: 100%;
+                margin-top: 12px;
             }
         }
     }
@@ -62,11 +64,23 @@ mat-card{
         align-items: center;
         justify-content: center;
         width: 30svw;
+        padding-top: 12px;
+        padding-bottom: 32px;
     }
 
     a{
         color: black;
+        padding-top: 12px;
     }
+}
+
+.content-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 6px;
 }
 
 .separation-line {
@@ -74,6 +88,17 @@ mat-card{
     height: 0.5px;
     background-color: #82928c;
     border: none;
+}
+
+.form-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+    padding-block: 12px;
+    gap: 6px;
 }
 
 .separator-div {
@@ -86,8 +111,11 @@ mat-card{
 
     p {
         margin: 0 0 0 0;
-        padding-inline-start: 12px;
-        padding-inline-end: 12px;
+        padding-inline: 12px;
         font-weight: 600;
     }
+}
+
+mat-form-field:has(mat-error) {
+    padding-bottom: 6px;
 }

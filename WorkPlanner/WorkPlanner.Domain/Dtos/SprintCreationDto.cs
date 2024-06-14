@@ -5,6 +5,7 @@ namespace WorkPlanner.Domain.Dtos
     public class SprintCreationDto
     {
         [Required]
+        [MinLength(2, ErrorMessage = ValidationConstants.NameLengthErrorMessage)]
         public string Name { get; set; }
 
         [Required]

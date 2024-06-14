@@ -1,9 +1,20 @@
 .main-div{
     display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+
+.main-components-alignment {
+    display: flex;
+    flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
     height: 100%;
+    padding-block: 12px;
+    gap: 12px;
 }
 
 .presentation-div{
@@ -25,31 +36,41 @@
     }
 }
 
+.card-div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
 .name-input-div{
     display: flex;
-    align-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0 16px;
+    width: 100%;
 }
 
-.firstname-input{
-    width: 50%;
-    margin: 0 0 0 0;
-}
-
-.lastname-input{
-    width: 50%;
-    margin: 0 0 0 1em;
+.content-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 6px;
 }
 
 mat-card{
-    width: 42svw;
-    height: 84svh;
+    width: 40svw;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
 
     mat-card-title{
         h2{
             font-size: 32px;
-            margin: 12px 0 30px 0;
+            margin: 32px 0 32px 0;
         }
     }
 
@@ -58,7 +79,9 @@ mat-card{
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 36svw;
+        box-sizing: border-box;
+        width: 100%;
+        padding-inline: 36px;
     
         form{
             width: 100%;
@@ -70,6 +93,7 @@ mat-card{
 
             button{
                 width: 100%;
+                margin-top: 12px;
             }
         }
     }
@@ -80,10 +104,13 @@ mat-card{
         align-items: center;
         justify-content: center;
         width: 36svw;
+        padding-top: 12px;
+        padding-bottom: 32px;
     }
 
     a{
         color: black;
+        padding-top: 12px;
     }
 }
 
@@ -94,18 +121,31 @@ mat-card{
     border: none;
 }
 
+.form-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+    padding-block: 12px;
+    gap: 6px;
+}
+
 .separator-div {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding-block-start: 12px;
-    padding-block-end: 12px;
+    padding-block: 12px;
 
     p {
         margin: 0 0 0 0;
-        padding-inline-start: 18px;
-        padding-inline-end: 18px;
+        padding-inline: 18px;
         font-weight: 600;
     }
+}
+
+mat-form-field:has(mat-error) {
+    padding-bottom: 6px;
 }

@@ -6,9 +6,9 @@ namespace WorkPlanner.Domain.Dtos
     public class SprintTaskCreationDto
     {
         [Required]
+        [MinLength(2, ErrorMessage = ValidationConstants.NameLengthErrorMessage)]
         public string Name { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
         public Guid SprintId { get; set; }
@@ -27,9 +27,10 @@ namespace WorkPlanner.Domain.Dtos
 
         [Required]
         [EnumDataType(typeof(TaskType))]
-        public int Type { get; set; }
+        public TaskType Type { get; set; }
 
         [Required]
+        [RegularExpression(ValidationConstants.NumberRegex, ErrorMessage = ValidationConstants.NumberErrorMessage)]
         public int StoryPoints { get; set; }
     }
 }
