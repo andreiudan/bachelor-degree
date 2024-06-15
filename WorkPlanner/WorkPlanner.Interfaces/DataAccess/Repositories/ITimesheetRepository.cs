@@ -7,5 +7,7 @@ namespace WorkPlanner.Interfaces.DataAccess.Repositories
         public Task<IEnumerable<Timesheet>> GetAllTimesheetsByUserAsync(string username);
 
         public bool Update(Timesheet timesheet);
+
+        public Task<List<Timesheet>> GetAllForUserByDateInterval(DateOnly startDate, DateOnly endDate, string username);
     }
 }

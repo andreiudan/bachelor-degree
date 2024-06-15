@@ -63,9 +63,12 @@ mat-card{
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 30svw;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
         padding-top: 12px;
         padding-bottom: 32px;
+        padding-inline: 42px;
     }
 
     a{
@@ -81,6 +84,16 @@ mat-card{
     justify-content: center;
     width: 100%;
     gap: 6px;
+}
+
+.actions-div {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 12px;
 }
 
 .separation-line {
@@ -106,8 +119,6 @@ mat-card{
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding-block-start: 12px;
-    padding-block-end: 12px;
 
     p {
         margin: 0 0 0 0;

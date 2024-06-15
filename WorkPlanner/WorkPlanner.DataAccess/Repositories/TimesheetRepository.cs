@@ -35,8 +35,14 @@ namespace WorkPlanner.DataAccess.Repositories
                 return false;
             }
             
-
             return true;
+        }
+
+        public async Task<List<Timesheet>> GetAllForUserByDateInterval(DateOnly startDate, DateOnly endDate, string username)
+        {
+            return await Context.Set<Timesheet>()
+                          .Where(t => t.Account.Username.Equals(username) && (t.Date >= startDate && t.Date <= endDate))
+                          .ToListAsync();
         }
     }
 }

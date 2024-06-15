@@ -68,6 +68,127 @@ export class CalendarComponent {
 
   ngOnInit(): void {
     this.initializeCurrentUTCDate();
+    Promise.resolve(this.loadTimesheets());
+  }
+
+  private async loadTimesheets() {
+    return new Promise(async () => {
+      const jwtToken = this.storageService.getJwtToken();
+      const username = this.jwtService.getClaim(jwtToken, 'username');
+      const startDate = new Date(this.selectedYear, this.selectedMonth, this.daysInSelectedWeek[0].date).toDateString();
+      const endDate = new Date(this.selectedYear, this.selectedMonth, this.daysInSelectedWeek[6].date).toDateString();
+
+      this.clearCalendar();
+
+      const timesheets$ = this.timesheetService.getAllForUserByDateInterval(startDate, endDate, username);
+      let timesheets: Timesheet[] = await lastValueFrom(timesheets$);
+
+      timesheets.forEach(timesheet => {
+        this.createCalendarEventByKnownDates(timesheet);
+      })
+    });
+  }
+
+  private clearCalendar(){
+    if(this.viewContainerRef){
+      this.onCalendarEventDetailsClose();
+    }
+
+    const elements = this.calendarEventsDivs;
+
+    elements.forEach(element => {
+      this.deleteCalendarEventElement(this.calendarEventsDivs[0].eventElement)
+    });
+
+    this.calendarEventsDivs = [];
+  }
+
+  private getInsetInlineByDate(date: string): IInsetInline {
+    const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
+    var eventDivWidthAsPercentage = 100 / 7;
+    const dateAsDate: Date = new Date(date);
+    const dateDay = dateAsDate.getDate();
+
+    const dayInCalendar = this.daysInSelectedWeek.findIndex(value => value.date === dateDay) + 1;
+
+    const insetInlineStart = (dayInCalendar * eventDivWidthAsPercentage) - eventDivWidthAsPercentage;
+    const insetInlineEnd = 100 - (dayInCalendar * eventDivWidthAsPercentage);
+
+    return {
+      start: insetInlineStart,
+      end: insetInlineEnd,
+    };
+  }
+
+  private getBottomPercentageFromTime(endTime: string) {
+    let hourTo = Number.parseInt(endTime.split(':')[0]);
+    let minutesTo = Number.parseInt(endTime.split(':')[1]);
+
+    hourTo = (hourTo / 24 ) * 100;
+    minutesTo = (minutesTo / (24 * 60)) * 100;
+
+    const bottom = 100 - (hourTo + minutesTo);
+
+    return bottom;
+  }
+
+  private getTopPercentageFromTime(startTime: string) {
+    let hourFrom = Number.parseInt(startTime.split(':')[0]);
+    let minutesFrom = Number.parseInt(startTime.split(':')[1]);
+
+    hourFrom = (hourFrom * 100) / 24;
+    minutesFrom = (minutesFrom * 100) / (60 * 24);
+
+    const top = hourFrom + minutesFrom;
+
+    return top;
+  }
+
+  private async createCalendarEventByKnownDates(timesheet: Timesheet) {
+    const calendarEventsRect =
+      this.calendarEvents.nativeElement.getBoundingClientRect();
+
+    const eventDiv = this.renderer.createElement('div');
+    this.renderer.addClass(eventDiv, 'event');
+
+    var insetInline = this.getInsetInlineByDate(timesheet.date);
+
+    var top = this.getTopPercentageFromTime(timesheet.startTime);
+
+    if(top < 0) {
+      top = 0;
+    }
+
+    const bottom = this.getBottomPercentageFromTime(timesheet.endTime);
+
+    const eventPreviewDiv = this.renderer.createElement('div');
+    this.renderer.addClass(eventPreviewDiv, 'event-preview');
+    
+    let eventButton = this.createCalendarEventButton();
+
+    this.renderer.appendChild(eventPreviewDiv, eventButton.button);
+
+    this.renderer.appendChild(eventDiv, eventPreviewDiv);
+
+    this.renderer.setStyle(
+      eventDiv,
+      'inset-inline',
+      `calc(${insetInline.start}%) calc(${insetInline.end}%)`
+    );
+    this.renderer.setStyle(eventDiv, 'top', `calc(${top}%)`);
+    this.renderer.setStyle(eventDiv, 'bottom', `calc(${bottom}%)`)
+
+    this.renderer.appendChild(this.calendarEvents.nativeElement, eventDiv);
+
+    this.calendarEventsDivs.push({
+      eventElement: eventDiv,
+      eventElementButton: eventButton.button, 
+      clickListener: this.renderer.listen(eventDiv, 'mousedown', (e: MouseEvent) => {
+        e.stopPropagation();
+      }),
+      dblClickListener: eventButton.dbClickListener,
+      timesheetId: timesheet.id,
+    });
   }
 
   public onDayClicked(): void {
@@ -216,15 +337,11 @@ export class CalendarComponent {
     return this.selectedWeekFromTwoMonths(daysInSelectedMonth);
   }
 
-  public async createCalendarEventDiv(event: MouseEvent): Promise<void> {
-    if (event.button !== 0) {
-      return;
-    }
-
+  private async createCalendarEventByMousePosition(xPosition: number, yPosition: number) : Promise<void> {
     const calendarEventsRect =
-      this.calendarEvents.nativeElement.getBoundingClientRect();
-    const mouseX = event.clientX - calendarEventsRect.left;
-    const mouseY = event.clientY - calendarEventsRect.top;
+    this.calendarEvents.nativeElement.getBoundingClientRect();
+    const mouseX = xPosition - calendarEventsRect.left;
+    const mouseY = yPosition - calendarEventsRect.top;
 
     const eventDiv = this.renderer.createElement('div');
     this.renderer.addClass(eventDiv, 'event');
@@ -261,9 +378,9 @@ export class CalendarComponent {
 
     this.renderer.appendChild(this.calendarEvents.nativeElement, eventDiv);
 
-    const bottom = await this.getBottomPercentageOfEventDiv(eventDiv); //how do I await this?
+    const bottom = await this.getBottomPercentageOfEventDiv(eventDiv);
 
-    let newTimesheetId = await this.addNewTimesheet(top, bottom);
+    let newTimesheetId = await this.addNewTimesheet(top, bottom, insetInline);
 
     newTimesheetId = newTimesheetId.replace(/"/g, '');
 
@@ -276,6 +393,18 @@ export class CalendarComponent {
       dblClickListener: eventButton.dbClickListener,
       timesheetId: newTimesheetId,
     });
+
+    if(newTimesheetId === '' || undefined){
+      this.deleteCalendarEventElement(eventDiv);
+    }
+  }
+
+  public onCalendarEventClick(event: MouseEvent) {
+    if (event.button !== 0) {
+      return;
+    }
+
+    this.createCalendarEventByMousePosition(event.clientX, event.clientY);
   }
 
   private createCalendarEventButton(): {button: HTMLElement, dbClickListener: () => void} {
@@ -373,14 +502,16 @@ export class CalendarComponent {
     this.calendarEventsDivs = [];
   }
 
-  private async addNewTimesheet(top: number, bottom: number): Promise<string> {
+  private async addNewTimesheet(top: number, bottom: number, insetInline: IInsetInline): Promise<string> {
     const jwtToken = this.storageService.getJwtToken();
     const username = this.jwtService.getClaim(jwtToken, 'username');
     let timesheetId = '';
 
+    const calculatedDate = this.calculateDateFromInsetInline(insetInline);
+
     const timesheet: TimesheetCreation = {
       username: username,
-      date: new Date(this.selectedYear, this.selectedMonth, this.selectedDay).toDateString(),
+      date: calculatedDate.toDateString(),
       startTime: this.calculateTimeFromPositions(top),
       endTime: this.calculateTimeFromPositions(100 - bottom),
     };
@@ -389,6 +520,14 @@ export class CalendarComponent {
     timesheetId = await lastValueFrom(createTimesheet);
 
     return timesheetId;
+  }
+
+  private calculateDateFromInsetInline(insetInline: IInsetInline): Date{
+    const dateDayIndex = Math.floor((insetInline.start * 7) / 100);
+
+    const dateDay = this.daysInSelectedWeek[dateDayIndex].date;
+
+    return new Date(this.selectedYear, this.selectedMonth, dateDay);
   }
 
   private calculateTimeFromPositions(position: number) {
@@ -404,22 +543,27 @@ export class CalendarComponent {
   } //floating point precision problem
 
   public onCalendarEventDelete(): void {
+    this.deleteCalendarEventElement(this.calendarEventDetailsComponent.eventElement);
+  }
+
+  private deleteCalendarEventElement(eventElement: HTMLElement) {
     const divToRemove = this.calendarEventsDivs.filter(
-        (div) => div.eventElementButton === this.calendarEventDetailsComponent.eventElement
+      (div) => div.eventElementButton === this.calendarEventDetailsComponent.eventElement
     );
     this.renderer.removeChild(this.calendarEvents.nativeElement, divToRemove[0].eventElement);
 
-    divToRemove[0].clickListener;
-    divToRemove[0].clickListener = () => {};
-    divToRemove[0].dblClickListener;
-    divToRemove[0].dblClickListener = () => {};
-    
-    const divToRemoveIndex = this.calendarEventsDivs.indexOf(divToRemove[0]);
-    this.calendarEventsDivs.splice(divToRemoveIndex, 1);
-
-    this.onCalendarEventDetailsClose();
-
     this.timesheetService.delete(divToRemove[0].timesheetId).subscribe(
+      () => {
+        divToRemove[0].clickListener;
+        divToRemove[0].clickListener = () => {};
+        divToRemove[0].dblClickListener;
+        divToRemove[0].dblClickListener = () => {};
+        
+        const divToRemoveIndex = this.calendarEventsDivs.indexOf(divToRemove[0]);
+        this.calendarEventsDivs.splice(divToRemoveIndex, 1);
+
+        this.onCalendarEventDetailsClose();
+      },
       error => {
         console.log(error);
       }
@@ -428,12 +572,6 @@ export class CalendarComponent {
 
   public onCalendarEventModified(event: any): void {
     const newTimeInterval: { hourFrom: string, hourTo: string } = event;
-
-    const hourFrom = Number.parseInt(newTimeInterval.hourFrom.split(':')[0]);
-    const minutesFrom = Number.parseInt(newTimeInterval.hourFrom.split(':')[1]);
-
-    const hourTo = Number.parseInt(newTimeInterval.hourTo.split(':')[0]);
-    const minutesTo = Number.parseInt(newTimeInterval.hourTo.split(':')[1]);
     
     const divToModify = this.calendarEventsDivs.filter(
       (div) => div.eventElementButton === this.calendarEventDetailsComponent.eventElement
@@ -448,26 +586,20 @@ export class CalendarComponent {
     }
 
     this.timesheetService.update(timesheet).subscribe(
+      () => {
+        this.setNewCalendarEventPositions(divToModify[0].eventElement, newTimeInterval.hourFrom, newTimeInterval.hourTo);
+      },
       error => {
         console.log(error);
       }
     );
-
-    this.setNewCalendarEventPositions(divToModify[0].eventElement, hourFrom, minutesFrom, hourTo, minutesTo);
   }
 
-  private setNewCalendarEventPositions(eventElement: HTMLElement, hourFrom: number, minutesFrom: number, hourTo: number, minutesTo: number): void {
+  private setNewCalendarEventPositions(eventElement: HTMLElement, hourFrom: string, hourTo: string): void {
     const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
 
-    hourFrom = (hourFrom * 100) / 24;
-    minutesFrom = (minutesFrom * 100) / (60 * 24);
-
-    const top = hourFrom + minutesFrom;
-
-    hourTo = (hourTo / 24 ) * 100;
-    minutesTo = (minutesTo / (24 * 60)) * 100;
-
-    const bottom = 100 - (hourTo + minutesTo);
+    const top = this.getTopPercentageFromTime(hourFrom);
+    const bottom = this.getBottomPercentageFromTime(hourTo)
 
     this.renderer.setStyle(eventElement, 'top', `${top}%`);
     this.renderer.setStyle(eventElement, 'bottom', `${bottom}%`);
@@ -569,6 +701,7 @@ export class CalendarComponent {
 
       case 'week':
         this.calculateNextWeek();
+        Promise.resolve(this.loadTimesheets());
         break;
 
       case 'month':
@@ -661,6 +794,7 @@ export class CalendarComponent {
 
       case 'week':
         this.calculatePreviousWeek();
+        Promise.resolve(this.loadTimesheets());
         break;
 
       case 'month':

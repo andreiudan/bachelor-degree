@@ -40,6 +40,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 const matFormFieldOptions: MatFormFieldDefaultOptions = {
   hideRequiredMarker: true,
+  appearance: 'outline',
 }
 
 @NgModule({

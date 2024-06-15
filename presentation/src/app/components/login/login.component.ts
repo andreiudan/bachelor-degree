@@ -61,8 +61,8 @@ export class LoginComponent implements OnInit{
       let userWithEncodedPassword: User = {
         firstName: '',
         lastName: '',
-        email: user.email,
-        password: btoa(user.password)
+        email: this.email?.value,
+        password: btoa(this.password?.value)
       };
 
       this.authService.login(userWithEncodedPassword).subscribe(() => {

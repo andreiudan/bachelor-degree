@@ -36,4 +36,10 @@ export class TimesheetService {
 
     return this.httpClient.delete(deleteUrl, { responseType: 'text' });
   }
+
+  public getAllForUserByDateInterval(startDate: string, endDate: string, username: string){
+    const getAllForUserByDateIntervalUrl = this.baseUrl + `/startDate=${startDate}&endDate=${endDate}&username=${username}`;
+
+    return this.httpClient.get<Timesheet[]>(getAllForUserByDateIntervalUrl);
+  }
 }

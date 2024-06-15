@@ -7,6 +7,7 @@ import { RegistrationSuccessfulDialogComponent } from '../registration-successfu
 import { PasswordsErrorStateMatcher } from '../../input-validation/error-state-matcher';
 import { CustomValidators } from '../../input-validation/custom-validators';
 import { INPUT_VALIDATION_RULES } from '../../input-validation/input-validation-rules';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,7 @@ export class RegisterComponent implements OnInit {
   public isPasswordVisible: boolean = false;
   public matcher = new PasswordsErrorStateMatcher();
 
-  public constructor(private formBuilder: FormBuilder, private userService: UserService, private dialog: MatDialog){
+  public constructor(private formBuilder: FormBuilder, private userService: UserService, private dialog: MatDialog, private router: Router){
   }
 
   public ngOnInit(): void {
@@ -94,13 +95,13 @@ export class RegisterComponent implements OnInit {
   private register(user: User): void {
     if(this.registerForm.valid){
       let userWithEncodedPassword: User = {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        email: this.user.email,
-        password: btoa(this.user.password)
+        firstName: this.firstName?.value,
+        lastName: this.lastName?.value,
+        email: this.email?.value,
+        password: btoa(this.password?.value)
       };
 
-      this.userService.register(user).subscribe((response: string) => {
+      this.userService.register(userWithEncodedPassword).subscribe((response: string) => {
         this.openDialog();
       }, (error) => {
         alert('Registration failed');
@@ -114,6 +115,10 @@ export class RegisterComponent implements OnInit {
   }
 
   private openDialog(): void {
-    this.dialog.open(RegistrationSuccessfulDialogComponent);
+    const dialogRef = this.dialog.open(RegistrationSuccessfulDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['/login']);
+    })
   }
 }
