@@ -1,3 +1,74 @@
 <div class="main-div">
+    <div class="header">
+        <div class="avatar-div">
+            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
+        </div>
+        <div class="name">
+            <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+        </div>
+    </div>
+
+    <div class="info-alignment">
+        <div class="info">
+            <div class="categories">
+                <div (click)="onPersonalClick()" class="category {{isPersonal === true ? 'active-category' : ''}}">
+                    <h4>Personal</h4>
+                </div>
+
+                <div class="horizontal-spacer">
+                    <mat-divider></mat-divider>
+                </div>
+
+                <div (click)="onSecurityClick()" class="category {{isSecurity === true ? 'active-category' : ''}}">
+                    <h4>Security</h4>
+                </div>  
+                
+                
+            </div>
     
+            <div class="vertical-spacer">
+                <mat-divider vertical></mat-divider>
+            </div>
+
+            <div class="chosen-category">
+                <div class="chosen-category-info">
+                    <div *ngIf="isPersonal" class="personal">
+                        <div class="personal-info">
+                            <h4>First name:</h4>
+                            <p>{{ user.firstName }}</p>
+                        </div>
+    
+                        <div class="personal-info">
+                            <h4>Last name:</h4>
+                            <p>{{ user.lastName }}</p>
+                        </div>
+    
+                        <div class="personal-info">
+                            <h4>Email:</h4>
+                            <p>{{ user.email }}</p>
+                        </div>
+    
+                        <div class="personal-info">
+                            <h4>Username:</h4>
+                            <p>{{ username }}</p>
+                        </div>
+                    </div>
+    
+                    <div *ngIf="isSecurity" class="security">
+                        <div class="security-info">
+                            <h4>You can reset your password here:</h4>
+                            <button mat-raised-button disabled>Reset password</button>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div *ngIf="!isSecurity" class="actions">
+                    <div class="modify-button">
+                        <button mat-raised-button disabled>Modify</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

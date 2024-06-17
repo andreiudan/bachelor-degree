@@ -97,7 +97,11 @@ export class CalendarComponent {
     const elements = this.calendarEventsDivs;
 
     elements.forEach(element => {
-      this.deleteCalendarEventElement(this.calendarEventsDivs[0].eventElement)
+      const divToRemove = this.calendarEventsDivs.filter(
+        (div) => div.eventElementButton === element.eventElementButton
+      );
+
+      this.renderer.removeChild(this.calendarEvents.nativeElement, divToRemove[0].eventElement);
     });
 
     this.calendarEventsDivs = [];
