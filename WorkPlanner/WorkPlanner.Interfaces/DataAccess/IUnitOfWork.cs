@@ -10,6 +10,7 @@ namespace WorkPlanner.Interfaces.DataAccess
         public IProjectRepository Projects { get; }
         public IUserRepository Users { get; }
         public IBacklogRepository Backlogs { get; }
+        public ISubtaskRepository Subtasks { get; }
 
         public Task<int> CompleteAsync();
     }

@@ -33,10 +33,6 @@ namespace WorkPlanner.Business
                 .ForMember(dest => dest.StartDate, opt => opt.Ignore())
                 .ForMember(dest => dest.DueDate, opt => opt.Ignore());
 
-            CreateMap<SubtaskCreationDto, Subtask>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.Done, opt => opt.Ignore());
-
             CreateMap<TimesheetCreationDto, Timesheet>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Account, opt => opt.Ignore())
@@ -51,6 +47,11 @@ namespace WorkPlanner.Business
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(t => ConvertStringToDateOnly(t.Date)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(t => ConvertStringToTimeOnly(t.StartTime)))
                 .ForMember(dest => dest.EndTime, opt => opt.MapFrom(t => ConvertStringToTimeOnly(t.EndTime)));
+
+            CreateMap<SubtaskDto, Subtask>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(s => MapStringIdToGuid(s.Id)))
+                .ForMember(dest => dest.TaskId, opt => opt.Ignore())
+                .ForMember(dest => dest.Task, opt => opt.Ignore());
         }
 
         private DateOnly ConvertStringToDateOnly(string date)
@@ -69,6 +70,11 @@ namespace WorkPlanner.Business
             TimeOnly.TryParse(time, out timeOnly);
 
             return timeOnly;
+        }
+
+        private Guid MapStringIdToGuid(string id)
+        {
+            return Guid.Parse(id);
         }
     }
 }

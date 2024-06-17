@@ -12,6 +12,7 @@ namespace WorkPlanner.DataAccess
         public IProjectRepository Projects { get; }
         public IUserRepository Users { get; }
         public IBacklogRepository Backlogs { get; }
+        public ISubtaskRepository Subtasks { get; }
 
         private readonly WorkPlannerContext Context;
 
@@ -25,6 +26,7 @@ namespace WorkPlanner.DataAccess
             Projects = new ProjectRepository(Context);
             Users = new UserRepository(Context);
             Backlogs = new BacklogRepository(Context);
+            Subtasks = new SubtaskRepository(Context);
         }
 
         public async Task<int> CompleteAsync()

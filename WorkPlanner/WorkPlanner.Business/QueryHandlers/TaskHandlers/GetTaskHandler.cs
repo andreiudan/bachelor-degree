@@ -16,9 +16,9 @@ namespace WorkPlanner.Business.QueryHandlers.TaskHandlers
 
         public async Task<SprintTask> Handle(GetTaskQuery request, CancellationToken cancellationToken)
         {
-            Guid Id = Guid.Parse(request.Id);
+            Guid taskId = Guid.Parse(request.Id);
 
-            SprintTask task = await unitOfWork.Tasks.FindAsync(t => t.Id == Id);
+            SprintTask task = await unitOfWork.Tasks.GetWithSubtasks(taskId);
 
             return task;
         }

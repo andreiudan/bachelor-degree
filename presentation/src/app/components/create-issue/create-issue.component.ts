@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { types } from 'util';
 import { TaskTypes } from '../../../models/taskTypes';
 import { PriorityTypes } from '../../../models/priorityTypes';
@@ -18,7 +18,7 @@ import { CustomValidators } from '../../input-validation/custom-validators';
   templateUrl: './create-issue.component.html',
   styleUrl: './create-issue.component.scss'
 })
-export class CreateIssueComponent {
+export class CreateIssueComponent implements OnInit{
   public taskTypes = Object.values(TaskTypes).filter(value => typeof value === 'string');
   public priorityTypes = Object.values(PriorityTypes).filter(value => typeof value === 'string');
   public users: User[] = [];

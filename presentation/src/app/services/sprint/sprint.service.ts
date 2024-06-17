@@ -144,11 +144,11 @@ export class SprintService {
   }
 
   private calculateTaskProgress(task: Task): number {
-    if (!task.keyTasks) {
+    if (!task.subtasks) {
         return 0;
     }
-    const completedSubTasks = task.keyTasks.filter(subTask => subTask.isDone).length;
-    const totalSubTasks = task.keyTasks.length;
+    const completedSubTasks = task.subtasks.filter(subTask => subTask.done).length;
+    const totalSubTasks = task.subtasks.length;
     return totalSubTasks === 0 ? 0 : (completedSubTasks / totalSubTasks) * 100;
 }
 }

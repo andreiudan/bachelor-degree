@@ -14,19 +14,40 @@
         <div class="page-alignment">
             <div class="task-info">
                 <div class="info-divider">
-                    <h4>Description</h4>
-                    <mat-divider></mat-divider>
+                    <div class="info-title">
+                        <h4>Description</h4>
+                    </div>
+                    
+                    <div class="horizontal-divider">
+                        <mat-divider></mat-divider>
+                    </div>
                 </div>
                 <p class="description">{{ task.description }}</p>
                 
                 <div class="info-divider">
-                    <h4>Key Tasks</h4>
-                    <mat-divider></mat-divider>
+                    <div class="info-title">
+                        <h4>Key Tasks</h4>
+                    </div>
+                    
+                    <div class="horizontal-divider">
+                        <mat-divider></mat-divider>
+                    </div>
+                    
+                    <div class="new-subtask-button">
+                        <button (click)="onAddSubtaskClick()" mat-icon-button>
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
                 </div>
+                
                 <div class="subtasks">
-                    @for(subtask of task.keyTasks; track $index) {
-                        <mat-checkbox class="custom-checkbox" [(ngModel)]="subtask.isDone">{{ subtask.name }}</mat-checkbox>
-                    }
+                    <mat-checkbox *ngFor="let subtask of task.subtasks" 
+                                class="custom-checkbox" 
+                                [(ngModel)]="subtask.done"
+                                (ngModelChange)="onSubtaskStatusChanged(subtask)"
+                    >
+                        {{ subtask.name }}
+                    </mat-checkbox>
                 </div>
             </div>
             

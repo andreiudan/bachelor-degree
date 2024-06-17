@@ -17,5 +17,5 @@ export class Task {
     dueDate: Date;
     startDate: Date;
     progress: number;
-    keyTasks: SubTask[];
+    subtasks: SubTask[];
 }

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WorkPlanner.Business.Commands.SubtaskCommands;
 using WorkPlanner.Business.Commands.TaskCommands;
 using WorkPlanner.Business.Queries.TaskQueries;
 using WorkPlanner.Domain.Dtos;
@@ -66,6 +67,26 @@ namespace WorkPlanner.Api.Controllers
             GetProjectNameForTaskQuery request = new GetProjectNameForTaskQuery(taskId);
 
             string result = await mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{taskId}/newSubtask={subtaskName}")]
+        public async Task<IActionResult> AddSubtask(string taskId, string subtaskName)
+        {
+            SubtaskCreationCommand request = new SubtaskCreationCommand(taskId, subtaskName);
+
+            Subtask result = await mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{taskId}/subtask")]
+        public async Task<IActionResult> UpdateSubtask(string taskId, [FromBody] SubtaskDto subtask)
+        {
+            UpdateSubtaskCommand request = new UpdateSubtaskCommand(subtask, taskId);
+
+            bool result = await mediator.Send(request);
 
             return Ok(result);
         }

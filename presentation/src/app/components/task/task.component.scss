@@ -23,16 +23,32 @@
 .info-divider {
     display: flex;
     align-items: center;
+    gap: 0 12px;
+    width: 100%;
     padding: 12px 0 6px 0;
 
+    .info-title {
+        display: flex;
+        align-items: center;
+    }
+
+    .horizontal-divider {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .new-subtask-button {
+        display: flex;
+        align-items: center;
+    }
+
     h4 {
-        width: 10%;
         white-space: nowrap;
     }
 
     mat-divider {
-        margin-inline-start: 24px;
-        width: 86%;
+        width: 100%;
     }
 }
 
@@ -157,4 +173,13 @@ h4{
     display: flex;
     flex-direction: column;
     margin-left: 12px;
+}
+
+.add-subtask-button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    margin-left: 12px;
+    margin-top: 12px;
 }

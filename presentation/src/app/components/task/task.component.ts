@@ -5,6 +5,8 @@ import { SubTask } from '../../../models/subTask';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../../services/task/task.service';
 import { lastValueFrom } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { AddSubtaskDialogComponent } from '../add-subtask-dialog/add-subtask-dialog.component';
 
 @Component({
   selector: 'app-task',
@@ -31,12 +33,12 @@ export class TaskComponent {
   public task: Task = new Task();
   private taskIdSub: any;
 
-  public sprintName: string = "1";
-  public projectName: string = "2";
+  public sprintName: string = "";
+  public projectName: string = "";
 
   public taskLoaded: Promise<boolean>;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private taskService: TaskService) {}
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private taskService: TaskService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.taskIdSub = this.activatedRoute.params.subscribe(params => {
@@ -49,22 +51,6 @@ export class TaskComponent {
   ngOnDestroy() {
     this.taskIdSub.unsubscribe();
   }
-
-  // private async loadTask() {
-  //   try {
-  //     this.taskLoaded = Promise.resolve(this.getTask());
-  //     //this.isLoading = false;
-  //     if (!this.taskLoaded) { 
-  //       this.taskNotFound();
-  //     }
-
-      
-  //   } catch (error) {
-  //     //this.isLoading = false;
-  //     //this.isError = true;
-  //     console.error('Error loading task', error);
-  //   }
-  // }
 
   private async getTask() {
     const task$ = this.taskService.get(this.taskId);
@@ -91,7 +77,6 @@ export class TaskComponent {
         this.projectName = project;
       }
     );
-    //this.projectName = await lastValueFrom(projectName);
   }
 
   private async setSprintName() {
@@ -116,5 +101,31 @@ export class TaskComponent {
 
   public toggleDates() {
     this.showDates = !this.showDates;
+  }
+
+  public onAddSubtaskClick(): void {
+    const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
+      height: '25%',
+      width: '35%',
+      data: {subtaskName: ''}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result === undefined || result === ''){
+        return;
+      }
+
+      this.addSubtask(result);
+    });
+  }
+
+  private addSubtask(subtaskName: string) {
+    this.taskService.addNewSubtask(this.taskId, subtaskName).subscribe((result) => {
+      this.task.subtasks.push(result);
+    });
+  }
+
+  public onSubtaskStatusChanged(subtask: SubTask) {
+    this.taskService.updateSubtask(this.taskId, subtask).subscribe();
   }
 }

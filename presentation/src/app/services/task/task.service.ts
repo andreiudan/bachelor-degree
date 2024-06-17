@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Task } from '../../../models/task';
 import { Observable, map } from 'rxjs';
 import { TaskCreation } from '../../../models/taskCreation';
+import { SubTask } from '../../../models/subTask';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +51,23 @@ export class TaskService {
     const getProjectNameUrl = this.baseUrl + taskId + '/projectName';
 
     return this.httpClient.get<string>(getProjectNameUrl);
+  }
+
+  public addNewSubtask(taskId: string, subtaskName: string): Observable<any> {
+    const addSubtaskUrl = this.baseUrl + taskId + '/newSubtask=' + subtaskName;
+
+    return this.httpClient.put<SubTask>(addSubtaskUrl, {responseType: 'text'}).pipe(
+      map(subtask => ({
+        id: subtask.id,
+        name: subtask.name,
+        isDone: subtask.done,
+      }))
+    );
+  }
+
+  public updateSubtask(taskId: string, subtask: SubTask): Observable<any> {
+    const updateSubtaskUrl = this.baseUrl + taskId + '/subtask';
+
+    return this.httpClient.put(updateSubtaskUrl, subtask, {responseType: 'text'});
   }
 }
