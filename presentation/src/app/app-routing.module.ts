@@ -13,6 +13,7 @@ import { UserComponent } from './components/user/user.component';
 import { CreateIssueComponent } from './components/create-issue/create-issue.component';
 import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
+import { ProjectsComponent } from './components/projects/projects.component';
 
 const routes: Routes = [
   {
@@ -73,7 +74,12 @@ const routes: Routes = [
     component: CreateIssueComponent,
     canActivate: [authGuard],
     data: { sprintId: '' }
-  }
+  },
+  {
+    path: 'projects',
+    component: ProjectsComponent,
+    canActivate: [authGuard],
+  },
 ];
 
 @NgModule({

@@ -37,6 +37,9 @@ import { ErrorHandlingService } from './services/error-handling/error-handling.s
 import { DATE_FORMATS } from './date-formats';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ProjectsComponent } from './components/projects/projects.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table'
 
 const matFormFieldOptions: MatFormFieldDefaultOptions = {
   hideRequiredMarker: true,
@@ -58,6 +61,7 @@ const matFormFieldOptions: MatFormFieldDefaultOptions = {
     BacklogComponent,
     UserComponent,
     CreateIssueComponent,
+    ProjectsComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,7 +83,9 @@ const matFormFieldOptions: MatFormFieldDefaultOptions = {
     MatProgressBarModule,
     ReactiveFormsModule,
     FormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginator,
+    MatTableModule,
   ],
   providers: [
     provideClientHydration(),
