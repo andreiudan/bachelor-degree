@@ -39,7 +39,8 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table'
+import { MatTableModule } from '@angular/material/table';
+import { CreateProjectDialogComponent } from './components/create-project-dialog/create-project-dialog.component'
 
 const matFormFieldOptions: MatFormFieldDefaultOptions = {
   hideRequiredMarker: true,

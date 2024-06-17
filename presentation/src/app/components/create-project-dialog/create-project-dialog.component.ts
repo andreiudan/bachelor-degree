@@ -5,9 +5,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { ProjectCreation } from '../../../models/projectCreation';
 
 @Component({
-  selector: 'app-add-subtask-dialog',
+  selector: 'app-create-project-dialog',
   standalone: true,
   imports: [MatCardModule, MatFormFieldModule, MatInputModule, MatButton,
     MatDialogActions,
@@ -15,22 +16,22 @@ import { FormsModule } from '@angular/forms';
     MatDialogContent,
     MatDialogTitle,
     FormsModule],
-  templateUrl: './add-subtask-dialog.component.html',
-  styleUrl: './add-subtask-dialog.component.scss'
+  templateUrl: './create-project-dialog.component.html',
+  styleUrl: './create-project-dialog.component.scss'
 })
-export class AddSubtaskDialogComponent {
-  public subtaskName: string = '';
+export class CreateProjectDialogComponent {
+  public project: ProjectCreation = new ProjectCreation();
 
-  constructor(public dialogRef: MatDialogRef<AddSubtaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: string) { }
+  constructor(public dialogRef: MatDialogRef<CreateProjectDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ProjectCreation) { }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   closeDialog(): void {
-    if (this.subtaskName !== '') {
-      this.dialogRef.close(this.subtaskName);
+    if(this.project.name !== '') {
+      this.dialogRef.close(this.project);
     }
   }
 }

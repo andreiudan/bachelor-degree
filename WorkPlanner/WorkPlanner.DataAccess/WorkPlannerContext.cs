@@ -41,7 +41,12 @@ namespace WorkPlanner.DataAccess
                         .WithOne(t => t.Account)
                         .HasForeignKey(t => t.AccountId)
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();  
+                        .IsRequired();
+
+            modelBuilder.Entity<Project>()
+                        .Property(b => b.StartDate)
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("datetime('now')");
 
             modelBuilder.Entity<Project>()
                         .HasMany(p => p.Sprints)
@@ -69,11 +74,21 @@ namespace WorkPlanner.DataAccess
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired(false);
 
+            modelBuilder.Entity<Sprint>()
+                        .Property(s => s.StartDate)
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("datetime('now')");
+
             modelBuilder.Entity<SprintTask>()
                         .HasMany(t => t.Subtasks)
                         .WithOne(s => s.Task)
                         .HasForeignKey(s => s.TaskId)
                         .IsRequired();
+
+            modelBuilder.Entity<SprintTask>()
+                        .Property(t => t.StartDate)
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("datetime('now')");
         }
     }
 }

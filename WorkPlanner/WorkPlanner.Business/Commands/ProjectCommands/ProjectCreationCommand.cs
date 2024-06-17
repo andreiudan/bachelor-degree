@@ -4,7 +4,7 @@ using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Business.Commands.ProjectCommands
 {
-    public class ProjectCreationCommand : IRequest<Project>
+    public class ProjectCreationCommand : IRequest<ProjectDto>
     {
         public ProjectCreationDto Project { get; }
 

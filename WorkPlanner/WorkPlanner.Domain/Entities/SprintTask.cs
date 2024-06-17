@@ -10,8 +10,6 @@ namespace WorkPlanner.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public int LabelId { get; set; }
-
         [ForeignKey("Sprint")]
         public Guid? SprintId { get; set; } = null!;
 
@@ -39,6 +37,8 @@ namespace WorkPlanner.Domain.Entities
 
         [Required]
         public DateTime DueDate { get; set; }
+
+        public string Label { get; set; }
 
         [Required]
         [EnumDataType(typeof(PriorityType))]
@@ -76,7 +76,7 @@ namespace WorkPlanner.Domain.Entities
         private bool Equals(SprintTask obj)
         {
             return this.Id.CompareTo(obj.Id) == 0 &&
-                this.LabelId.CompareTo(obj.LabelId) == 0 &&
+                this.Label.Equals(obj.Label) &&
                 this.SprintId.Equals(obj.SprintId) &&
                 this.Sprint.Equals(obj.Sprint) &&
                 this.BacklogId.Equals(obj.BacklogId) &&
@@ -99,7 +99,7 @@ namespace WorkPlanner.Domain.Entities
             HashCode hash = new HashCode();
 
             hash.Add(Id);
-            hash.Add(LabelId);
+            hash.Add(Label);
             hash.Add(SprintId);
             hash.Add(Sprint);
             hash.Add(BacklogId);

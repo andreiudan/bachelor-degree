@@ -9,11 +9,10 @@ namespace WorkPlanner.Domain.Dtos
         [MinLength(2, ErrorMessage = ValidationConstants.NameLengthErrorMessage)]
         public string Name { get; set; }
 
-        [ForeignKey("User")]
-        public Guid CreatorId { get; set; }
-
         [Required]
-        public DateTime StartDate { get; set; }
+        public string CreatorUsername { get; set; }
+
+        public string Description { get; set; }
 
         [Required]
         public DateTime DueDate { get; set; }

@@ -1,0 +1,27 @@
+<div class="title">
+    <h2 mat-dialog-title>Create Key Task</h2>
+</div>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput type="text" [(ngModel)]="project.name" placeholder="Name" name="name" cdkFocusInitial #name="ngModel" required>
+        <mat-error>Name is required.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input matInput type="text" [(ngModel)]="project.description" placeholder="Description" name="description" #name="ngModel">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Due Date</mat-label>
+        <input matInput type="datetime-local" [(ngModel)]="project.dueDate" placeholder="Due Date" name="dueDate" #name="ngModel" required>
+        <mat-error>Due date is required.</mat-error>
+    </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="onNoClick()">Close</button>
+    <button mat-button (click)="closeDialog()">Create</button>
+</mat-dialog-actions>
+

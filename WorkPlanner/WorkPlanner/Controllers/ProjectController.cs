@@ -25,9 +25,9 @@ namespace WorkPlanner.Api.Controllers
         {
             ProjectCreationCommand request = new ProjectCreationCommand(project);
 
-            Project result = await mediator.Send(request);
+            ProjectDto result = await mediator.Send(request);
 
-            return Created();
+            return CreatedAtAction(nameof(Create), new { id = result.Id } ,result);
         }
 
         [HttpGet]

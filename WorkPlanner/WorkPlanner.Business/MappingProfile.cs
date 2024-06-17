@@ -20,7 +20,8 @@ namespace WorkPlanner.Business
 
             CreateMap<ProjectCreationDto, Project>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.Sprints, opt => opt.Ignore());
+                .ForMember(dest => dest.Sprints, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatorId, opt => opt.Ignore());
 
             CreateMap<SprintCreationDto, Sprint>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -52,6 +53,10 @@ namespace WorkPlanner.Business
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(s => MapStringIdToGuid(s.Id)))
                 .ForMember(dest => dest.TaskId, opt => opt.Ignore())
                 .ForMember(dest => dest.Task, opt => opt.Ignore());
+
+            CreateMap<Project, ProjectDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(p => p.Id.ToString()))
+                .ForMember(dest => dest.CreatorId, opt => opt.MapFrom(p => p.CreatorId.ToString()));  
         }
 
         private DateOnly ConvertStringToDateOnly(string date)

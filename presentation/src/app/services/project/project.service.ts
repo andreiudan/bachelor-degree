@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Project } from '../../../models/project';
 import { Sprint } from '../../../models/sprint';
+import { ProjectCreation } from '../../../models/projectCreation';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ProjectService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public create(project: Project): Observable<any> {
+  public create(project: ProjectCreation): Observable<Project> {
     return this.httpClient.post<Project>(this.baseUrl, project, {responseType: 'text' as 'json'});
   }
 

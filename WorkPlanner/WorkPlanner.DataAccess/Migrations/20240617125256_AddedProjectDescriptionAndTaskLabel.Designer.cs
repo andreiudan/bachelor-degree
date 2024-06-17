@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkPlanner.DataAccess;
 
@@ -10,9 +11,11 @@ using WorkPlanner.DataAccess;
 namespace WorkPlanner.DataAccess.Migrations
 {
     [DbContext(typeof(WorkPlannerContext))]
-    partial class WorkPlannerContextModelSnapshot : ModelSnapshot
+    [Migration("20240617125256_AddedProjectDescriptionAndTaskLabel")]
+    partial class AddedProjectDescriptionAndTaskLabel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
@@ -55,9 +58,7 @@ namespace WorkPlanner.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("datetime('now')");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -84,9 +85,7 @@ namespace WorkPlanner.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("datetime('now')");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -132,9 +131,7 @@ namespace WorkPlanner.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("datetime('now')");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");

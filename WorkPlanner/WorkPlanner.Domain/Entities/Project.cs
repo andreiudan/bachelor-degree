@@ -12,6 +12,9 @@ namespace WorkPlanner.Domain.Entities
         [Required]
         public string Name { get; set; }
 
+        [Required]
+        public string Description { get; set; }
+
         [ForeignKey("User")]
         public Guid CreatorId { get; set; }
 
