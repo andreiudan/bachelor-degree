@@ -38,7 +38,7 @@ namespace WorkPlanner.Domain.Entities
         [Required]
         public DateTime DueDate { get; set; }
 
-        public string Label { get; set; }
+        public string? Label { get; set; } = string.Empty;
 
         [Required]
         [EnumDataType(typeof(PriorityType))]

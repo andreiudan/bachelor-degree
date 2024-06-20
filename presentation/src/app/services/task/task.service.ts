@@ -4,6 +4,7 @@ import { Task } from '../../../models/task';
 import { Observable, map } from 'rxjs';
 import { TaskCreation } from '../../../models/taskCreation';
 import { SubTask } from '../../../models/subTask';
+import { StatusTypes } from '../../../models/statusTypes';
 
 @Injectable({
   providedIn: 'root'
@@ -69,5 +70,11 @@ export class TaskService {
     const updateSubtaskUrl = this.baseUrl + taskId + '/subtask';
 
     return this.httpClient.put(updateSubtaskUrl, subtask, {responseType: 'text'});
+  }
+
+  public updateStatus(taskId: string, status: StatusTypes): Observable<any> {
+    const updateStatusUrl = this.baseUrl + taskId + '/status/' + status;
+
+    return this.httpClient.put(updateStatusUrl, {responseType: 'text'});
   }
 }

@@ -13,5 +13,7 @@ namespace WorkPlanner.Interfaces.DataAccess.Repositories
         public Task<TModel> FindAsync(Expression<Func<TModel, bool>> predicate);
 
         public Task<IEnumerable<TModel>> GetAll();
+
+        public bool Update(TModel model);
     }
 }

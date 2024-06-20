@@ -57,5 +57,24 @@ namespace WorkPlanner.DataAccess.Repositories
         {
             return await this.Context.Set<TModel>().ToListAsync();
         }
+
+        public bool Update(TModel model)
+        {
+            try
+            {
+                if (Context.Entry(model).State == EntityState.Detached)
+                {
+                    Context.Set<TModel>().Attach(model);
+                }
+
+                Context.Entry(model).State = EntityState.Modified;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

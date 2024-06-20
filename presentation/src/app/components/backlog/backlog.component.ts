@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateSprintDialogComponent } from '../create-sprint-dialog/create-sprint-dialog.component';
 import { SprintCreation } from '../../../models/sprintCreation';
 import { Router } from '@angular/router';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-backlog',
@@ -155,5 +156,38 @@ export class BacklogComponent {
 
   public onCreateIssueClick(sprintId: string): void {
     this.router.navigate(['/createIssue', sprintId]);
+  }
+
+  public drop(event: CdkDragDrop<Task[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray<Task>(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem<Task>(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+
+      switch(event.container.id) {
+        case 'activeSprintTasksList':
+          console.log('move to active sprint');
+          break;
+
+        case 'backlogTasksList':
+          console.log('move to backlog');
+          break;
+        
+        default:
+          if(this.inactiveSprints.filter(sprint => sprint.id === event.container.id).length > 0){
+            console.log('move to inactive sprint');
+            break;
+          }
+          else{
+            console.log('default');
+            break;
+          }
+      }
+    }
   }
 }

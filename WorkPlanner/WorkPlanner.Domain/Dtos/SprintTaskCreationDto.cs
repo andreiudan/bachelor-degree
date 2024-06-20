@@ -11,15 +11,15 @@ namespace WorkPlanner.Domain.Dtos
 
         public string Description { get; set; }
 
-        public Guid SprintId { get; set; }
+        public string SprintId { get; set; }
 
         public Guid ProjectId { get; set; }
 
         [Required]
-        public Guid CreatorId { get; set; }
+        public string Username { get; set; }
 
         [Required]
-        public DateTime DueDate { get; set; }
+        public string DueDate { get; set; }
 
         [Required]
         [EnumDataType(typeof(PriorityType))]

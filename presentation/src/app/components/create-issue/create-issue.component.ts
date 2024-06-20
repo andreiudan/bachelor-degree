@@ -12,6 +12,8 @@ import { TaskCreation } from '../../../models/taskCreation';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from '../../input-validation/custom-validators';
+import { StorageService } from '../../services/storage/storage.service';
+import { JwtService } from '../../services/authentication/jwt.service';
 
 @Component({
   selector: 'app-create-issue',
@@ -24,7 +26,6 @@ export class CreateIssueComponent implements OnInit{
   public users: User[] = [];
   
   public taskCreationForm: FormGroup;
-  public newTask: TaskCreation = new TaskCreation();
 
   public usersLoaded: Promise<boolean>;
 
@@ -34,7 +35,9 @@ export class CreateIssueComponent implements OnInit{
 
   private sprintId: string = '';
 
-  constructor(private userService: UserService, 
+  constructor(private storageService: StorageService,
+              private jwtService: JwtService,
+              private userService: UserService, 
               private taskService: TaskService,
               private router: Router,
               private formBuilder: FormBuilder,
@@ -52,6 +55,10 @@ export class CreateIssueComponent implements OnInit{
 
     this.usersLoaded = Promise.resolve(this.loadAssignees());
 
+    this.assigneeControl = new FormControl('', Validators.required);
+    this.typesControl = new FormControl('', Validators.required);
+    this.priorityControl = new FormControl('', Validators.required);
+
     this.taskCreationForm = this.formBuilder.group({
       name: [
         '',
@@ -67,22 +74,14 @@ export class CreateIssueComponent implements OnInit{
           Validators.required,
         ],
       ],
-      priority: [
-        '',
-        [
-          Validators.required,
-        ],
-      ],
-      type: [
-        '',
-        [
-          Validators.required,
-        ],
-      ],
+      priority: this.priorityControl,
+      type: this.typesControl,
+      assignee: this.assigneeControl,
       storyPoints: [
-        '',
+        null,
         [
           Validators.required,
+          Validators.min(0),
         ],
       ]
     });
@@ -104,27 +103,70 @@ export class CreateIssueComponent implements OnInit{
     return item.id;
   }
 
+  public get name() {
+    return this.taskCreationForm.get('name');
+  }
+
+  public get description() {
+    return this.taskCreationForm.get('description');
+  }
+
+  public get dueDate() {
+    return this.taskCreationForm.get('dueDate');
+  }
+
+  public get priority() {
+    return this.taskCreationForm.get('priority');
+  }
+
+  public get type() {
+    return this.taskCreationForm.get('type');
+  }
+
+  public get assignee() {
+    return this.taskCreationForm.get('assignee');
+  }
+
+  public get storyPoints() {
+    return this.taskCreationForm.get('storyPoints');
+  }
+
   public onSubmit() {
     if(this.taskCreationForm.invalid) {
       return;
     }
 
-    this.createIssue(this.newTask);
+    this.createIssue();
   }
 
-  private createIssue(task: TaskCreation) {
-    if(localStorage.getItem('selectedProjectId') === null || localStorage.getItem('selectedProjectId') === ''){
+  private createIssue() {
+    const projectId = localStorage.getItem('selectedProjectId') ?? '';
+
+    if(projectId === null || projectId === ''){
       alert('Please select a project first!');
       this.router.navigate(['/backlog']);
     }
 
+    const jwtToken = this.storageService.getJwtToken();
+    const username = this.jwtService.getClaim(jwtToken, 'username');
+
+    let newTask: TaskCreation = {
+      name: this.name?.value,
+      description: this.description?.value,
+      dueDate: this.dueDate?.value,
+      priority: 1,
+      type: 0,
+      storyPoints: this.storyPoints?.value,
+      sprintId: '',
+      projectId: projectId,
+      username: username,
+    };
+
     if(this.sprintId !== ''){
-      task.sprintId = this.sprintId;
+      newTask.sprintId = this.sprintId;
     }
 
-    task.projectId = localStorage.getItem('selectedProjectId') ?? '';
-
-    this.taskService.create(task).subscribe(
+    this.taskService.create(newTask).subscribe(
       (response) => {
         this.router.navigate(['/backlog']);
       },

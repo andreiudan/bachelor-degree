@@ -49,6 +49,12 @@ namespace WorkPlanner.DataAccess
                         .HasDefaultValueSql("datetime('now')");
 
             modelBuilder.Entity<Project>()
+                        .HasOne<User>()
+                        .WithMany()
+                        .HasForeignKey(p => p.CreatorId)
+                        .IsRequired();
+
+            modelBuilder.Entity<Project>()
                         .HasMany(p => p.Sprints)
                         .WithOne(s => s.Project)
                         .HasForeignKey(s => s.ProjectId)

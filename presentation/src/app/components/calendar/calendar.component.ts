@@ -881,5 +881,6 @@ export class CalendarComponent {
 
   public onTodayClicked(): void {
     this.initializeCurrentUTCDate();
+    Promise.resolve(this.loadTimesheets());
   }
 }

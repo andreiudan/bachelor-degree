@@ -17,7 +17,7 @@
       <button class="create-sprint-button" (click)="openCreateSprintDialog()">Create Sprint</button>
     </div>
   
-    <div class="page-alignment">
+    <div class="page-alignment" cdkDropListGroup>
       <div class="active-sprint" *ngIf="(activeSprintLoaded | async) && this.activeSprint.id != null">
         <mat-card class="sprint">
           <mat-card-header>
@@ -31,7 +31,12 @@
             </div>
           </mat-card-header>
   
-          <mat-card-content>
+          <mat-card-content cdkDropList
+                    id="activeSprintTasksList"
+                    [cdkDropListData]="activeSprint.tasks"
+                    cdkDropListSortingDisabled
+                    (cdkDropListDropped)="drop($event)"
+                    >
             <div class="task-info-alignment padding-top-legend">
               <div class="blank-title-space"></div>
               <div class="info-alignment">
@@ -56,59 +61,59 @@
               <div class="blank-story-points-space"></div>
             </div>
   
-            @for (task of activeSprint.tasks; track $index) {
-            <mat-card [routerLink]="['/task', task.id]" class="task-card">
-              <mat-card-content>
-                <div class="task-info task-info-alignment">
-                  <div class="blank-title-space">
-                    <div class="no-legend">
-                      <div class="title">
-                        <mat-icon>block</mat-icon>
-                        <h4>{{ task.name }}</h4>
+            <div *ngFor="let task of activeSprint.tasks; let i = index" cdkDrag>
+              <mat-card [routerLink]="['/task', task.id]" class="task-card">
+                <mat-card-content>
+                  <div class="task-info task-info-alignment">
+                    <div class="blank-title-space">
+                      <div class="no-legend">
+                        <div class="title">
+                          <mat-icon>block</mat-icon>
+                          <h4>{{ task.name }}</h4>
+                        </div>
+                        <mat-card class="task-labels">
+                          <mat-card-content>
+                            <p>{{ task.labels }}</p>
+                          </mat-card-content>
+                        </mat-card>
                       </div>
-                      <mat-card class="task-labels">
-                        <mat-card-content>
-                          <p>{{ task.labels }}</p>
-                        </mat-card-content>
-                      </mat-card>
                     </div>
-                  </div>
-                  <div class="info-alignment">
-                    <div class="info data">
-                      <div>
-                        <p>{{ task.status }}</p>
-                      </div>
-                      <div>
-                        <p>{{ task.type }}</p>
-                      </div>
-                      <div>
-                        <div class="progress">
-                          <p>{{ task.progress }}%</p>
-                          <mat-progress-bar
-                            mode="determinate"
-                            value="{{ task.progress }}"
-                          ></mat-progress-bar>
+                    <div class="info-alignment">
+                      <div class="info data">
+                        <div>
+                          <p>{{ task.status }}</p>
+                        </div>
+                        <div>
+                          <p>{{ task.type }}</p>
+                        </div>
+                        <div>
+                          <div class="progress">
+                            <p>{{ task.progress }}%</p>
+                            <mat-progress-bar
+                              mode="determinate"
+                              value="{{ task.progress }}"
+                            ></mat-progress-bar>
+                          </div>
+                        </div>
+                        <div>
+                          <p>{{ this.changeDateTimeToDate(task.dueDate) }}</p>
+                        </div>
+                        <div>
+                          <p>{{ task.assignee }}</p>
                         </div>
                       </div>
+                    </div>
+                    <div class="blank-story-points-space">
                       <div>
-                        <p>{{ this.changeDateTimeToDate(task.dueDate) }}</p>
-                      </div>
-                      <div>
-                        <p>{{ task.assignee }}</p>
+                        <div class="story-points">
+                          {{ task.storyPoints }}
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="blank-story-points-space">
-                    <div>
-                      <div class="story-points">
-                        {{ task.storyPoints }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </mat-card-content>
-            </mat-card>
-            }
+                </mat-card-content>
+              </mat-card>
+            </div>
           </mat-card-content>
   
           <mat-card-footer>
@@ -134,7 +139,12 @@
             </div>
           </mat-card-header>
   
-          <mat-card-content>
+          <mat-card-content cdkDropList
+                        id="{{sprint.id}}"
+                        [cdkDropListData]="sprint.tasks"
+                        cdkDropListSortingDisabled
+                        (cdkDropListDropped)="drop($event)"
+          >
             <div class="task-info-alignment padding-top-legend">
               <div class="blank-title-space"></div>
               <div class="info-alignment">
@@ -159,59 +169,59 @@
               <div class="blank-story-points-space"></div>
             </div>
   
-            @for (task of sprint.tasks; track $index) {
-            <mat-card [routerLink]="['/task', task.id]" class="task-card">
-              <mat-card-content>
-                <div class="task-info task-info-alignment">
-                  <div class="blank-title-space">
-                    <div class="no-legend">
-                      <div class="title">
-                        <mat-icon>block</mat-icon>
-                        <h4>{{ task.name }}</h4>
+            <div *ngFor="let task of sprint.tasks; let i = index" cdkDrag>
+              <mat-card [routerLink]="['/task', task.id]" class="task-card">
+                <mat-card-content>
+                  <div class="task-info task-info-alignment">
+                    <div class="blank-title-space">
+                      <div class="no-legend">
+                        <div class="title">
+                          <mat-icon>block</mat-icon>
+                          <h4>{{ task.name }}</h4>
+                        </div>
+                        <mat-card class="task-labels">
+                          <mat-card-content>
+                            <p>{{ task.labels }}</p>
+                          </mat-card-content>
+                        </mat-card>
                       </div>
-                      <mat-card class="task-labels">
-                        <mat-card-content>
-                          <p>{{ task.labels }}</p>
-                        </mat-card-content>
-                      </mat-card>
                     </div>
-                  </div>
-                  <div class="info-alignment">
-                    <div class="info data">
-                      <div>
-                        <p>{{ task.status }}</p>
-                      </div>
-                      <div>
-                        <p>{{ task.type }}</p>
-                      </div>
-                      <div>
-                        <div class="progress">
-                          <p>{{ task.progress }}%</p>
-                          <mat-progress-bar
-                            mode="determinate"
-                            value="{{ task.progress }}"
-                          ></mat-progress-bar>
+                    <div class="info-alignment">
+                      <div class="info data">
+                        <div>
+                          <p>{{ task.status }}</p>
+                        </div>
+                        <div>
+                          <p>{{ task.type }}</p>
+                        </div>
+                        <div>
+                          <div class="progress">
+                            <p>{{ task.progress }}%</p>
+                            <mat-progress-bar
+                              mode="determinate"
+                              value="{{ task.progress }}"
+                            ></mat-progress-bar>
+                          </div>
+                        </div>
+                        <div>
+                          <p>{{ this.changeDateTimeToDate(task.dueDate) }}</p>
+                        </div>
+                        <div>
+                          <p>{{ task.assignee }}</p>
                         </div>
                       </div>
+                    </div>
+                    <div class="blank-story-points-space">
                       <div>
-                        <p>{{ this.changeDateTimeToDate(task.dueDate) }}</p>
-                      </div>
-                      <div>
-                        <p>{{ task.assignee }}</p>
+                        <div class="story-points">
+                          {{ task.storyPoints }}
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="blank-story-points-space">
-                    <div>
-                      <div class="story-points">
-                        {{ task.storyPoints }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </mat-card-content>
-            </mat-card>
-            }
+                </mat-card-content>
+              </mat-card>
+            </div>
           </mat-card-content>
   
           <mat-card-footer>
@@ -235,60 +245,67 @@
           </div>
         </mat-card-header>
   
-        <mat-card-content *ngIf="(this.backlogTasksLoaded | async) && this.backlogTasks.length != 0">
-          <div class="backlog-task-info-alignment padding-top-legend">
-            <div class="blank-title-space"></div>
-            <div class="backlog-info-alignment">
-              <div class="backlog-info legend">
-                <div>
-                  <p>Type</p>
-                </div>
-                <div>
-                  <p>Due Date</p>
-                </div>
-              </div>
-            </div>
-            <div class="blank-story-points-space"></div>
-          </div>
-  
-          @for (task of backlogTasks; track $index) {
-          <mat-card [routerLink]="['/task', task.id]" class="task-card">
-            <mat-card-content>
-              <div class="task-info backlog-task-info-alignment">
-                <div class="blank-title-space">
-                  <div class="no-legend">
-                    <div class="title">
-                      <mat-icon>block</mat-icon>
-                      <h4>{{ task.name }}</h4>
-                    </div>
-                    <mat-card class="task-labels">
-                      <mat-card-content>
-                        <p>{{ task.labels }}</p>
-                      </mat-card-content>
-                    </mat-card>
-                  </div>
-                </div>
-                <div class="backlog-info-alignment">
-                  <div class="backlog-info data">
-                    <div>
-                      <p>{{ task.type }}</p>
-                    </div>
-                    <div>
-                      <p>{{ this.changeDateTimeToDate(task.dueDate) }}</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="blank-story-points-space">
+        <mat-card-content cdkDropList
+                          id="backlogTasksList"
+                          [cdkDropListData]="backlogTasks"
+                          cdkDropListSortingDisabled
+                          (cdkDropListDropped)="drop($event)"
+          >
+          <div *ngIf="(this.backlogTasksLoaded | async) && this.backlogTasks.length != 0" class="backlog-content">
+            <div class="backlog-task-info-alignment padding-top-legend">
+              <div class="blank-title-space"></div>
+              <div class="backlog-info-alignment">
+                <div class="backlog-info legend">
                   <div>
-                    <div class="story-points">
-                      {{ task.storyPoints }}
-                    </div>
+                    <p>Type</p>
+                  </div>
+                  <div>
+                    <p>Due Date</p>
                   </div>
                 </div>
               </div>
-            </mat-card-content>
-          </mat-card>
-          }
+              <div class="blank-story-points-space"></div>
+            </div>
+    
+            <div *ngFor="let task of backlogTasks; let i = index" cdkDrag>
+              <mat-card [routerLink]="['/task', task.id]" class="task-card">
+                <mat-card-content>
+                  <div class="task-info backlog-task-info-alignment">
+                    <div class="blank-title-space">
+                      <div class="no-legend">
+                        <div class="title">
+                          <mat-icon>block</mat-icon>
+                          <h4>{{ task.name }}</h4>
+                        </div>
+                        <mat-card class="task-labels">
+                          <mat-card-content>
+                            <p>{{ task.labels }}</p>
+                          </mat-card-content>
+                        </mat-card>
+                      </div>
+                    </div>
+                    <div class="backlog-info-alignment">
+                      <div class="backlog-info data">
+                        <div>
+                          <p>{{ task.type }}</p>
+                        </div>
+                        <div>
+                          <p>{{ this.changeDateTimeToDate(task.dueDate) }}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="blank-story-points-space">
+                      <div>
+                        <div class="story-points">
+                          {{ task.storyPoints }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>

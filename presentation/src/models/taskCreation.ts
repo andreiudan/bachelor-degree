@@ -1,11 +1,14 @@
+import { PriorityTypes } from "./priorityTypes";
+import { TaskTypes } from "./taskTypes";
+
 export class TaskCreation {
     name: string;
     description: string;
     sprintId: string;
     projectId: string;
-    creatorId: string;
+    username: string;
     dueDate: Date;
-    priority: string;
-    type: string;
+    priority: PriorityTypes;
+    type: TaskTypes;
     storyPoints: number;
 }

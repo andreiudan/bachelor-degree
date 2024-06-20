@@ -24,6 +24,11 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
 
             User userToValidate = await unitOfWork.Users.FindAsync(u => u.Id.Equals(idToBeActivated));
 
+            if(userToValidate.Verified == true)
+            {
+                return "Already activated!";
+            }
+
             string newUsername = usernameGenerator.GenerateUsername(userToValidate);
 
             User lastUserWithSameUsername = await unitOfWork.Users.GetLastUserWithSameUsername(newUsername);

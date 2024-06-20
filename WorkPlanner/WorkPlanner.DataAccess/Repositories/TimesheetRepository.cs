@@ -19,25 +19,6 @@ namespace WorkPlanner.DataAccess.Repositories
             return user.Timesheets;
         }
 
-        public bool Update(Timesheet timesheet)
-        {
-            try
-            {
-                if (Context.Entry(timesheet).State == EntityState.Detached)
-                {
-                    Context.Set<Timesheet>().Attach(timesheet);
-                }
-
-                Context.Entry(timesheet).State = EntityState.Modified;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            
-            return true;
-        }
-
         public async Task<List<Timesheet>> GetAllForUserByDateInterval(DateOnly startDate, DateOnly endDate, string username)
         {
             return await Context.Set<Timesheet>()

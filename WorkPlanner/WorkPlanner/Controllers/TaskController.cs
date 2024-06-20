@@ -6,6 +6,7 @@ using WorkPlanner.Business.Commands.TaskCommands;
 using WorkPlanner.Business.Queries.TaskQueries;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.EntityPropertyTypes;
 
 namespace WorkPlanner.Api.Controllers
 {
@@ -85,6 +86,16 @@ namespace WorkPlanner.Api.Controllers
         public async Task<IActionResult> UpdateSubtask(string taskId, [FromBody] SubtaskDto subtask)
         {
             UpdateSubtaskCommand request = new UpdateSubtaskCommand(subtask, taskId);
+
+            bool result = await mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{taskId}/status/{newStatus}")]
+        public async Task<IActionResult> UpdateStatus(string taskId, StatusType newStatus)
+        {
+            UpdateTaskCommand request = new UpdateTaskCommand(taskId, newStatus);
 
             bool result = await mediator.Send(request);
 

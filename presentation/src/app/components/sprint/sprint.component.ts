@@ -9,6 +9,7 @@ import { ProjectService } from '../../services/project/project.service';
 import { lastValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateSprintDialogComponent } from '../create-sprint-dialog/create-sprint-dialog.component';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-sprint',
@@ -30,7 +31,7 @@ export class SprintComponent {
   public doneTasksLoaded: Promise<boolean>;
   public sprintLoaded: Promise<boolean>;
 
-  constructor(private sprintService: SprintService, private projectService: ProjectService) {}
+  constructor(private sprintService: SprintService, private projectService: ProjectService, private taskService: TaskService) {}
 
   ngOnInit() {
     this.initialize();
@@ -41,7 +42,14 @@ export class SprintComponent {
   }
 
   private async loadActiveSprint() {
-    const activeSprint$ = this.sprintService.getActiveSprintForProject("2B50DAC7-EFFF-4E90-9080-BC6CE3058CC5");
+    const projectId = localStorage.getItem('selectedProjectId');
+
+    if (!projectId) {
+      alert('No project selected');
+      return;
+    }
+
+    const activeSprint$ = this.sprintService.getActiveSprintForProject(projectId);
     this.activeSprint = await lastValueFrom(activeSprint$);
   }
 
@@ -105,5 +113,55 @@ export class SprintComponent {
     }
     
     return true;
+  }
+
+  public async drop(event: CdkDragDrop<Task[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray<Task>(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      let wasUpdateSuccessful = false;
+      let movedTask = new Task();
+      let newStatus: StatusTypes = StatusTypes.ToDo;
+
+      switch(event.container.id) {
+        case 'toDoList':
+          movedTask = event.previousContainer.data[event.currentIndex];
+          newStatus = StatusTypes.ToDo;
+          break;
+
+        case 'inProgressList':
+          movedTask = event.previousContainer.data[event.currentIndex];
+          newStatus = StatusTypes.InProgress;
+          break;
+
+        case 'inReviewList':
+          movedTask = event.previousContainer.data[event.currentIndex];
+          newStatus = StatusTypes.InReview;
+          break;
+
+        case 'doneList':
+          movedTask = event.previousContainer.data[event.currentIndex];
+          newStatus = StatusTypes.Done;
+          break;
+        
+        default:
+          console.log('default');
+          break;
+      }
+
+      const modified$ = this.taskService.updateStatus(movedTask.id, newStatus);
+      wasUpdateSuccessful = await lastValueFrom(modified$);
+
+      if(wasUpdateSuccessful) {
+        transferArrayItem<Task>(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+      } else {
+        alert('Task status update failed');
+      }
+    }
   }
 }

@@ -10,24 +10,5 @@ namespace WorkPlanner.DataAccess.Repositories
         {
             
         }
-
-        public bool Update(Subtask subtask)
-        {
-            try
-            {
-                if (Context.Entry(subtask).State == EntityState.Detached)
-                {
-                    Context.Set<Subtask>().Attach(subtask);
-                }
-
-                Context.Entry(subtask).State = EntityState.Modified;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return true;
-        }   
     }
 }

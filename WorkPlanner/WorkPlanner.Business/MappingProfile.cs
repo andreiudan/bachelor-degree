@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.EntityPropertyTypes;
 
 namespace WorkPlanner.Business
 {
@@ -32,7 +33,10 @@ namespace WorkPlanner.Business
                 .ForMember(dest => dest.Subtasks, opt => opt.Ignore())
                 .ForMember(dest => dest.Status, opt => opt.Ignore())
                 .ForMember(dest => dest.StartDate, opt => opt.Ignore())
-                .ForMember(dest => dest.DueDate, opt => opt.Ignore());
+                .ForMember(dest => dest.SprintId, opt => opt.Ignore())
+                .ForMember(dest => dest.Sprint, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatorId, opt => opt.Ignore())
+                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(d => DateTime.Parse(d.DueDate)));
 
             CreateMap<TimesheetCreationDto, Timesheet>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -80,6 +84,11 @@ namespace WorkPlanner.Business
         private Guid MapStringIdToGuid(string id)
         {
             return Guid.Parse(id);
+        }
+
+        private TModel MapEnumType<TModel>(string priority)
+        {
+            return (TModel)Enum.Parse(typeof(TModel), priority);
         }
     }
 }

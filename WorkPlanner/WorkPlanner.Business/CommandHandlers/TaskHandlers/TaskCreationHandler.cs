@@ -22,13 +22,20 @@ namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
             SprintTask task = mapper.Map<SprintTask>(request.Task);
             SprintTask taskAdded = null;
 
-            if (request.Task.SprintId == Guid.Empty)
+            User user = await unitOfWork.Users.FindAsync(u => u.Username.Equals(request.Task.Username));
+
+            task.CreatorId = user.Id;
+
+            if (request.Task.SprintId == string.Empty)
             {
                 taskAdded = await unitOfWork.Tasks.AddOnBacklog(request.Task.ProjectId, task);
             }
             else
             {
-                taskAdded = await unitOfWork.Tasks.AddOnSprint(request.Task.SprintId, task);
+                Guid sprintId = Guid.Parse(request.Task.SprintId);
+                task.SprintId = sprintId;
+
+                taskAdded = await unitOfWork.Tasks.AddOnSprint(sprintId, task);
             }
 
             await unitOfWork.CompleteAsync();

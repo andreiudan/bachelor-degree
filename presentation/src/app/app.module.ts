@@ -40,7 +40,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { CreateProjectDialogComponent } from './components/create-project-dialog/create-project-dialog.component'
+import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 
 const matFormFieldOptions: MatFormFieldDefaultOptions = {
   hideRequiredMarker: true,
@@ -87,6 +87,9 @@ const matFormFieldOptions: MatFormFieldDefaultOptions = {
     MatTooltipModule,
     MatPaginator,
     MatTableModule,
+    CdkDropListGroup, 
+    CdkDropList, 
+    CdkDrag,
   ],
   providers: [
     provideClientHydration(),
