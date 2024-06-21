@@ -77,4 +77,16 @@ export class TaskService {
 
     return this.httpClient.put(updateStatusUrl, {responseType: 'text'});
   }
+
+  public changeSprint(taskId: string, newSprintId: string): Observable<any> {
+    const changeSprintUrl = this.baseUrl + taskId + '/' + newSprintId;
+
+    return this.httpClient.put(changeSprintUrl, {responseType: 'text'});
+  }
+
+  public moveToBacklog(taskId: string): Observable<any> {
+    const moveToBacklogUrl = this.baseUrl + taskId + '/moveToBacklog';
+
+    return this.httpClient.put(moveToBacklogUrl, {responseType: 'text'});
+  }
 }

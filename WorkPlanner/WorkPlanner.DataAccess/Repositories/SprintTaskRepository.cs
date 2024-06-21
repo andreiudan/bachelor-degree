@@ -97,5 +97,48 @@ namespace WorkPlanner.DataAccess.Repositories
 
             return task;
         }
+
+        public async Task<bool> ChangeSprint(Guid newSprintId, SprintTask task)
+        {
+            if(task.BacklogId != null!)
+            {
+                task.BacklogId = null!;
+                task.Backlog = null!;
+                task.SprintId = newSprintId;
+            }
+            else if(task.SprintId != null!)
+            {
+                task.SprintId = newSprintId;
+            }
+
+            Update(task);
+
+            return true;
+        }
+
+        public async Task<bool> MoveToBacklog(SprintTask task)
+        {
+            if(task == null || task == default)
+            {
+                return false;
+            }
+
+            Guid projectId = Context.Set<SprintTask>()
+                                    .Include(t => t.Sprint)
+                                    .Where(t => t.Id.Equals(task.Id))
+                                    .Select(t => t.Sprint.ProjectId)
+                                    .FirstOrDefaultAsync().Result;      
+
+            task.SprintId = null;
+            task.Sprint = null;
+
+            task.BacklogId = Context.Set<Backlog>()
+                                    .Where(b => b.ProjectId.Equals(projectId))
+                                    .FirstOrDefaultAsync().Result.Id;
+
+            Update(task);
+
+            return true;
+        }
     }
 }

@@ -6,7 +6,7 @@ import { BacklogService } from '../../services/backlog/backlog.service';
 import { SprintService } from '../../services/sprint/sprint.service';
 import { Project } from '../../../models/project';
 import { ProjectService } from '../../services/project/project.service';
-import { lastValueFrom } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { TaskService } from '../../services/task/task.service';
 import { TaskCreation } from '../../../models/taskCreation';
 import { MatDialog } from '@angular/material/dialog';
@@ -36,6 +36,7 @@ export class BacklogComponent {
   constructor(private backlogService: BacklogService, 
               private sprintService: SprintService, 
               private projectService: ProjectService,
+              private tasksService: TaskService,
               private dialog: MatDialog,
               private router: Router) {}
 
@@ -158,35 +159,44 @@ export class BacklogComponent {
     this.router.navigate(['/createIssue', sprintId]);
   }
 
-  public drop(event: CdkDragDrop<Task[]>) {
+  public async drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray<Task>(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem<Task>(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      let wasMoved = false;
+      let movedTask$: Observable<any> = new Observable();
 
       switch(event.container.id) {
         case 'activeSprintTasksList':
-          console.log('move to active sprint');
+          movedTask$ = this.tasksService.changeSprint(event.previousContainer.data[event.currentIndex].id, this.activeSprint.id);
           break;
 
         case 'backlogTasksList':
-          console.log('move to backlog');
+          movedTask$ = this.tasksService.moveToBacklog(event.previousContainer.data[event.currentIndex].id);
           break;
         
         default:
           if(this.inactiveSprints.filter(sprint => sprint.id === event.container.id).length > 0){
-            console.log('move to inactive sprint');
+            movedTask$ = this.tasksService.changeSprint(event.previousContainer.data[event.currentIndex].id, event.container.id);
             break;
           }
           else{
             console.log('default');
             break;
           }
+      }
+
+      wasMoved = await lastValueFrom(movedTask$);
+
+      if(wasMoved){
+        transferArrayItem<Task>(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+      } else {
+        alert("Task could not be moved.")
       }
     }
   }

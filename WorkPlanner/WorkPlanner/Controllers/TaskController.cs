@@ -101,5 +101,25 @@ namespace WorkPlanner.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPut("{taskId}/{newSprintId}")]
+        public async Task<IActionResult> ChangeSprint(string taskId, string newSprintId)
+        {
+            ChangeSprintCommand request = new ChangeSprintCommand(taskId, newSprintId);
+
+            bool result = await mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{taskId}/moveToBacklog")]
+        public async Task<IActionResult> MoveToBacklog(string taskId)
+        {
+            MoveTaskToBacklogCommand request = new MoveTaskToBacklogCommand(taskId);
+
+            bool result = await mediator.Send(request);
+
+            return Ok(result);
+        }
     }
 }
