@@ -4,42 +4,34 @@
     </div>
     
     <div class="form">
-        <form [formGroup]="taskCreationForm" (ngSubmit)="onSubmit()">
-            <mat-form-field>
-                <input matInput type="text" placeholder="Title" formControlName="name">
+        <form [formGroup]="taskCreationForm" (ngSubmit)="onSubmit()" #form="ngForm">
+            <mat-form-field class="single-form-field">
                 <mat-label>Title</mat-label>
+                <input matInput type="text" placeholder="Title" formControlName="name">
+                <mat-error>Please enter a title.</mat-error>
             </mat-form-field>
         
-            <mat-form-field>
-                <input matInput type="text" placeholder="Description" formControlName="description">
+            <mat-form-field class="single-form-field">
                 <mat-label>Description</mat-label>
+                <input matInput type="text" placeholder="Description" formControlName="description">
+                <mat-error>Please enter a description.</mat-error>
             </mat-form-field>
-            
-            <div class="two-col-alignment">
-                <mat-form-field>
-                    <input matInput type="number" placeholder="Story Points" formControlName="storyPoints">
-                    <mat-label>Story Points</mat-label>
-                </mat-form-field>
-                
-                <mat-form-field>
-                    <mat-label>Assignee</mat-label>
-                    <mat-select *ngIf="(usersLoaded | async)" [formControl]="assigneeControl">
-                        <mat-option *ngFor="let assignee of users; trackBy: trackByFn" [value]="assignee" formControlName="assignee">{{ assignee.firstName }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
         
-            <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Due Date" formControlName="dueDate">
-                <mat-label>Due date</mat-label>
+            <mat-form-field class="single-form-field">
+                <mat-label>Due Date</mat-label>
+                <input matInput [matDatepicker]="picker" [min]="today" placeholder="Choose a date" formControlName="dueDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error>Please enter a date.</mat-error>
             </mat-form-field>
             
-            <div class="two-col-alignment">
+            <div class="multiple-col-alignment">
                 <mat-form-field>
                     <mat-label>Type</mat-label>
                     <mat-select [formControl]="typesControl">
                         <mat-option *ngFor="let type of taskTypes" [value]="type" formControlName="type">{{ type }}</mat-option>
                     </mat-select>
+                    <mat-error>Please select a type.</mat-error>
                 </mat-form-field>
             
                 <mat-form-field>
@@ -47,12 +39,26 @@
                     <mat-select [formControl]="priorityControl">
                         <mat-option *ngFor="let priority of priorityTypes" [value]="priority" formControlName="priority">{{ priority }}</mat-option>
                     </mat-select>
+                    <mat-error>Please select a priority.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="number" placeholder="Story Points" formControlName="storyPoints">
+                    <mat-label>Story Points</mat-label>
+                    <mat-error>Please enter a number.</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field>
+                    <mat-label>Assignee</mat-label>
+                    <mat-select [formControl]="assigneeControl">
+                        <mat-option *ngFor="let assignee of users; trackBy: trackByFn" [value]="assignee" formControlName="assignee">{{ assignee.firstName }}</mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
 
             <div class="actions">
                 <div>
-                    <button mat-button>Clear</button>
+                    <button mat-button (click)="form.reset()">Clear</button>
                 </div>
                 <div>
                     <button mat-raised-button color="primary" type="submit">Create</button>

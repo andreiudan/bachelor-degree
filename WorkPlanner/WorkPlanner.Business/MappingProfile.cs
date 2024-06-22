@@ -60,7 +60,11 @@ namespace WorkPlanner.Business
 
             CreateMap<Project, ProjectDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(p => p.Id.ToString()))
-                .ForMember(dest => dest.CreatorId, opt => opt.MapFrom(p => p.CreatorId.ToString()));  
+                .ForMember(dest => dest.CreatorId, opt => opt.MapFrom(p => p.CreatorId.ToString()));
+
+            CreateMap<SprintTask, SprintTaskDto>();
+
+            CreateMap<Sprint, SprintDto>();
         }
 
         private DateOnly ConvertStringToDateOnly(string date)

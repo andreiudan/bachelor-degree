@@ -4,7 +4,7 @@ using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Business.Commands.TaskCommands
 {
-    public class TaskCreationCommand : IRequest<SprintTask>
+    public class TaskCreationCommand : IRequest<SprintTaskDto>
     {
         public SprintTaskCreationDto Task { get; }
 

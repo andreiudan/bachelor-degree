@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using WorkPlanner.Business.Commands.UserCommands;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
@@ -27,12 +28,12 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
 
             if (user is null)
             {
-                throw new InvalidOperationException("User with this email does not exist");
+                throw new UserNotFoundException();
             }
 
             if (!passwordHasher.VerifyPassword(request.User.Password, user.Salt, user.HashedPassword))
             {
-                throw new InvalidOperationException("Invalid password");
+                throw new InvalidPasswordException();
             }
 
             return tokenService.GenerateToken(user); ;

@@ -40,10 +40,10 @@ namespace WorkPlanner.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("startDate={startDate}&endDate={endDate}&username={username}")]
-        public async Task<IActionResult> GetAllForUserByDateInterval(string startDate, string endDate, string username)
+        [HttpGet("startDate={startDate}&endDate={endDate}")]
+        public async Task<IActionResult> GetAllForUserByDateInterval(string startDate, string endDate)
         {
-            GetAllTimesheetsForUserByDateIntervalQuery request = new GetAllTimesheetsForUserByDateIntervalQuery(startDate, endDate, username);
+            GetAllTimesheetsForUserByDateIntervalQuery request = new GetAllTimesheetsForUserByDateIntervalQuery(startDate, endDate);
 
             List<Timesheet> response = await mediator.Send(request);
 

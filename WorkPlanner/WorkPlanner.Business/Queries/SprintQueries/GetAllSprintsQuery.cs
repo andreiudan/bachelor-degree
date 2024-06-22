@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.Dtos;
 
 namespace WorkPlanner.Business.Queries.SprintQueries
 {
-    public class GetAllSprintsQuery : IRequest<List<Sprint>>
+    public class GetAllSprintsQuery : IRequest<List<SprintDto>>
     {
     }
 }

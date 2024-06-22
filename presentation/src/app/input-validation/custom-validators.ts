@@ -52,4 +52,10 @@ export class CustomValidators {
     const pattern =  INPUT_VALIDATION_RULES.regex.hasAccentedAlphanumeric;
     return pattern.test(control.value) ? null : { invalidCharacters: true };
   }
+
+  public static dateInvalidFormatValidator(control: FormGroup): { [s: string]: boolean } | null
+  {
+    const pattern = INPUT_VALIDATION_RULES.regex.datePattern;
+    return pattern.test(control.value) ? null : { invalidFormat: true };
+  }
 }

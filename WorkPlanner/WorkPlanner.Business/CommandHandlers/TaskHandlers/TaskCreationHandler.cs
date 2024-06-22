@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using WorkPlanner.Business.Commands.TaskCommands;
+using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
 
 namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
 {
-    internal class TaskCreationHandler : IRequestHandler<TaskCreationCommand, SprintTask>
+    internal class TaskCreationHandler : IRequestHandler<TaskCreationCommand, SprintTaskDto>
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
@@ -17,10 +18,10 @@ namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<SprintTask> Handle(TaskCreationCommand request, CancellationToken cancellationToken)
+        public async Task<SprintTaskDto> Handle(TaskCreationCommand request, CancellationToken cancellationToken)
         {
             SprintTask task = mapper.Map<SprintTask>(request.Task);
-            SprintTask taskAdded = null;
+            SprintTask addedTask = null;
 
             User user = await unitOfWork.Users.FindAsync(u => u.Username.Equals(request.Task.Username));
 
@@ -28,19 +29,21 @@ namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
 
             if (request.Task.SprintId == string.Empty)
             {
-                taskAdded = await unitOfWork.Tasks.AddOnBacklog(request.Task.ProjectId, task);
+                addedTask = await unitOfWork.Tasks.AddOnBacklog(request.Task.ProjectId, task);
             }
             else
             {
                 Guid sprintId = Guid.Parse(request.Task.SprintId);
                 task.SprintId = sprintId;
 
-                taskAdded = await unitOfWork.Tasks.AddOnSprint(sprintId, task);
+                addedTask = await unitOfWork.Tasks.AddOnSprint(sprintId, task);
             }
 
             await unitOfWork.CompleteAsync();
 
-            return taskAdded;
+            SprintTaskDto taskDto = mapper.Map<SprintTaskDto>(addedTask);
+
+            return taskDto;
         }
     }
 }

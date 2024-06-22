@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using WorkPlanner.Domain.Dtos;
-using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Business.Commands.SprintCommands
 {
-    public class SprintCreationCommand : IRequest<Sprint>
+    public class SprintCreationCommand : IRequest<SprintDto>
     {
         public SprintCreationDto Sprint { get; }
 

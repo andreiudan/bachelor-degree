@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { types } from 'util';
 import { TaskTypes } from '../../../models/taskTypes';
 import { PriorityTypes } from '../../../models/priorityTypes';
 import { User } from '../../../models/user';
 import { UserService } from '../../services/user/user.service';
 import { TaskService } from '../../services/task/task.service';
 import { lastValueFrom } from 'rxjs';
-import { Task } from '../../../models/task';
-import { StatusTypes } from '../../../models/statusTypes';
 import { TaskCreation } from '../../../models/taskCreation';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -21,17 +18,17 @@ import { JwtService } from '../../services/authentication/jwt.service';
   styleUrl: './create-issue.component.scss'
 })
 export class CreateIssueComponent implements OnInit{
-  public taskTypes = Object.values(TaskTypes).filter(value => typeof value === 'string');
-  public priorityTypes = Object.values(PriorityTypes).filter(value => typeof value === 'string');
-  public users: User[] = [];
-  
   public taskCreationForm: FormGroup;
 
-  public usersLoaded: Promise<boolean>;
+  public taskTypes = Object.values(TaskTypes).filter(value => typeof value === 'string');
+  public priorityTypes = Object.values(PriorityTypes).filter(value => typeof value === 'string');
+  
+  public users: User[] = [];
+  public today = new Date();
 
-  public typesControl = new FormControl('Type');
-  public priorityControl = new FormControl('Priority');
-  public assigneeControl = new FormControl('Assignee');
+  public typesControl: FormControl;
+  public priorityControl:  FormControl;
+  public assigneeControl: FormControl;
 
   private sprintId: string = '';
 
@@ -53,9 +50,9 @@ export class CreateIssueComponent implements OnInit{
 
     this.sprintId = this.activatedRoute.snapshot.paramMap.get('sprintId') ?? '';
 
-    this.usersLoaded = Promise.resolve(this.loadAssignees());
+    this.loadAssignees();
 
-    this.assigneeControl = new FormControl('', Validators.required);
+    this.assigneeControl = new FormControl('');
     this.typesControl = new FormControl('', Validators.required);
     this.priorityControl = new FormControl('', Validators.required);
 
@@ -67,7 +64,12 @@ export class CreateIssueComponent implements OnInit{
           CustomValidators.nameMinimumLengthValidator,
         ],
       ],
-      description: [''],
+      description: [
+        '',
+        [
+          Validators.required,
+        ]
+      ],
       dueDate: [
         '',
         [
@@ -174,5 +176,9 @@ export class CreateIssueComponent implements OnInit{
         console.log(error);
       }
     );
+  }
+
+  public onClearClick() {
+    this.taskCreationForm.reset();
   }
 }

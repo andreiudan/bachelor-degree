@@ -13,7 +13,7 @@ export class Task {
     status: StatusTypes;
     storyPoints: number;
     assignee: string;
-    author: string;
+    creator: string;
     dueDate: Date;
     startDate: Date;
     progress: number;

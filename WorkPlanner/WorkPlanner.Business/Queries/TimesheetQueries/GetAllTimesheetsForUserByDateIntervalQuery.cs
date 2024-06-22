@@ -7,13 +7,11 @@ namespace WorkPlanner.Business.Queries.TimesheetQueries
     {
         public string StartDate { get; }
         public string EndDate { get; }
-        public string Username { get; }
 
-        public GetAllTimesheetsForUserByDateIntervalQuery(string startDate, string endDate, string username)
+        public GetAllTimesheetsForUserByDateIntervalQuery(string startDate, string endDate)
         {
-            StartDate = startDate;
-            EndDate = endDate;
-            Username = username;
+            StartDate = startDate ?? throw new ArgumentNullException(nameof(startDate));
+            EndDate = endDate ?? throw new ArgumentNullException(nameof(endDate));
         }
     }
 }

@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SprintCreation } from '../../../models/sprintCreation';
 import { FormsModule } from '@angular/forms';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-create-sprint-dialog',
@@ -15,12 +17,18 @@ import { FormsModule } from '@angular/forms';
     MatDialogClose,
     MatDialogContent,
     MatDialogTitle,
-    FormsModule],
+    FormsModule,
+    MatDatepickerModule,
+    MatDatepicker,
+  ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './create-sprint-dialog.component.html',
   styleUrl: './create-sprint-dialog.component.scss'
 })
 
 export class CreateSprintDialogComponent {
+  public today = new Date();
+
   public sprint: SprintCreation = new SprintCreation();
 
   constructor(public dialogRef: MatDialogRef<CreateSprintDialogComponent>,
@@ -31,6 +39,8 @@ export class CreateSprintDialogComponent {
   }
 
   closeDialog(): void {
-    this.dialogRef.close(this.sprint);
+    if(this.sprint.name !== '' && this.sprint.dueDate !== null && this.sprint.name !== undefined && this.sprint.dueDate !== undefined){
+      this.dialogRef.close(this.sprint);
+    }
   }
 }

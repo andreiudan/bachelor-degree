@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WorkPlanner.Api.Filters;
 using WorkPlanner.Business.Commands;
 using WorkPlanner.Business.Commands.UserCommands;
 using WorkPlanner.Business.Queries.UserQueries;
@@ -21,6 +22,7 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpPost("authenticate")]
+        [ServiceFilter(typeof(AuthenticationExceptionFilter))]
         public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto user)
         {
             UserAuthenticationCommand request = new UserAuthenticationCommand(user);
@@ -56,7 +58,7 @@ namespace WorkPlanner.Api.Controllers
 
         [Authorize]
         [HttpGet("get")]
-        public async Task<IActionResult> GetUsers(string id)
+        public async Task<IActionResult> Get(string id)
         {
             GetUserQuery request = new GetUserQuery(id);
 

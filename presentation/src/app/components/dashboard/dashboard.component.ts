@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { Task } from '../../../models/task';
-import { SubTask } from '../../../models/subTask';
 import { ProjectService } from '../../services/project/project.service';
 import { Project } from '../../../models/project';
-import { error } from 'node:console';
 import { SprintService } from '../../services/sprint/sprint.service';
 import { Sprint } from '../../../models/sprint';
 import { lastValueFrom, of } from 'rxjs';
@@ -122,7 +120,7 @@ export class DashboardComponent {
     });
   }
 
-  private async setInProgressTasksNUmber() {
+  private async setInProgressTasksNumber() {
     const sprintInProgressTasks = this.sprintService.getTasksByTaskStatusForSprint(this.selectedProject.sprints[0].id, StatusTypes.InProgress);
     const inProgressTasks = await lastValueFrom(sprintInProgressTasks);
 
@@ -159,7 +157,7 @@ export class DashboardComponent {
   private setStatusTasksNumbers() {
     this.setDoneTasksNumber();
     this.setToDoTasksNumber();
-    this.setInProgressTasksNUmber();
+    this.setInProgressTasksNumber();
     this.setInReviewTasksNumber();
   }
 

@@ -14,12 +14,15 @@ using WorkPlanner.Domain.EmailTypes;
 using WorkPlanner.Domain.Configurations;
 using WorkPlanner.Business.Commands.UserCommands;
 using System.Text.Json.Serialization;
+using WorkPlanner.Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(
+    options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+);
 
 var config = new MapperConfiguration(cfg =>
 {
@@ -29,6 +32,9 @@ var config = new MapperConfiguration(cfg =>
 var mapper = config.CreateMapper();
 
 builder.Services.AddSingleton(mapper);
+
+builder.Services.AddScoped<AuthenticationExceptionFilter>();
+builder.Services.AddScoped<ActivateUserExceptionFilter>();
 
 builder.Services.AddCors(options =>
 {
@@ -62,6 +68,7 @@ builder.Services.AddAuthentication(option =>
 }).AddJwtBearer();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

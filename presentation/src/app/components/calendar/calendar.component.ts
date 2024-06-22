@@ -80,7 +80,7 @@ export class CalendarComponent {
 
       this.clearCalendar();
 
-      const timesheets$ = this.timesheetService.getAllForUserByDateInterval(startDate, endDate, username);
+      const timesheets$ = this.timesheetService.getAllForUserByDateInterval(startDate, endDate);
       let timesheets: Timesheet[] = await lastValueFrom(timesheets$);
 
       timesheets.forEach(timesheet => {

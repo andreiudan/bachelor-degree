@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using System.Text;
 using WorkPlanner.Business.Commands.UserCommands;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
@@ -24,9 +25,14 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
 
             User userToValidate = await unitOfWork.Users.FindAsync(u => u.Id.Equals(idToBeActivated));
 
+            if(userToValidate is null)
+            {
+                throw new UserNotFoundException();
+            }
+
             if(userToValidate.Verified == true)
             {
-                return "Already activated!";
+                throw new UserAlreadyActivatedException();
             }
 
             string newUsername = usernameGenerator.GenerateUsername(userToValidate);

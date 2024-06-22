@@ -67,9 +67,6 @@ export class LoginComponent implements OnInit{
 
       this.authService.login(userWithEncodedPassword).subscribe(() => {
         this.router.navigate(['/dashboard']);
-      }, (error) => {
-        alert('Login failed');
-        this.ngOnInit();
       });
     }
   }
@@ -89,5 +86,4 @@ export class LoginComponent implements OnInit{
                           this.email.hasError('email') || 
                           this.email.hasError('missingDomain'));
   }
-
 }

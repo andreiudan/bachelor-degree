@@ -3,18 +3,22 @@
 </div>
 <mat-dialog-content>
     <mat-form-field>
-        <input matInput type="text" [(ngModel)]="sprint.name" placeholder="Sprint Name" name="sprintName" required cdkFocusInitial #name="ngModel">
         <mat-label>Sprint name</mat-label>
+        <input matInput type="text" [(ngModel)]="sprint.name" placeholder="Sprint Name" name="sprintName" required cdkFocusInitial>
+        <mat-error>Please enter a sprint name.</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-        <input matInput type="datetime-local" [(ngModel)]="sprint.dueDate" placeholder="Due Date" name="startDate" required #name="ngModel">
         <mat-label>Due Date</mat-label>
+        <input matInput [matDatepicker]="picker" [min]="today" placeholder="Choose a date" required [(ngModel)]="sprint.dueDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>Please enter a date.</mat-error>
     </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close (click)="onNoClick()">Close</button>
-    <button mat-button [mat-dialog-close]="sprint" (click)="closeDialog()">Create</button>
+    <button mat-button (click)="closeDialog()">Create</button>
 </mat-dialog-actions>
 

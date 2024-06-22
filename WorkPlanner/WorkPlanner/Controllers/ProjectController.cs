@@ -65,7 +65,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetSprintsForProjectQuery request = new GetSprintsForProjectQuery(projectId);
 
-            List<Sprint> response = await mediator.Send(request);
+            List<SprintDto> response = await mediator.Send(request);
 
             return Ok(response);
         }
@@ -75,7 +75,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetActiveSprintForProjectQuery request = new GetActiveSprintForProjectQuery(projectId);
 
-            Sprint response = await mediator.Send(request);
+            SprintDto response = await mediator.Send(request);
 
             return Ok(response);
         }

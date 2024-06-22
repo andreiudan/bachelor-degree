@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { AuthenticationService } from './services/authentication/authentication.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { AuthenticationService } from './services/authentication/authentication.
 export class AppComponent {
   @ViewChild(MatSidenav)
   public sidenav!: MatSidenav;
-  public title = 'presentation';
+  public title = 'SprintHive';
   public isSidenavCollapsed = true;
   public isLoggedIn: boolean;
 

@@ -41,9 +41,16 @@ namespace WorkPlanner.Business.Services
         public IEnumerable<Claim> DecodeToken(string token)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            JwtSecurityToken tokenS = tokenHandler.ReadJwtToken(token) as JwtSecurityToken;
+            JwtSecurityToken tokens = tokenHandler.ReadJwtToken(token) as JwtSecurityToken;
 
-            return tokenS.Claims;
+            return tokens.Claims;
+        }
+
+        public string GetClaimValue(string token, string claimType)
+        {
+            IEnumerable<Claim> claims = DecodeToken(token);
+
+            return claims.First(c => c.Type.Equals(claimType)).Value;
         }
     }
 }

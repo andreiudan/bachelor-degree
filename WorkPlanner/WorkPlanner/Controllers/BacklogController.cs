@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkPlanner.Business.Queries.BacklogQueries;
-using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.Dtos;
 
 namespace WorkPlanner.Api.Controllers
 {
@@ -23,7 +23,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetBacklogForProjectQuery request = new GetBacklogForProjectQuery(projectId);
 
-            List<SprintTask> result = await mediator.Send(request);
+            List<SprintTaskDto> result = await mediator.Send(request);
 
             return Ok(result);
         }

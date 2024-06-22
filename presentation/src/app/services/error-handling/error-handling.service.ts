@@ -2,13 +2,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorHandlingService extends ErrorHandler {
 
-  constructor(private zone: NgZone, private router: Router, private authService: AuthenticationService) { 
+  constructor(private zone: NgZone, private router: Router, private authService: AuthenticationService, private snackBar: MatSnackBar) { 
     super();
   }
 
@@ -23,7 +24,7 @@ export class ErrorHandlingService extends ErrorHandler {
           this.router.navigate(['/landing']);
           break;
         case 400:
-          errorMessage = 'Bad Request: The server could not understand the request due to invalid syntax.';
+          errorMessage = `${error.name}: ${error.message}`;
           break;
         case 401:
           errorMessage = 'Unauthorized: You are not authorized to access this resource.';
@@ -48,19 +49,13 @@ export class ErrorHandlingService extends ErrorHandler {
     } else if (error instanceof Error) {
       if(error.message.includes('Cannot read property')) {
         errorMessage = 'An unexpected error occurred. Please try again later.';
-      } else if (error.message.includes('Timeout')) {
-        errorMessage = 'The request took too long to process. Please try again later.';
-      } else if (error.message.includes('Network Error')) {
-        errorMessage = 'The request could not be completed due to a network issue.';
-      } else if (error.message.includes('Cannot match any routes')) {
-        errorMessage = 'The requested page could not be found. Please check the URL.';
       } else {
         errorMessage = `${error.name}: ${error.stack}`;
       }
     }
 
     this.zone.run(() => {
-      console.error(errorMessage);
+      this.snackBar.open(errorMessage, 'Close', { duration: 10000 });
     });
 
     super.handleError(error);

@@ -7,22 +7,14 @@ import { TaskService } from '../../services/task/task.service';
 import { lastValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AddSubtaskDialogComponent } from '../add-subtask-dialog/add-subtask-dialog.component';
+import { TaskTypes } from '../../../models/taskTypes';
+import { PriorityTypes } from '../../../models/priorityTypes';
+import { StatusTypes } from '../../../models/statusTypes';
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrl: './task.component.scss',
-  animations: [
-    trigger('panelInOut', [
-        transition('void => *', [
-            style({transform: 'translateY(-100%)'}),
-            animate(800)
-        ]),
-        transition('* => void', [
-            animate(800, style({transform: 'translateY(-100%)'}))
-        ])
-    ])
-]
 })
 export class TaskComponent {
   public showDetails: boolean = true;
@@ -37,6 +29,10 @@ export class TaskComponent {
   public projectName: string = "";
 
   public taskLoaded: Promise<boolean>;
+
+  public taskTypes = Object.values(TaskTypes).filter(value => typeof value === 'string');
+  public priorityTypes = Object.values(PriorityTypes).filter(value => typeof value === 'string');
+  public statusTypes = Object.values(StatusTypes).filter(value => typeof value === 'string');
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private taskService: TaskService, private dialog: MatDialog) {}
 
@@ -82,8 +78,6 @@ export class TaskComponent {
   private async setSprintName() {
     const sprintName = this.taskService.getSprintName(this.taskId);
     this.sprintName = await lastValueFrom(sprintName);
-
-    this.sprintName = "A";
   }
 
   private taskNotFound(): void{

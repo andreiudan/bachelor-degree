@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using WorkPlanner.Business.Commands.SprintCommands;
+using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
 
 namespace WorkPlanner.Business.CommandHandlers.SprintHandlers
 {
-    internal class SprintCreationHandler : IRequestHandler<SprintCreationCommand, Sprint>
+    internal class SprintCreationHandler : IRequestHandler<SprintCreationCommand, SprintDto>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -17,7 +18,7 @@ namespace WorkPlanner.Business.CommandHandlers.SprintHandlers
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<Sprint> Handle(SprintCreationCommand request, CancellationToken cancellationToken)
+        public async Task<SprintDto> Handle(SprintCreationCommand request, CancellationToken cancellationToken)
         {
             Sprint sprint = mapper.Map<Sprint>(request.Sprint);
 
@@ -25,7 +26,9 @@ namespace WorkPlanner.Business.CommandHandlers.SprintHandlers
 
             await unitOfWork.CompleteAsync();
 
-            return addedSprint;
+            SprintDto sprintDto = mapper.Map<SprintDto>(addedSprint);
+
+            return sprintDto;
         }
     }
 }

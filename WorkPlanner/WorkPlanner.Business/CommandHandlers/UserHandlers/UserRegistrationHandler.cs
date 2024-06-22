@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using WorkPlanner.Business.Commands.UserCommands;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
@@ -27,7 +28,7 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
         {
             if (await unitOfWork.Users.FindAsync(u => u.Email == request.User.Email) is not null)
             {
-                throw new InvalidOperationException("User with this email already exists");
+                throw new EmailAlreadyExistsException(request.User.Email);
             }
 
             User user = mapper.Map<User>(request.User);

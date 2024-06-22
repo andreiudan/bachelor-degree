@@ -35,12 +35,13 @@ import { CreateIssueComponent } from './components/create-issue/create-issue.com
 import { authInterceptor } from './services/interceptor/auth.interceptor';
 import { ErrorHandlingService } from './services/error-handling/error-handling.service';
 import { DATE_FORMATS } from './date-formats';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 const matFormFieldOptions: MatFormFieldDefaultOptions = {
   hideRequiredMarker: true,
@@ -90,16 +91,19 @@ const matFormFieldOptions: MatFormFieldDefaultOptions = {
     CdkDropListGroup, 
     CdkDropList, 
     CdkDrag,
+    MatDatepickerModule,
   ],
   providers: [
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor])),
-    provideAnimations(),
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,useValue: matFormFieldOptions },
+    provideNativeDateAdapter(),
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: matFormFieldOptions },
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS },
     { provide: ErrorHandler, useClass: ErrorHandlingService },
+    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+
   ],
   bootstrap: [AppComponent]
 })

@@ -14,7 +14,7 @@
           {{ project.name }}
         </mat-option>
       </mat-select>
-      <button class="create-sprint-button" (click)="openCreateSprintDialog()">Create Sprint</button>
+      <button mat-raised-button (click)="openCreateSprintDialog()" color="accent">Create Sprint</button>
     </div>
   
     <div class="page-alignment" cdkDropListGroup>
@@ -24,7 +24,7 @@
             <h3>{{ activeSprint.name }}</h3>
             <span class="spacer"></span>
             <div class="sprint-actions">
-              <button class="create-issue-button" (click)="onCreateIssueClick(activeSprint.id)">Create Issue</button>
+              <button mat-raised-button color="primary" class="create-issue-button" (click)="onCreateIssueClick(activeSprint.id)">Create Issue</button>
               <button mat-icon-button>
                 <mat-icon>edit</mat-icon>
               </button>
@@ -131,8 +131,8 @@
             <h3>{{ sprint.name }}</h3>
             <span class="spacer"></span>
             <div class="sprint-actions">
-              <button class="start-sprint-button">Start Sprint</button>
-              <button class="create-issue-button" (click)="onCreateIssueClick(sprint.id)">Create Issue</button>
+              <button mat-raised-button color="primary" class="start-sprint-button">Start Sprint</button>
+              <button mat-raised-button color="primary" class="create-issue-button" (click)="onCreateIssueClick(sprint.id)">Create Issue</button>
               <button mat-icon-button>
                 <mat-icon>edit</mat-icon>
               </button>
@@ -238,7 +238,7 @@
           <h3>Backlog</h3>
           <span class="spacer"></span>
           <div class="backlog-actions">
-            <button class="create-issue-button" (click)="onCreateIssueClick('')">Create Issue</button>
+            <button mat-raised-button color="primary" class="create-issue-button" (click)="onCreateIssueClick('')">Create Issue</button>
             <button mat-icon-button>
               <mat-icon>edit</mat-icon>
             </button>

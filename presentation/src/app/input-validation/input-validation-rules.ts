@@ -14,7 +14,8 @@ export const INPUT_VALIDATION_RULES = {
       hasAccentedAlphanumeric: /^[^!?@#$%^&*>()<+=\[\]{}:"'.,/\\~]*$/,
       emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
       numberPattern: /^\d+(\.\d{1,2})?$/,
-      namePattern: /^[\p{L}'][ \p{L}'-]*[\p{L}]$/u
+      namePattern: /^[\p{L}'][ \p{L}'-]*[\p{L}]$/u,
+      datePattern: /^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{4}$/,
     }
   };
   

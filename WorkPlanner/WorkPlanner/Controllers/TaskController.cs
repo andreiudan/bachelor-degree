@@ -27,7 +27,7 @@ namespace WorkPlanner.Api.Controllers
         {
             TaskCreationCommand request = new TaskCreationCommand(task);
 
-            SprintTask result = await mediator.Send(request);
+            SprintTaskDto result = await mediator.Send(request);
 
             return Created();
         }
@@ -37,7 +37,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetAllTasksQuery request = new GetAllTasksQuery();
 
-            List<SprintTask> result = await mediator.Send(request);
+            List<SprintTaskDto> result = await mediator.Send(request);
 
             return Ok(result);
         }
@@ -47,7 +47,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetTaskQuery request = new GetTaskQuery(taskId);
 
-            SprintTask result = await mediator.Send(request);
+            SprintTaskDto result = await mediator.Send(request);
 
             return Ok(result);
         }
