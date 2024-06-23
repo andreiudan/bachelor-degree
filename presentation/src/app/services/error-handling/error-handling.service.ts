@@ -24,7 +24,7 @@ export class ErrorHandlingService extends ErrorHandler {
           this.router.navigate(['/landing']);
           break;
         case 400:
-          errorMessage = `${error.name}: ${error.message}`;
+          errorMessage = `${error.name}: ${error.error.message}`;
           break;
         case 401:
           errorMessage = 'Unauthorized: You are not authorized to access this resource.';

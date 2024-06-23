@@ -26,6 +26,10 @@ namespace WorkPlanner.Domain.Entities
         [Required]
         public DateTime DueDate { get; set; }
 
+        public bool Active { get; set; } = false;
+
+        public bool Released { get; set; } = false;
+
         [Required]
         public List<SprintTask> Tasks { get; set; } = new List<SprintTask>();
 

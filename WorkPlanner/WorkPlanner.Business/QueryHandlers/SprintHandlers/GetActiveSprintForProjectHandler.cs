@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Business.Queries.SprintQueries;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
@@ -26,6 +25,12 @@ namespace WorkPlanner.Business.QueryHandlers.SprintHandlers
             Sprint activeSprint = await unitOfWork.Sprints.GetActiveSprintForProject(projectId);
 
             SprintDto sprintDto = mapper.Map<SprintDto>(activeSprint);
+
+            if (activeSprint is null)
+            {
+                sprintDto = new SprintDto();
+                sprintDto.Id = string.Empty;
+            }
 
             return sprintDto;
         }

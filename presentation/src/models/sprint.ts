@@ -5,5 +5,7 @@ export class Sprint{
     name: string;
     dueDate: Date;
     startDate: Date;
+    active: boolean;
+    released: boolean;
     tasks: Task[];
 }

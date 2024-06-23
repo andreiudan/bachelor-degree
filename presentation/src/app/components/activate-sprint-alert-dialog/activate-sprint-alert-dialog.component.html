@@ -1,0 +1,13 @@
+<div class="title">
+    <h2 mat-dialog-title>Start Sprint</h2>
+</div>
+<mat-dialog-content>
+    <p>
+        Starting a new sprint will close the current active sprint. Are you sure you want to start a new sprint?
+    </p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button (click)="close()">Close</button>
+    <button mat-raised-button class="activate-button" (click)="activateSprint()">Start</button>
+</mat-dialog-actions>

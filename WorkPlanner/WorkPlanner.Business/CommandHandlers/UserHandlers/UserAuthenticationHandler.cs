@@ -31,6 +31,11 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
                 throw new UserNotFoundException();
             }
 
+            if(user.Verified == false)
+            {
+                throw new UserNotActivatedException();
+            }
+
             if (!passwordHasher.VerifyPassword(request.User.Password, user.Salt, user.HashedPassword))
             {
                 throw new InvalidPasswordException();

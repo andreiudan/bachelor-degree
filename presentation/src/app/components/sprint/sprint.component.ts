@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
 import { Task } from '../../../models/task';
-import { SubTask } from '../../../models/subTask';
 import { TaskService } from '../../services/task/task.service';
 import { StatusTypes } from '../../../models/statusTypes';
 import { Sprint } from '../../../models/sprint';
 import { SprintService } from '../../services/sprint/sprint.service';
 import { ProjectService } from '../../services/project/project.service';
 import { lastValueFrom } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { CreateSprintDialogComponent } from '../create-sprint-dialog/create-sprint-dialog.component';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sprint',
@@ -31,7 +29,7 @@ export class SprintComponent {
   public doneTasksLoaded: Promise<boolean>;
   public sprintLoaded: Promise<boolean>;
 
-  constructor(private sprintService: SprintService, private projectService: ProjectService, private taskService: TaskService) {}
+  constructor(private sprintService: SprintService, private projectService: ProjectService, private taskService: TaskService, private router: Router) {}
 
   ngOnInit() {
     this.initialize();
@@ -54,6 +52,11 @@ export class SprintComponent {
 
     const activeSprint$ = this.sprintService.getActiveSprintForProject(projectId);
     this.activeSprint = await lastValueFrom(activeSprint$);
+
+    if (this.activeSprint.id === '') {
+      alert('No active sprint for project');
+      this.router.navigate(['/backlog']);
+    }
   }
 
   private async loadTasks() {
@@ -136,5 +139,11 @@ export class SprintComponent {
         alert('Task status update failed');
       }
     }
+  }
+
+  public releaseSprint() {
+    this.sprintService.release(this.activeSprint.id).subscribe(() => {
+      this.router.navigate(['/backlog']);
+    });
   }
 }

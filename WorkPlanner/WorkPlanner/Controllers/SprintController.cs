@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WorkPlanner.Api.Filters;
 using WorkPlanner.Business.Commands.SprintCommands;
 using WorkPlanner.Business.Queries.SprintQueries;
 using WorkPlanner.Business.Queries.TaskQueries;
@@ -97,6 +98,28 @@ namespace WorkPlanner.Api.Controllers
             GetInactiveSprintsForProjectQuery request = new GetInactiveSprintsForProjectQuery(projectId);
 
             List<SprintDto> response = await mediator.Send(request);
+
+            return Ok(response);
+        }
+
+        [HttpPut("{sprintId}/activate")]
+        [ServiceFilter(typeof(ActivateSprintExceptionFilter))]
+        public async Task<IActionResult> ActivateSprint(string sprintId)
+        {
+            ActivateSprintCommand request = new ActivateSprintCommand(sprintId);
+
+            bool response = await mediator.Send(request);
+
+            return Ok(response);
+        }
+
+        [HttpPut("{sprintId}/release")]
+        [ServiceFilter(typeof(ReleaseSprintExceptionFilter))]
+        public async Task<IActionResult> ReleaseSprint(string sprintId)
+        {
+            ReleaseSprintCommand request = new ReleaseSprintCommand(sprintId);
+
+            bool response = await mediator.Send(request);
 
             return Ok(response);
         }

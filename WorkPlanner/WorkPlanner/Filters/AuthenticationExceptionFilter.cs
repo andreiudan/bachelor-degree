@@ -22,13 +22,11 @@ namespace WorkPlanner.Api.Filters
             {
                 context.ModelState.AddModelError(user, context.Exception.Message);
             }
-
-            if (context.Exception is UserNotActivatedException)
+            else if (context.Exception is UserNotActivatedException)
             {
                 context.ModelState.AddModelError(userNotActivated, context.Exception.Message);
             }
-
-            if (context.Exception is InvalidPasswordException)
+            else if (context.Exception is InvalidPasswordException)
             {
                 context.ModelState.AddModelError(password, context.Exception.Message);
             }

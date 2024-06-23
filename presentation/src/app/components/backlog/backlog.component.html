@@ -18,7 +18,7 @@
     </div>
   
     <div class="page-alignment" cdkDropListGroup>
-      <div class="active-sprint" *ngIf="(activeSprintLoaded | async) && this.activeSprint.id != null">
+      <div class="active-sprint" *ngIf="(activeSprintLoaded | async) && this.activeSprint.id != null && this.activeSprint.id != ''">
         <mat-card class="sprint">
           <mat-card-header>
             <h3>{{ activeSprint.name }}</h3>
@@ -131,7 +131,7 @@
             <h3>{{ sprint.name }}</h3>
             <span class="spacer"></span>
             <div class="sprint-actions">
-              <button mat-raised-button color="primary" class="start-sprint-button">Start Sprint</button>
+              <button mat-raised-button color="primary" class="start-sprint-button" (click)="startSprint(sprint.id)">Start Sprint</button>
               <button mat-raised-button color="primary" class="create-issue-button" (click)="onCreateIssueClick(sprint.id)">Create Issue</button>
               <button mat-icon-button>
                 <mat-icon>edit</mat-icon>

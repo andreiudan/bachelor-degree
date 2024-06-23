@@ -6,7 +6,7 @@ namespace WorkPlanner.Domain.Dtos
     public class SprintDto
     {
         [Required]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [MinLength(2, ErrorMessage = ValidationConstants.NameLengthErrorMessage)]
@@ -17,6 +17,12 @@ namespace WorkPlanner.Domain.Dtos
 
         [Required]
         public DateTime DueDate { get; set; }
+
+        [Required]
+        public bool Active { get; set; }
+
+        [Required]
+        public bool Released { get; set; }
 
         [Required]
         public List<SprintTask> Tasks { get; set; } = new List<SprintTask>();

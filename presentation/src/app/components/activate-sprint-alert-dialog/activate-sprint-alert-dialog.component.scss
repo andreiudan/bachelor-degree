@@ -1,0 +1,15 @@
+h2{
+    font-weight: bold;
+}
+
+mat-dialog-actions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activate-button {
+    background-color: #910f06;
+    color: white;
+    transition-duration: 0.4s;
+}

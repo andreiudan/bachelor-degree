@@ -45,15 +45,21 @@ namespace WorkPlanner.DataAccess.Repositories
         {
             return await Context.Set<Sprint>()
                                 .Include(s => s.Tasks)
-                                .FirstOrDefaultAsync(x => x.ProjectId.Equals(projectId) && x.StartDate <= DateTime.UtcNow);
+                                .FirstOrDefaultAsync(x => x.ProjectId.Equals(projectId) && x.Active == true && x.Released == false);
         }
 
         public async Task<List<Sprint>> GetInactiveSprintsForProject(Guid projectId)
         {
             return await Context.Set<Sprint>()
                                 .Include(s => s.Tasks)
-                                .Where(x => x.ProjectId.Equals(projectId) && (x.StartDate > DateTime.UtcNow || x.DueDate < DateTime.UtcNow))
+                                .Where(x => x.ProjectId.Equals(projectId) && x.Active == false && x.Released == false)
                                 .ToListAsync();
+        }
+
+        public async Task<int> GetNumberOfActiveSprints()
+        {
+            return await Context.Set<Sprint>()
+                                .CountAsync(s => s.Active == true && s.Released == false);
         }
     }
 }

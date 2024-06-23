@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
-using WorkPlanner.Domain.EntityPropertyTypes;
 
 namespace WorkPlanner.Business
 {

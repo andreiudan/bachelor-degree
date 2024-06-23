@@ -141,4 +141,16 @@ export class SprintService {
       )
     );
   }
+
+  public activate(sprintId: string): Observable<any> {
+    const activateSprintUrl = this.baseUrl + '/' + sprintId + '/activate';
+
+    return this.httpClient.put(activateSprintUrl, null, { responseType: 'text' });
+  }
+
+  public release(sprintId: string): Observable<any> {
+    const releaseSprintUrl = this.baseUrl + '/' + sprintId + '/release';
+
+    return this.httpClient.put(releaseSprintUrl, null, { responseType: 'text' });
+  }
 }

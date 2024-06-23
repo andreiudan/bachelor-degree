@@ -35,11 +35,17 @@ builder.Services.AddSingleton(mapper);
 
 builder.Services.AddScoped<AuthenticationExceptionFilter>();
 builder.Services.AddScoped<ValidationExceptionFilter>();
+builder.Services.AddScoped<ActivateSprintExceptionFilter>();
+builder.Services.AddScoped<CreateAndUpdateTimesheetActionFilter>();
+builder.Services.AddScoped<DeleteTimesheetExceptionFilter>();
+builder.Services.AddScoped<GetTimesheetExceptionFilter>();
+builder.Services.AddScoped<RegistrationExceptionFilter>();
+builder.Services.AddScoped<ReleaseSprintExceptionFilter>();
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-               builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+               builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
 });
 
 builder.Services.AddDbContext<WorkPlannerContext>(options =>

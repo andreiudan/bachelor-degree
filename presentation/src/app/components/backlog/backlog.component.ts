@@ -15,6 +15,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../../models/user';
 import { SubTask } from '../../../models/subTask';
+import { ActivateSprintAlertDialogComponent } from '../activate-sprint-alert-dialog/activate-sprint-alert-dialog.component';
 
 @Component({
   selector: 'app-backlog',
@@ -253,6 +254,31 @@ export class BacklogComponent {
       } else {
         alert("Task could not be moved.")
       }
+    }
+  }
+
+  public startSprint(sprintId: string) {
+    if(this.activeSprint.id !== ''){
+      const dialogRef = this.dialog.open(ActivateSprintAlertDialogComponent);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if(result === false || result === undefined){
+          return;
+        }
+        
+        this.sprintService.release(this.activeSprint.id).subscribe(() => {
+          this.sprintService.activate(sprintId).subscribe(() => {
+            this.ngOnInit();
+          });
+        });
+
+        return;
+      });
+    }
+    else{
+      this.sprintService.activate(sprintId).subscribe(() => {
+        this.ngOnInit();
+      });
     }
   }
 }
