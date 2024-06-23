@@ -150,18 +150,18 @@ export class TaskComponent {
   }
 
   public getAssigneeUsername(taskId: string): string {
-    if(this.assignee.username){
-      return this.assignee.username;
+    if(this.assignee?.username === undefined){
+      return 'No assignee';
     }
 
-    return 'No assignee';
+    return this.assignee.username;
   }
 
   public getAssigneeFullName(taskId: string): string {
-    if(this.assignee.firstName && this.assignee.lastName){
-      return this.assignee.firstName + ' ' + this.assignee.lastName;
+    if(this.assignee?.firstName === undefined || this.assignee?.lastName === undefined){
+      return 'No assignee';
     }
 
-    return 'No assignee';
+    return this.assignee.firstName + ' ' + this.assignee.lastName;
   }
 }

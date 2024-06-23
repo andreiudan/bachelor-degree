@@ -24,7 +24,8 @@ export class ErrorHandlingService extends ErrorHandler {
           this.router.navigate(['/landing']);
           break;
         case 400:
-          errorMessage = `${error.name}: ${error.error.message}`;
+          const formattedError = this.formatErrorMessage(JSON.parse(error.error));
+          errorMessage = formattedError;
           break;
         case 401:
           errorMessage = 'Unauthorized: You are not authorized to access this resource.';
@@ -59,5 +60,14 @@ export class ErrorHandlingService extends ErrorHandler {
     });
 
     super.handleError(error);
+  }
+
+  private formatErrorMessage(errorResponse: any): string {
+    if (typeof errorResponse === 'object') {
+      return Object.entries(errorResponse)
+        .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+        .join('\n');
+    }
+    return 'An unknown error occurred';
   }
 }

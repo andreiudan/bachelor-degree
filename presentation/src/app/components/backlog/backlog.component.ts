@@ -121,6 +121,10 @@ export class BacklogComponent {
       const totalSubtasks = subtasks.length;
 
       task.progress = (completedSubtasks / totalSubtasks) * 100;
+
+      if(Number.isNaN(task.progress)){
+        task.progress = 0;
+      }
     });
 
     await Promise.all(promises);
@@ -168,6 +172,11 @@ export class BacklogComponent {
   public getUserFullName(taskId: string): string {
     if(this.taskUserMap.has(taskId)){
       const user = this.taskUserMap.get(taskId);
+
+      if(user?.firstName === undefined || user?.lastName === undefined){
+        return 'No assignee';
+      }
+
       return user?.firstName + ' ' + user?.lastName;
     }
 

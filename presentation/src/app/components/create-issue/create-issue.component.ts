@@ -20,9 +20,9 @@ import { JwtService } from '../../services/authentication/jwt.service';
 export class CreateIssueComponent implements OnInit{
   public taskCreationForm: FormGroup;
 
-  public taskTypes = Object.values(TaskTypes).filter(value => typeof value === 'string');
-  public priorityTypes = Object.values(PriorityTypes).filter(value => typeof value === 'string');
-  
+  public taskTypes = this.getEnumValuesAndIndices(TaskTypes);
+  public priorityTypes = this.getEnumValuesAndIndices(PriorityTypes);
+
   public users: User[] = [];
   public today = new Date();
 
@@ -91,6 +91,15 @@ export class CreateIssueComponent implements OnInit{
     await this.loadAssignees();
   }
 
+  private getEnumValuesAndIndices(enumObj: any): { value: string, index: number }[] {
+    return Object.keys(enumObj)
+      .filter(key => typeof enumObj[key] === 'number')
+      .map(key => ({
+        value: key,
+        index: enumObj[key]
+      }));
+  }
+
   private async loadAssignees(): Promise<void> {
     const assignees$ = this.userService.getAll();
     this.users = await lastValueFrom(assignees$);
@@ -151,8 +160,8 @@ export class CreateIssueComponent implements OnInit{
       name: this.name?.value,
       description: this.description?.value,
       dueDate: this.dueDate?.value,
-      priority: 1,
-      type: 0,
+      priority: this.priority?.value,
+      type: this.type?.value,
       storyPoints: this.storyPoints?.value,
       sprintId: '',
       projectId: projectId,

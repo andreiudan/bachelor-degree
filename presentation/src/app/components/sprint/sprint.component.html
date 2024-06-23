@@ -7,10 +7,12 @@
         <div class="title-div">
             <h2>{{ this.activeSprint.name }}</h2>
             <span class="spacer"></span>
-            <button mat-raised-button color="accent" (click)="releaseSprint()">Release</button>
-            <button mat-icon-button>
-                <mat-icon>edit</mat-icon>
-            </button>
+            <div class="sprint-actions">
+                <button mat-raised-button color="accent" ngClass="release-button" (click)="releaseSprint()">Release</button>
+                <button mat-icon-button>
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
         </div>
         
         <div class="page-alignment" cdkDropListGroup>

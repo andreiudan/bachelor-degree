@@ -15,6 +15,7 @@ using WorkPlanner.Domain.Configurations;
 using WorkPlanner.Business.Commands.UserCommands;
 using System.Text.Json.Serialization;
 using WorkPlanner.Api.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,11 +42,16 @@ builder.Services.AddScoped<DeleteTimesheetExceptionFilter>();
 builder.Services.AddScoped<GetTimesheetExceptionFilter>();
 builder.Services.AddScoped<RegistrationExceptionFilter>();
 builder.Services.AddScoped<ReleaseSprintExceptionFilter>();
+builder.Services.Configure<ApiBehaviorOptions>(options
+    => options.SuppressModelStateInvalidFilter = true);
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-               builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+               builder => builder.WithOrigins("http://localhost:4200")
+                                 .AllowAnyMethod()
+                                 .AllowAnyHeader()
+                                 .AllowCredentials());
 });
 
 builder.Services.AddDbContext<WorkPlannerContext>(options =>
