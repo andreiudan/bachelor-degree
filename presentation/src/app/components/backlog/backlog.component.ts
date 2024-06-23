@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Task } from '../../../models/task';
-import { SubTask } from '../../../models/subTask';
 import { Sprint } from '../../../models/sprint';
 import { BacklogService } from '../../services/backlog/backlog.service';
 import { SprintService } from '../../services/sprint/sprint.service';
@@ -8,12 +7,14 @@ import { Project } from '../../../models/project';
 import { ProjectService } from '../../services/project/project.service';
 import { Observable, lastValueFrom } from 'rxjs';
 import { TaskService } from '../../services/task/task.service';
-import { TaskCreation } from '../../../models/taskCreation';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateSprintDialogComponent } from '../create-sprint-dialog/create-sprint-dialog.component';
 import { SprintCreation } from '../../../models/sprintCreation';
 import { Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { UserService } from '../../services/user/user.service';
+import { User } from '../../../models/user';
+import { SubTask } from '../../../models/subTask';
 
 @Component({
   selector: 'app-backlog',
@@ -33,10 +34,13 @@ export class BacklogComponent {
   public inactiveSprintsLoaded: Promise<boolean>;
   public backlogTasksLoaded: Promise<boolean>;
 
+  private taskUserMap: Map<string, User> = new Map<string, User>();
+
   constructor(private backlogService: BacklogService, 
               private sprintService: SprintService, 
               private projectService: ProjectService,
               private tasksService: TaskService,
+              private userService: UserService,
               private dialog: MatDialog,
               private router: Router) {}
 
@@ -44,8 +48,11 @@ export class BacklogComponent {
     this.initialize();
   }
 
-  private initialize() {
-    this.projectsLoaded = Promise.resolve(this.loadProjects()).then(async () => await this.loadData());
+  private async initialize() {
+    await this.loadProjects();
+    await this.loadData();
+
+    this.projectsLoaded = Promise.resolve(true);
   }
 
   private async loadProjects() {
@@ -81,54 +88,98 @@ export class BacklogComponent {
   }
 
   private async loadData() {
-    try{
-      this.activeSprintLoaded = Promise.resolve(this.setActiveSprint());
-      this.inactiveSprintsLoaded = Promise.resolve(this.setInactiveSprints());
-      this.backlogTasksLoaded = Promise.resolve(this.setBacklogTasks());
-    }
-    catch{
-      return false;
-    }
+    await this.setActiveSprint();
+    await this.setInactiveSprints();
+    await this.setBacklogTasks();
+    await this.mapTasksToUser();
+    await this.setTasksProgress();
 
-    return true;
+    this.activeSprintLoaded = Promise.resolve(true);
+    this.inactiveSprintsLoaded = Promise.resolve(true);
+    this.backlogTasksLoaded = Promise.resolve(true);
   }
 
+  private async setTasksProgress() {
+    if (this.activeSprint !== undefined && this.activeSprint.tasks !== undefined && this.activeSprint.tasks.length > 0) {
+      await this.calculateTasksProgress(this.activeSprint.tasks);
+    }
+  
+    for (const sprint of this.inactiveSprints) {
+      if (sprint.tasks !== undefined && sprint.tasks.length > 0) {
+        await this.calculateTasksProgress(sprint.tasks);
+      }
+    }
+  }
+
+  private async calculateTasksProgress(tasks: Task[]) {
+    const promises = tasks.map(async task => {
+      const subtasks$ = this.tasksService.getSubtasks(task.id);
+      const subtasks: SubTask[] = await lastValueFrom(subtasks$);
+
+      const completedSubtasks = subtasks.filter(subtask => subtask.done).length;
+      const totalSubtasks = subtasks.length;
+
+      task.progress = (completedSubtasks / totalSubtasks) * 100;
+    });
+
+    await Promise.all(promises);
+  }
 
   private async setActiveSprint() {
-    try{
-      const activeSprint$ = this.sprintService.getActiveSprintForProject(this.selectedProject.id);
-      this.activeSprint = await lastValueFrom(activeSprint$);
-    }
-    catch{
-      return false;
-    }
-
-    return true;
+    const activeSprint$ = this.sprintService.getActiveSprintForProject(this.selectedProject.id);
+    this.activeSprint = await lastValueFrom(activeSprint$);
   }
 
   private async setInactiveSprints() {
-    try{
-      const inactiveSprints$ = this.sprintService.getInactiveSprintsForProject(this.selectedProject.id);
-      this.inactiveSprints = await lastValueFrom(inactiveSprints$);
-    }
-    catch(e){
-      console.log(e);
-      return false;
-    }
-
-    return true;
+    const inactiveSprints$ = this.sprintService.getInactiveSprintsForProject(this.selectedProject.id);
+    this.inactiveSprints = await lastValueFrom(inactiveSprints$);
   }
 
   private async setBacklogTasks() {
-    try{
-      const backlogTasks$ = this.backlogService.getBacklogTasksForProject(this.selectedProject.id);
-      this.backlogTasks = await lastValueFrom(backlogTasks$);
+    const backlogTasks$ = this.backlogService.getBacklogTasksForProject(this.selectedProject.id);
+    this.backlogTasks = await lastValueFrom(backlogTasks$);
+  }
+
+  private async mapTasksToUser() {
+    if (this.activeSprint !== undefined && this.activeSprint.tasks !== undefined && this.activeSprint.tasks.length > 0) {
+      await this.setTaskUser(this.activeSprint.tasks);
     }
-    catch{
-      return false;
+  
+    for (const sprint of this.inactiveSprints) {
+      if (sprint.tasks !== undefined && sprint.tasks.length > 0) {
+        await this.setTaskUser(sprint.tasks);
+      }
+    }
+  }
+
+  private async setTaskUser(tasks: Task[]) {
+    const promises = tasks.map(async task => {
+      if (!this.taskUserMap.has(task.id)) {
+        const user$ = this.userService.get(task.assigneeId);
+        const user: User = await lastValueFrom(user$);
+        this.taskUserMap.set(task.id, user);
+      }
+    });
+
+    await Promise.all(promises);
+  }
+
+  public getUserFullName(taskId: string): string {
+    if(this.taskUserMap.has(taskId)){
+      const user = this.taskUserMap.get(taskId);
+      return user?.firstName + ' ' + user?.lastName;
     }
 
-    return true;
+    return 'No assignee';
+  }
+
+  getUsername(taskId: string): string {
+    if(this.taskUserMap.has(taskId)){
+      const user = this.taskUserMap.get(taskId);
+      return user?.username ? user.username : 'No assignee';
+    }
+
+    return 'No assignee';
   }
 
   public changeDateTimeToDate(date: Date) {
@@ -137,12 +188,16 @@ export class BacklogComponent {
 
   public openCreateSprintDialog() {
     const dialogRef = this.dialog.open(CreateSprintDialogComponent, {
-      height: '55%',
+      height: '58%',
       width: '40%',
       data: {sprint: new SprintCreation()}
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if(result === undefined){
+        return;
+      }
+      
       this.createSprint(result);
     });
   }

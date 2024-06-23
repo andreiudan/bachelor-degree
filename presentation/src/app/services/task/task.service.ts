@@ -61,7 +61,7 @@ export class TaskService {
       map(subtask => ({
         id: subtask.id,
         name: subtask.name,
-        isDone: subtask.done,
+        done: subtask.done,
       }))
     );
   }
@@ -88,5 +88,17 @@ export class TaskService {
     const moveToBacklogUrl = this.baseUrl + taskId + '/moveToBacklog';
 
     return this.httpClient.put(moveToBacklogUrl, {responseType: 'text'});
+  }
+
+  public getSubtasks(taskId: string): Observable<any> {
+    const getSubtasksUrl = this.baseUrl + taskId + '/subtasks';
+
+    return this.httpClient.get<SubTask[]>(getSubtasksUrl).pipe(
+      map((subtasks) => subtasks.map(subtask => ({
+        id: subtask.id,
+        name: subtask.name,
+        done: subtask.done,
+      })))
+    );
   }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkPlanner.Business.Commands.SubtaskCommands;
 using WorkPlanner.Business.Commands.TaskCommands;
+using WorkPlanner.Business.Queries.SubtaskQueries;
 using WorkPlanner.Business.Queries.TaskQueries;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
@@ -88,6 +89,16 @@ namespace WorkPlanner.Api.Controllers
             UpdateSubtaskCommand request = new UpdateSubtaskCommand(subtask, taskId);
 
             bool result = await mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{taskId}/subtasks")]
+        public async Task<IActionResult> GetSubtasks(string taskId)
+        {
+            GetTaskSubtasksQuery request = new GetTaskSubtasksQuery(taskId);
+
+            List<SubtaskDto> result = await mediator.Send(request);
 
             return Ok(result);
         }

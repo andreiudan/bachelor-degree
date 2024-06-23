@@ -10,5 +10,14 @@ namespace WorkPlanner.DataAccess.Repositories
         {
             
         }
+
+        public async Task<List<Subtask>> GetTaskSubtasks(Guid taskId)
+        {
+            SprintTask task = await Context.Set<SprintTask>()
+                                            .Include(s => s.Subtasks)
+                                            .FirstOrDefaultAsync(t => t.Id.Equals(taskId));
+
+            return task.Subtasks;
+        }
     }
 }

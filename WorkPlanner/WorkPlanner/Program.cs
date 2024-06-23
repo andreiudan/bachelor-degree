@@ -34,7 +34,7 @@ var mapper = config.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 builder.Services.AddScoped<AuthenticationExceptionFilter>();
-builder.Services.AddScoped<ActivateUserExceptionFilter>();
+builder.Services.AddScoped<ValidationExceptionFilter>();
 
 builder.Services.AddCors(options =>
 {

@@ -4,11 +4,14 @@
     </div>
     
     <div class="form">
-        <form [formGroup]="taskCreationForm" (ngSubmit)="onSubmit()" #form="ngForm">
+        <form [formGroup]="taskCreationForm" (ngSubmit)="onSubmit()" #myForm="ngForm">
             <mat-form-field class="single-form-field">
-                <mat-label>Title</mat-label>
+                <mat-label for="name">Title</mat-label>
                 <input matInput type="text" placeholder="Title" formControlName="name">
-                <mat-error>Please enter a title.</mat-error>
+                <mat-error *ngIf="name && name.touched && name.hasError('required')">Please enter a title.</mat-error>
+                <mat-error *ngIf="name && name.touched && name.hasError('nameMinimumLength')">
+                  Title must be at least 2 characters long.
+                </mat-error>
             </mat-form-field>
         
             <mat-form-field class="single-form-field">
@@ -17,7 +20,7 @@
                 <mat-error>Please enter a description.</mat-error>
             </mat-form-field>
         
-            <mat-form-field class="single-form-field">
+             <mat-form-field class="single-form-field">
                 <mat-label>Due Date</mat-label>
                 <input matInput [matDatepicker]="picker" [min]="today" placeholder="Choose a date" formControlName="dueDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -28,37 +31,37 @@
             <div class="multiple-col-alignment">
                 <mat-form-field>
                     <mat-label>Type</mat-label>
-                    <mat-select [formControl]="typesControl">
-                        <mat-option *ngFor="let type of taskTypes" [value]="type" formControlName="type">{{ type }}</mat-option>
+                    <mat-select formControlName="type">
+                        <mat-option *ngFor="let type of taskTypes" [value]="type">{{ type }}</mat-option>
                     </mat-select>
                     <mat-error>Please select a type.</mat-error>
                 </mat-form-field>
             
                 <mat-form-field>
                     <mat-label>Priority</mat-label>
-                    <mat-select [formControl]="priorityControl">
-                        <mat-option *ngFor="let priority of priorityTypes" [value]="priority" formControlName="priority">{{ priority }}</mat-option>
+                    <mat-select formControlName="priority">
+                        <mat-option *ngFor="let priority of priorityTypes" [value]="priority">{{ priority }}</mat-option>
                     </mat-select>
                     <mat-error>Please select a priority.</mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput type="number" placeholder="Story Points" formControlName="storyPoints">
                     <mat-label>Story Points</mat-label>
-                    <mat-error>Please enter a number.</mat-error>
+                    <input matInput type="number" placeholder="Story Points" formControlName="storyPoints">
+                    <mat-error *ngIf="storyPoints && storyPoints.touched">Please enter a number.</mat-error>
                 </mat-form-field>
                 
                 <mat-form-field>
                     <mat-label>Assignee</mat-label>
-                    <mat-select [formControl]="assigneeControl">
-                        <mat-option *ngFor="let assignee of users; trackBy: trackByFn" [value]="assignee" formControlName="assignee">{{ assignee.firstName }}</mat-option>
+                    <mat-select formControlName="assignee">
+                        <mat-option *ngFor="let assignee of users; trackBy: trackByFn" [value]="assignee">{{ assignee.firstName }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
 
             <div class="actions">
                 <div>
-                    <button mat-button (click)="form.reset()">Clear</button>
+                    <button mat-button type="button" (click)="clearForm(myForm)">Clear</button>
                 </div>
                 <div>
                     <button mat-raised-button color="primary" type="submit">Create</button>

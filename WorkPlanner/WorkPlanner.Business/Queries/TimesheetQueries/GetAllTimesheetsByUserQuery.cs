@@ -5,11 +5,8 @@ namespace WorkPlanner.Business.Queries.TimesheetQueries
 {
     public class GetAllTimesheetsByUserQuery : IRequest<List<Timesheet>>
     {
-        public string Username { get; }
-
-        public GetAllTimesheetsByUserQuery(string username)
+        public GetAllTimesheetsByUserQuery()
         {
-            Username = username;
         }
     }
 }

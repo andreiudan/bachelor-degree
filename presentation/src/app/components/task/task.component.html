@@ -96,8 +96,8 @@
                         <p>Author:</p>
                     </div>
                     <div class="properties-values">
-                        <p>{{ task.assignee === '' ? 'No assignee' : ''}}</p>
-                        <p>{{ task.creator }}</p>
+                        <p matTooltip="Username: {{getAssigneeUsername(task.id)}}">{{ getAssigneeFullName(task.id) }}</p>
+                        <p matTooltip="Username: {{ author.username }}">{{ author.firstName }} {{author.lastName}}</p>
                     </div>
                 </div>
             

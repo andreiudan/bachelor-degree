@@ -1,24 +1,29 @@
-<div class="title">
-    <h2 mat-dialog-title>Create Sprint</h2>
+<div class="main-div">
+    <div class="title">
+        <h2 mat-dialog-title>Create Sprint</h2>
+    </div>
+    <form [formGroup]="createSprintForm" (ngSubmit)="onSubmit()">
+        <mat-dialog-content>
+            <mat-form-field>
+                <mat-label>Sprint name</mat-label>
+                <input matInput type="text" placeholder="Sprint Name" formControlName="sprintName" cdkFocusInitial>
+                <mat-error>
+                    Sprint name should be at least 2 characters long.
+                </mat-error>
+            </mat-form-field>
+        
+            <mat-form-field>
+                <mat-label>Due Date</mat-label>
+                <input matInput [matDatepicker]="picker" [min]="today" placeholder="Choose a date" formControlName="dueDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error>Please enter a valid date.</mat-error>
+            </mat-form-field>
+        </mat-dialog-content>
+        
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close (click)="onNoClick()">Close</button>
+            <button mat-raised-button color="accent" type="submit">Create</button>
+        </mat-dialog-actions>
+    </form>
 </div>
-<mat-dialog-content>
-    <mat-form-field>
-        <mat-label>Sprint name</mat-label>
-        <input matInput type="text" [(ngModel)]="sprint.name" placeholder="Sprint Name" name="sprintName" required cdkFocusInitial>
-        <mat-error>Please enter a sprint name.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-label>Due Date</mat-label>
-        <input matInput [matDatepicker]="picker" [min]="today" placeholder="Choose a date" required [(ngModel)]="sprint.dueDate">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error>Please enter a date.</mat-error>
-    </mat-form-field>
-</mat-dialog-content>
-
-<mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close (click)="onNoClick()">Close</button>
-    <button mat-button (click)="closeDialog()">Create</button>
-</mat-dialog-actions>
-

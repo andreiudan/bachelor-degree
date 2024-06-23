@@ -98,17 +98,19 @@ namespace WorkPlanner.DataAccess.Repositories
             return task;
         }
 
-        public async Task<bool> ChangeSprint(Guid newSprintId, SprintTask task)
+        public async Task<bool> ChangeSprint(Sprint newSprint, SprintTask task)
         {
             if(task.BacklogId != null!)
             {
                 task.BacklogId = null!;
                 task.Backlog = null!;
-                task.SprintId = newSprintId;
+                task.SprintId = newSprint.Id;
+                task.Sprint = newSprint;
             }
             else if(task.SprintId != null!)
             {
-                task.SprintId = newSprintId;
+                task.SprintId = newSprint.Id;
+                task.Sprint = newSprint;
             }
 
             Update(task);
@@ -123,18 +125,26 @@ namespace WorkPlanner.DataAccess.Repositories
                 return false;
             }
 
-            Guid projectId = Context.Set<SprintTask>()
+            Guid projectId = await Context.Set<SprintTask>()
                                     .Include(t => t.Sprint)
                                     .Where(t => t.Id.Equals(task.Id))
                                     .Select(t => t.Sprint.ProjectId)
-                                    .FirstOrDefaultAsync().Result;      
+                                    .FirstOrDefaultAsync();      
 
             task.SprintId = null;
             task.Sprint = null;
 
-            task.BacklogId = Context.Set<Backlog>()
+            Backlog backlog = await Context.Set<Backlog>()
                                     .Where(b => b.ProjectId.Equals(projectId))
-                                    .FirstOrDefaultAsync().Result.Id;
+                                    .FirstOrDefaultAsync();
+
+            if(backlog is null)
+            {
+                return false;
+            }
+
+            task.BacklogId = backlog.Id;
+            task.Backlog = backlog;
 
             Update(task);
 

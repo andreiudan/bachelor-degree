@@ -10,6 +10,8 @@ import { AddSubtaskDialogComponent } from '../add-subtask-dialog/add-subtask-dia
 import { TaskTypes } from '../../../models/taskTypes';
 import { PriorityTypes } from '../../../models/priorityTypes';
 import { StatusTypes } from '../../../models/statusTypes';
+import { User } from '../../../models/user';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-task',
@@ -34,14 +36,28 @@ export class TaskComponent {
   public priorityTypes = Object.values(PriorityTypes).filter(value => typeof value === 'string');
   public statusTypes = Object.values(StatusTypes).filter(value => typeof value === 'string');
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private taskService: TaskService, private dialog: MatDialog) {}
+  public author: User = new User();
+  private assignee: User = new User();
 
-  ngOnInit() {
+  constructor(private activatedRoute: ActivatedRoute, 
+              private router: Router, 
+              private taskService: TaskService, 
+              private userService: UserService,
+              private dialog: MatDialog) {}
+
+  async ngOnInit() {
     this.taskIdSub = this.activatedRoute.params.subscribe(params => {
       this.taskId = params['taskId'];}
     );
 
-    this.taskLoaded = Promise.resolve(this.getTask());
+    await this.getTask();
+
+    if (this.task) {
+      await this.loadAssignee();
+      await this.loadAuthor();
+    }
+
+    this.taskLoaded = Promise.resolve(true);
   }
 
   ngOnDestroy() {
@@ -65,6 +81,16 @@ export class TaskComponent {
   private setParentData() {
     this.setProjectName();
     this.setSprintName();
+  }
+
+  private async loadAssignee() {
+    const assignee$ = this.userService.get(this.task.assigneeId);
+    this.assignee = await lastValueFrom(assignee$);
+  }
+
+  private async loadAuthor() {
+    const author$ = this.userService.get(this.task.creatorId);
+    this.author = await lastValueFrom(author$);
   }
 
   private async setProjectName() {
@@ -99,7 +125,7 @@ export class TaskComponent {
 
   public onAddSubtaskClick(): void {
     const dialogRef = this.dialog.open(AddSubtaskDialogComponent, {
-      height: '25%',
+      height: '40%',
       width: '35%',
       data: {subtaskName: ''}
     });
@@ -121,5 +147,21 @@ export class TaskComponent {
 
   public onSubtaskStatusChanged(subtask: SubTask) {
     this.taskService.updateSubtask(this.taskId, subtask).subscribe();
+  }
+
+  public getAssigneeUsername(taskId: string): string {
+    if(this.assignee.username){
+      return this.assignee.username;
+    }
+
+    return 'No assignee';
+  }
+
+  public getAssigneeFullName(taskId: string): string {
+    if(this.assignee.firstName && this.assignee.lastName){
+      return this.assignee.firstName + ' ' + this.assignee.lastName;
+    }
+
+    return 'No assignee';
   }
 }

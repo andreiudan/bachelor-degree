@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Business.Queries.SprintQueries;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;

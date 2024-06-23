@@ -12,7 +12,6 @@ import { UserService } from '../../services/user/user.service';
 })
 export class UserComponent implements OnInit{
   public user: User = new User();
-  public username: string = '';
   public isPersonal: boolean = true;
   public isSecurity: boolean = false;
   public isPasswordVisible: boolean = false;
@@ -31,10 +30,9 @@ export class UserComponent implements OnInit{
         firstName: this.jwtService.getClaim(jwtToken, 'firstName'),
         lastName: this.jwtService.getClaim(jwtToken, 'lastName'),
         email: this.jwtService.getClaim(jwtToken, 'email'),
-        password: ''
+        password: '',
+        username: this.jwtService.getClaim(jwtToken, 'username')
       };
-
-      this.username = this.jwtService.getClaim(jwtToken, 'username');
     });
   }
 

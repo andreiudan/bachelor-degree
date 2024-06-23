@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WorkPlanner.Api.Filters;
 using WorkPlanner.Business.Commands.TimesheetCommands;
 using WorkPlanner.Business.Queries.TimesheetQueries;
 using WorkPlanner.Domain.Dtos;
@@ -21,6 +22,7 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(CreateAndUpdateTimesheetActionFilter))]
         public async Task<IActionResult> Create([FromBody] TimesheetCreationDto timesheet)
         {
             CreateTimesheetCommand request = new CreateTimesheetCommand(timesheet);
@@ -30,10 +32,10 @@ namespace WorkPlanner.Api.Controllers
             return Created("", result);
         }
 
-        [HttpGet("username={username}")]
-        public async Task<IActionResult> GetAllByUser(string username)
+        [HttpGet]
+        public async Task<IActionResult> GetAllByUser()
         {
-            GetAllTimesheetsByUserQuery request = new GetAllTimesheetsByUserQuery(username);
+            GetAllTimesheetsByUserQuery request = new GetAllTimesheetsByUserQuery();
 
             List<Timesheet> response = await mediator.Send(request);
 
@@ -41,6 +43,7 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpGet("startDate={startDate}&endDate={endDate}")]
+        [ServiceFilter(typeof(GetTimesheetExceptionFilter))]
         public async Task<IActionResult> GetAllForUserByDateInterval(string startDate, string endDate)
         {
             GetAllTimesheetsForUserByDateIntervalQuery request = new GetAllTimesheetsForUserByDateIntervalQuery(startDate, endDate);
@@ -51,6 +54,7 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpDelete("{timesheetId}")]
+        [ServiceFilter(typeof(DeleteTimesheetExceptionFilter))]
         public async Task<IActionResult> Delete(string timesheetId)
         {
             DeleteTimesheetCommand request = new DeleteTimesheetCommand(timesheetId);
@@ -61,6 +65,7 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpPut]
+        [ServiceFilter(typeof(CreateAndUpdateTimesheetActionFilter))]
         public async Task<IActionResult> Update([FromBody] TimesheetUpdateDto timesheet)
         {
             UpdateTimesheetCommand request = new UpdateTimesheetCommand(timesheet);

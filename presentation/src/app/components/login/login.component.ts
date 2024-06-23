@@ -5,6 +5,7 @@ import { AuthenticationService } from '../../services/authentication/authenticat
 import { Router } from '@angular/router';
 import { CustomValidators } from '../../input-validation/custom-validators';
 import { INPUT_VALIDATION_RULES } from '../../input-validation/input-validation-rules';
+import { UserAuthentication } from '../../../models/userAuthentication';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ import { INPUT_VALIDATION_RULES } from '../../input-validation/input-validation-
 })
 export class LoginComponent implements OnInit{
   public loginForm: FormGroup;
-  public user = new User();
+  public user = new UserAuthentication();
   public isPasswordVisible: boolean = false;
   public passwordRequirements: string = 
       "Password should contain at least 8 characters.\nPassword should contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
@@ -56,13 +57,11 @@ export class LoginComponent implements OnInit{
     return this.loginForm.get('password');
   }
 
-  private login(user: User){
+  private login(user: UserAuthentication){
     if(this.loginForm.valid){
-      let userWithEncodedPassword: User = {
-        firstName: '',
-        lastName: '',
+      let userWithEncodedPassword: UserAuthentication = {
         email: this.email?.value,
-        password: btoa(this.password?.value)
+        password: btoa(this.password?.value),
       };
 
       this.authService.login(userWithEncodedPassword).subscribe(() => {

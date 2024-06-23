@@ -4,6 +4,6 @@ namespace WorkPlanner.Interfaces.DataAccess.Repositories
 {
     public interface ISubtaskRepository : IRepository<Subtask>
     {
-        public bool Update(Subtask subtask);
+        public Task<List<Subtask>> GetTaskSubtasks(Guid taskId);
     }
 }

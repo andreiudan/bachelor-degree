@@ -37,8 +37,11 @@ export class SprintComponent {
     this.initialize();
   }
 
-  private initialize() {
-    this.sprintLoaded = Promise.resolve(this.loadActiveSprint()).then(async () => await this.loadTasks());
+  private async initialize() {
+    await this.loadActiveSprint();
+    await this.loadTasks();
+
+    this.sprintLoaded = Promise.resolve(true);
   }
 
   private async loadActiveSprint() {
@@ -54,65 +57,35 @@ export class SprintComponent {
   }
 
   private async loadTasks() {
-    try{
-      this.toDoTasksLoaded = Promise.resolve(this.loadToDoTasks());
-      this.inProgressTasksLoaded = Promise.resolve(this.loadInProgressTasks());
-      this.inReviewTasksLoaded = Promise.resolve(this.loadInReviewTasks());
-      this.doneTasksLoaded = Promise.resolve(this.loadDoneTasks());
-    }
-    catch(error) {
-      return false;
-    }
+    await this.loadToDoTasks();
+    await this.loadInProgressTasks();
+    await this.loadInReviewTasks();
+    await this.loadDoneTasks();
 
-    return true;
+    this.toDoTasksLoaded = Promise.resolve(true);
+    this.inProgressTasksLoaded = Promise.resolve(true);
+    this.inReviewTasksLoaded = Promise.resolve(true);
+    this.doneTasksLoaded = Promise.resolve(true);
   }
 
-  private async loadToDoTasks(): Promise<boolean> {
-    try{
-      const toDoTasks$ = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.ToDo);
-      this.toDoTasks = await lastValueFrom(toDoTasks$);
-    }
-    catch(error) {
-      return false;
-    }
-    
-    return true;
+  private async loadToDoTasks(): Promise<void> {
+    const toDoTasks$ = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.ToDo);
+    this.toDoTasks = await lastValueFrom(toDoTasks$);
   }
 
-  private async loadInProgressTasks(): Promise<boolean> {
-    try{
-      const inProgressTasks$ = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.InProgress);
-      this.inProgressTasks = await lastValueFrom(inProgressTasks$);
-    }
-    catch(error) {
-      return false;
-    }
-    
-    return true;
+  private async loadInProgressTasks(): Promise<void> {
+    const inProgressTasks$ = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.InProgress);
+    this.inProgressTasks = await lastValueFrom(inProgressTasks$);
   }
 
-  private async loadInReviewTasks(): Promise<boolean> {
-    try{
-      const inReviewTasks$ = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.InReview);
-      this.inReviewTasks = await lastValueFrom(inReviewTasks$);
-    }
-    catch(error) {
-      return false;
-    }
-    
-    return true;
+  private async loadInReviewTasks(): Promise<void> {
+    const inReviewTasks$ = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.InReview);
+    this.inReviewTasks = await lastValueFrom(inReviewTasks$);
   }
 
-  private async loadDoneTasks(): Promise<boolean> {
-    try{
-      const doneTasks$ = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.Done);
-      this.doneTasks = await lastValueFrom(doneTasks$);
-    }
-    catch(error) {
-      return false;
-    }
-    
-    return true;
+  private async loadDoneTasks(): Promise<void> {
+    const doneTasks$ = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.Done);
+    this.doneTasks = await lastValueFrom(doneTasks$);
   }
 
   public async drop(event: CdkDragDrop<Task[]>) {

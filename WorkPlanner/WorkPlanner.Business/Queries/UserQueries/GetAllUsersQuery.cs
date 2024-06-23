@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.Dtos;
 
 namespace WorkPlanner.Business.Queries.UserQueries
 {
-    public class GetAllUsersQuery : IRequest<IEnumerable<User>>
+    public class GetAllUsersQuery : IRequest<IEnumerable<UserDto>>
     {
     }
 }

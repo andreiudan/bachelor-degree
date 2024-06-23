@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Business.Queries.TimesheetQueries;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
@@ -27,6 +28,11 @@ namespace WorkPlanner.Business.QueryHandlers.TimesheetHandlers
 
             DateOnly startDate = DateOnly.FromDateTime(startDateTime);
             DateOnly endDate = DateOnly.FromDateTime(endDateTime);
+
+            if(startDate > endDate)
+            {
+                throw new EndDateBeforeStartDateException();
+            }
 
             string username = httpContextAccessor.HttpContext?.User.FindFirstValue(usernameClaimIdentifier);
 

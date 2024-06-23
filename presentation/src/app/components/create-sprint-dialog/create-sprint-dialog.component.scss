@@ -10,24 +10,54 @@ mat-dialog-content {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100%;
 }
 
 h2{
+    font-weight: bold !important;
     align-items: center;
     justify-content: center;
 }
 
 mat-dialog-actions {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
     gap: 0 6px;
-
-    button{
-        border-radius: 12px;
-    }
+    padding-bottom: 12px;
 }
 
 .title {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 0 6px;
+    width: 100%;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+mat-form-field:has(mat-error) {
+    padding-bottom: 6px;
+}
+
+.content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
 }

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using WorkPlanner.Business.Commands.TimesheetCommands;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
 
@@ -19,6 +20,11 @@ namespace WorkPlanner.Business.CommandHandlers.TimesheetHandlers
             Guid timesheetId = Guid.Parse(request.TimesheetId);
 
             Timesheet timesheetToDelete = await unitOfWork.Timesheets.FindAsync(t => t.Id.Equals(timesheetId));
+
+            if(timesheetToDelete is null)
+            {
+                throw new TimesheetNotFoundException();
+            }
 
             bool isDeleted = await unitOfWork.Timesheets.RemoveAsync(timesheetToDelete);
 

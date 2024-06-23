@@ -567,9 +567,6 @@ export class CalendarComponent {
         this.calendarEventsDivs.splice(divToRemoveIndex, 1);
 
         this.onCalendarEventDetailsClose();
-      },
-      error => {
-        console.log(error);
       }
     );
   }
@@ -592,9 +589,6 @@ export class CalendarComponent {
     this.timesheetService.update(timesheet).subscribe(
       () => {
         this.setNewCalendarEventPositions(divToModify[0].eventElement, newTimeInterval.hourFrom, newTimeInterval.hourTo);
-      },
-      error => {
-        console.log(error);
       }
     );
   }

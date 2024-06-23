@@ -33,6 +33,7 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpPost("register")]
+        [ServiceFilter(typeof(RegistrationExceptionFilter))]
         public async Task<IActionResult> Register([FromBody] UserRegistrationDto user)
         {
             UserRegistrationCommand registerRequest = new UserRegistrationCommand(user);
@@ -47,6 +48,7 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [HttpGet("validate")]
+        [ServiceFilter(typeof(ValidationExceptionFilter))]
         public async Task<IActionResult> Validate(string validationToken)
         {
             UserValidationCommand request = new UserValidationCommand(validationToken);
@@ -57,12 +59,12 @@ namespace WorkPlanner.Api.Controllers
         }
 
         [Authorize]
-        [HttpGet("get")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             GetUserQuery request = new GetUserQuery(id);
 
-            User result = await mediator.Send(request);
+            UserDto result = await mediator.Send(request);
 
             return Ok(result);
         }
@@ -73,7 +75,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetAllUsersQuery request = new GetAllUsersQuery();
 
-            IEnumerable<User> result = await mediator.Send(request);
+            IEnumerable<UserDto> result = await mediator.Send(request);
 
             return Ok(result);
         }

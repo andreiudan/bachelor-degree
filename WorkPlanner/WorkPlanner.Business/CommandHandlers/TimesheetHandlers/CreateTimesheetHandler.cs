@@ -2,6 +2,7 @@
 using MediatR;
 using System.Text.Json;
 using WorkPlanner.Business.Commands.TimesheetCommands;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
 
@@ -20,14 +21,22 @@ namespace WorkPlanner.Business.CommandHandlers.TimesheetHandlers
 
         public async Task<string> Handle(CreateTimesheetCommand request, CancellationToken cancellationToken)
         {
-            Timesheet newTimesheet = mapper.Map<Timesheet>(request.Timesheet);
-
             User user = await unitOfWork.Users.FindAsync(u => u.Username.Equals(request.Timesheet.Username));
 
-            if (user == null)
+            if (user is null)
             {
-                throw new ArgumentException("User not found");
+                throw new UserNotFoundException();
             }
+
+            TimeOnly startTime = TimeOnly.Parse(request.Timesheet.StartTime);
+            TimeOnly endTime = TimeOnly.Parse(request.Timesheet.EndTime);
+
+            if(startTime > endTime)
+            {
+                throw new InvalidTimesheetIntervalException();
+            }
+
+            Timesheet newTimesheet = mapper.Map<Timesheet>(request.Timesheet);
 
             newTimesheet.AccountId = user.Id;
 

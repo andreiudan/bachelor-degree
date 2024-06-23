@@ -12,10 +12,8 @@ export class TimesheetService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getAllByUserId(userId: string) {
-    const getAllByUserIdUrl = this.baseUrl + 'userId=' + userId;
-
-    return this.httpClient.get<Timesheet[]>(getAllByUserIdUrl).pipe(
+  public getAllByUserId() {
+    return this.httpClient.get<Timesheet[]>(this.baseUrl).pipe(
       map((timesheets) => timesheets.map((timesheet) => ({
         ...timesheet,
         date: new Date(timesheet.date)

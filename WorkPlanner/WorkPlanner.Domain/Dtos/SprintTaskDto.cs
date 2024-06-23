@@ -17,10 +17,10 @@ namespace WorkPlanner.Domain.Dtos
         public string Description { get; set; }
 
         [Required]
-        public string Creator { get; set; }
+        public Guid CreatorId { get; set; }
 
         [Required]
-        public string Assignee { get; set; }
+        public Guid AssigneeId { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }

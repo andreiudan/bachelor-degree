@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using WorkPlanner.Business.Commands.TaskCommands;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
 
@@ -21,7 +22,17 @@ namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
 
             SprintTask task = await unitOfWork.Tasks.FindAsync(t => t.Id.Equals(taskId));
 
-            bool isChanged = await unitOfWork.Tasks.ChangeSprint(newSprintId, task);
+            if(task is null) {
+                throw new SprintTaskNotFoundException();
+            }
+
+            Sprint sprint = await unitOfWork.Sprints.FindAsync(s => s.Id.Equals(newSprintId));
+
+            if(sprint is null) {
+                throw new SprintNotFoundException();
+            }
+
+            bool isChanged = await unitOfWork.Tasks.ChangeSprint(sprint, task);
 
             await unitOfWork.CompleteAsync();
 

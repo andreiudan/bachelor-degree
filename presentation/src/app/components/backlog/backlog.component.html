@@ -99,7 +99,7 @@
                           <p>{{ this.changeDateTimeToDate(task.dueDate) }}</p>
                         </div>
                         <div>
-                          <p>{{ task.assignee }}</p>
+                          <p matTooltip="Username: {{getUsername(task.id)}}">{{ getUserFullName(task.id) }}</p>
                         </div>
                       </div>
                     </div>
@@ -207,7 +207,7 @@
                           <p>{{ this.changeDateTimeToDate(task.dueDate) }}</p>
                         </div>
                         <div>
-                          <p>{{ task.assignee }}</p>
+                          <p matTooltip="Username: {{getUsername(task.id)}}">{{ getUserFullName(task.id) }}</p>
                         </div>
                       </div>
                     </div>

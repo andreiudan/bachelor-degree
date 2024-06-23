@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using WorkPlanner.Business.Commands.TaskCommands;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
 
@@ -19,6 +20,10 @@ namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
             Guid taskId = Guid.Parse(request.TaskId);
 
             SprintTask task = await unitOfWork.Tasks.FindAsync(t => t.Id.Equals(taskId));
+
+            if(task is null) {
+                throw new SprintTaskNotFoundException();
+            }
 
             if (task.BacklogId != null!)
             {

@@ -7,7 +7,7 @@ import { TaskService } from '../../services/task/task.service';
 import { lastValueFrom } from 'rxjs';
 import { TaskCreation } from '../../../models/taskCreation';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { CustomValidators } from '../../input-validation/custom-validators';
 import { StorageService } from '../../services/storage/storage.service';
 import { JwtService } from '../../services/authentication/jwt.service';
@@ -26,10 +26,6 @@ export class CreateIssueComponent implements OnInit{
   public users: User[] = [];
   public today = new Date();
 
-  public typesControl: FormControl;
-  public priorityControl:  FormControl;
-  public assigneeControl: FormControl;
-
   private sprintId: string = '';
 
   constructor(private storageService: StorageService,
@@ -47,14 +43,6 @@ export class CreateIssueComponent implements OnInit{
       alert('Please select a project first!');
       this.router.navigate(['/backlog']);
     }
-
-    this.sprintId = this.activatedRoute.snapshot.paramMap.get('sprintId') ?? '';
-
-    this.loadAssignees();
-
-    this.assigneeControl = new FormControl('');
-    this.typesControl = new FormControl('', Validators.required);
-    this.priorityControl = new FormControl('', Validators.required);
 
     this.taskCreationForm = this.formBuilder.group({
       name: [
@@ -76,9 +64,19 @@ export class CreateIssueComponent implements OnInit{
           Validators.required,
         ],
       ],
-      priority: this.priorityControl,
-      type: this.typesControl,
-      assignee: this.assigneeControl,
+      priority: [
+        '',
+        [
+          Validators.required,
+        ],
+      ],
+      type: [
+        '',
+        [
+          Validators.required,
+        ]
+      ],
+      assignee: [''],
       storyPoints: [
         null,
         [
@@ -87,18 +85,15 @@ export class CreateIssueComponent implements OnInit{
         ],
       ]
     });
+
+    this.sprintId = this.activatedRoute.snapshot.paramMap.get('sprintId') ?? '';
+
+    await this.loadAssignees();
   }
 
-  private async loadAssignees(): Promise<boolean> {
-    try{
-      const assignees$ = this.userService.getAll();
-      this.users = await lastValueFrom(assignees$);
-    }
-    catch(error) {
-      return false;
-    }
-
-    return true;
+  private async loadAssignees(): Promise<void> {
+    const assignees$ = this.userService.getAll();
+    this.users = await lastValueFrom(assignees$);
   }
 
   trackByFn(index: number, item: any) {
@@ -171,14 +166,16 @@ export class CreateIssueComponent implements OnInit{
     this.taskService.create(newTask).subscribe(
       (response) => {
         this.router.navigate(['/backlog']);
-      },
-      (error) => {
-        console.log(error);
       }
     );
   }
 
   public onClearClick() {
+    this.taskCreationForm.reset();
+  }
+
+  public clearForm(form: FormGroupDirective): void {
+    form.resetForm();
     this.taskCreationForm.reset();
   }
 }

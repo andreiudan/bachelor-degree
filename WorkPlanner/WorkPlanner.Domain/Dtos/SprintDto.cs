@@ -9,6 +9,7 @@ namespace WorkPlanner.Domain.Dtos
         public Guid Id { get; set; }
 
         [Required]
+        [MinLength(2, ErrorMessage = ValidationConstants.NameLengthErrorMessage)]
         public string Name { get; set; }
 
         [Required]

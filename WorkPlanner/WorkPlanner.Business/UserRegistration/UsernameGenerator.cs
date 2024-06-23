@@ -36,7 +36,7 @@ namespace WorkPlanner.Business.UserRegistration
                 idForNewUsername = int.Parse(lastUserWithSameUsernameId) + 1;
             }
 
-            return idForNewUsername.ToString();
+            return idForNewUsername.ToString().ToLower();
         }
     }
 }

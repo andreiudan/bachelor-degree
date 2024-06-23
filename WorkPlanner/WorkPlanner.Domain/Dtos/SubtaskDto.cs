@@ -1,11 +1,17 @@
-﻿namespace WorkPlanner.Domain.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WorkPlanner.Domain.Dtos
 {
     public class SubtaskDto
     {
-        public string Id { get; set; }
+        [Required]
+        public Guid Id { get; set; }
 
+        [Required]
+        [MinLength(2, ErrorMessage = ValidationConstants.NameLengthErrorMessage)]
         public string Name { get; set; }
 
+        [Required]
         public bool Done { get; set; }
     }
 }

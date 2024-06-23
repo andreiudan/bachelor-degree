@@ -2,6 +2,7 @@
 using MediatR;
 using System.Threading.Tasks;
 using WorkPlanner.Business.Commands.TaskCommands;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
 
@@ -24,9 +25,9 @@ namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
 
             SprintTask task = await unitOfWork.Tasks.FindAsync(t => t.Id.Equals(taskId));
 
-            if(task == null)
+            if(task is null)
             {
-                throw new ArgumentNullException(nameof(task));
+                throw new SprintTaskNotFoundException();
             }
 
             task.Status = request.Status;

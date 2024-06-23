@@ -84,7 +84,6 @@ const matFormFieldOptions: MatFormFieldDefaultOptions = {
     MatCheckboxModule,
     MatProgressBarModule,
     ReactiveFormsModule,
-    FormsModule,
     MatTooltipModule,
     MatPaginator,
     MatTableModule,

@@ -16,7 +16,7 @@ namespace WorkPlanner.Interfaces.DataAccess.Repositories
 
         public Task<SprintTask> AddOnBacklog(Guid projectId, SprintTask subtask);
 
-        public Task<bool> ChangeSprint(Guid newSprintId, SprintTask task);
+        public Task<bool> ChangeSprint(Sprint newSprint, SprintTask task);
 
         public Task<bool> MoveToBacklog(SprintTask task);
     }

@@ -82,9 +82,6 @@ export class DashboardComponent {
         }
 
         this.dataLoaded = Promise.resolve(true);
-      },
-      (error) => {
-        this.dataLoaded = Promise.resolve(false);
       }
     );
   }

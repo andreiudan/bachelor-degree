@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Business.Queries.ProjectQueries;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
@@ -23,6 +24,11 @@ namespace WorkPlanner.Business.QueryHandlers.ProjectHandlers
             Guid id = Guid.Parse(request.ProjectId);
 
             Project project = await unitOfWork.Projects.GetWithSprints(id);
+
+            if(project is null)
+            {
+                throw new ProjectNotFoundException();
+            }
 
             List<SprintDto> sprintDtos = new List<SprintDto>();
 

@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Sprint } from '../../../models/sprint';
-import { Project } from '../../../models/project';
 import { Task } from '../../../models/task';
 import { PriorityTypes } from '../../../models/priorityTypes';
 import { StatusTypes } from '../../../models/statusTypes';
@@ -91,7 +90,7 @@ export class SprintService {
           status: StatusTypes[task.status],
           priority: PriorityTypes[task.priority],
           type: TaskTypes[task.type],
-          progress: this.calculateTaskProgress(task),
+          progress: 0,
         }))
       )
     );
@@ -113,7 +112,7 @@ export class SprintService {
           status: StatusTypes[task.status],
           priority: PriorityTypes[task.priority],
           type: TaskTypes[task.type],
-          progress: this.calculateTaskProgress(task),
+          progress: 0,
         })),
       }))
     );
@@ -136,19 +135,10 @@ export class SprintService {
             status: StatusTypes[task.status],
             priority: PriorityTypes[task.priority],
             type: TaskTypes[task.type],
-            progress: this.calculateTaskProgress(task),
+            progress: 0,
           })),
         }))
       )
     );
   }
-
-  private calculateTaskProgress(task: Task): number {
-    if (!task.subtasks) {
-        return 0;
-    }
-    const completedSubTasks = task.subtasks.filter(subTask => subTask.done).length;
-    const totalSubTasks = task.subtasks.length;
-    return totalSubTasks === 0 ? 0 : (completedSubTasks / totalSubTasks) * 100;
-}
 }

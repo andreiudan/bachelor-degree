@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Business.Queries.ProjectQueries;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
@@ -23,6 +24,11 @@ namespace WorkPlanner.Business.QueryHandlers.ProjectHandlers
             Guid prjoectId = Guid.Parse(request.ProjectId);
 
             Sprint sprint = await unitOfWork.Sprints.GetActiveSprintForProject(prjoectId);
+
+            if(sprint is null)
+            {
+                throw new SprintNotFoundException();
+            }
 
             SprintDto sprintDto = mapper.Map<SprintDto>(sprint);
 

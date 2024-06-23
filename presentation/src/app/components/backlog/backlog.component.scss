@@ -85,7 +85,7 @@ h2{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-block: 0;
+        padding-block: 6px;
         padding-inline: 16px;
 
         p{
@@ -276,7 +276,7 @@ h2{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-block: 0;
+        padding-block: 6px;
         padding-inline: 16px;
 
         p{
@@ -409,7 +409,5 @@ button{
     border: 1px solid gray !important;
     border-radius: 18px !important;
     margin-inline-start: 12px;
-    margin-block-start: 32px;
-    margin-block-end: 12px;
     padding-block-end: 3px;
 }

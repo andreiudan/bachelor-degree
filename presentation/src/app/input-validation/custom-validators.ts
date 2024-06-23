@@ -38,11 +38,15 @@ export class CustomValidators {
 
   public static nameMinimumLengthValidator(control: FormGroup): { [s: string]: boolean } | null 
   {
+    if(control.value === null) return null;
+
     const hasMinimumLength = control.value.trim().length >= 2;
     return !hasMinimumLength ? { minLength: true } : null;
   }
 
   public static nameContainsNumbersValidator(control: FormGroup) {
+    if(control.value === null) return null;
+
     const hasNumbers = INPUT_VALIDATION_RULES.regex.hasNumber.test(control.value);  
     return hasNumbers ? { containsNumbers: true } : null;
   }

@@ -8,6 +8,7 @@ import { PasswordsErrorStateMatcher } from '../../input-validation/error-state-m
 import { CustomValidators } from '../../input-validation/custom-validators';
 import { INPUT_VALIDATION_RULES } from '../../input-validation/input-validation-rules';
 import { Router } from '@angular/router';
+import { UserRegistration } from '../../../models/userRegistration';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   public registerForm: FormGroup;
-  public user = new User();
+  public user = new UserRegistration();
   public isPasswordVisible: boolean = false;
   public matcher = new PasswordsErrorStateMatcher();
 
@@ -92,9 +93,9 @@ export class RegisterComponent implements OnInit {
     this.register(this.user);
   }
 
-  private register(user: User): void {
+  private register(user: UserRegistration): void {
     if(this.registerForm.valid){
-      let userWithEncodedPassword: User = {
+      let userWithEncodedPassword: UserRegistration = {
         firstName: this.firstName?.value,
         lastName: this.lastName?.value,
         email: this.email?.value,
@@ -103,9 +104,6 @@ export class RegisterComponent implements OnInit {
 
       this.userService.register(userWithEncodedPassword).subscribe((response: string) => {
         this.openDialog();
-      }, (error) => {
-        alert('Registration failed');
-        this.ngOnInit();
       });
     }
   }

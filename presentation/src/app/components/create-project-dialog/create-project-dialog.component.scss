@@ -1,3 +1,11 @@
 mat-form-field{
     width: 100%;
 }
+
+mat-form-field:has(mat-error) {
+    padding-bottom: 6px;
+}
+
+h2{
+    font-weight: bold !important;
+}

@@ -179,3 +179,56 @@ mat-card{
 .submit-button {
     width: 100%;
 }
+
+@media screen and (max-width: 1440px) {
+    h2{
+        margin-top: 24px !important;
+        margin-bottom: 12px !important;
+        font-size: 28px !important;
+    }
+
+    .presentation-div{
+        width: 48% !important;
+    }
+
+    .card-div {
+        width: 52% !important;
+        padding-right: 24px;
+        box-sizing: border-box;
+    }
+
+    mat-card {
+        width: 100% !important;
+    }
+
+    mat-card-actions{
+        margin-top: 6px !important;
+        padding-bottom: 24px !important;
+    }
+
+    .big-screen{
+        display: none !important;
+    }
+
+    .small-screen{
+        display: block !important;
+    }
+}
+
+@media screen and (min-width: 1441px) {
+    .big-screen {
+        display: block !important;
+    }
+
+    .small-screen {
+        display: none !important;
+    }
+}
+
+.tooltip-error{
+    white-space: pre-line;
+}
+
+::ng-deep .cdk-overlay-container, .cdk-global-overlay-wrapper {
+    white-space: pre-line;
+}

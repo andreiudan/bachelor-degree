@@ -1,10 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CustomValidators } from '../../input-validation/custom-validators';
 
 @Component({
   selector: 'app-add-subtask-dialog',
@@ -14,23 +15,43 @@ import { FormsModule } from '@angular/forms';
     MatDialogClose,
     MatDialogContent,
     MatDialogTitle,
-    FormsModule],
+    FormsModule,
+    ReactiveFormsModule,],
   templateUrl: './add-subtask-dialog.component.html',
   styleUrl: './add-subtask-dialog.component.scss'
 })
-export class AddSubtaskDialogComponent {
-  public subtaskName: string = '';
+export class AddSubtaskDialogComponent implements OnInit{
+  public createSubtaskForm: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<AddSubtaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: string) { }
+    @Inject(MAT_DIALOG_DATA) public data: string,
+    private formBuilder: FormBuilder) { }
+
+  ngOnInit() {
+    this.createSubtaskForm = this.formBuilder.group({
+      subtaskName: [
+        '',
+        [
+          Validators.required,
+          CustomValidators.nameMinimumLengthValidator
+        ]
+      ]
+    });
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  closeDialog(): void {
-    if (this.subtaskName !== '') {
-      this.dialogRef.close(this.subtaskName);
+  public get subtaskName() {
+    return this.createSubtaskForm.get('subtaskName');
+  }
+
+  public onSubmit(): void {
+    if(this.createSubtaskForm.invalid){
+      return;
     }
+
+    this.dialogRef.close(this.subtaskName?.value);
   }
 }

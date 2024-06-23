@@ -5,7 +5,6 @@ using WorkPlanner.Business.Commands.SprintCommands;
 using WorkPlanner.Business.Queries.SprintQueries;
 using WorkPlanner.Business.Queries.TaskQueries;
 using WorkPlanner.Domain.Dtos;
-using WorkPlanner.Domain.Entities;
 using WorkPlanner.Domain.EntityPropertyTypes;
 
 namespace WorkPlanner.Api.Controllers

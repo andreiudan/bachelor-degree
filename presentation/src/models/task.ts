@@ -12,8 +12,8 @@ export class Task {
     labels: string;
     status: StatusTypes;
     storyPoints: number;
-    assignee: string;
-    creator: string;
+    assigneeId: string;
+    creatorId: string;
     dueDate: Date;
     startDate: Date;
     progress: number;

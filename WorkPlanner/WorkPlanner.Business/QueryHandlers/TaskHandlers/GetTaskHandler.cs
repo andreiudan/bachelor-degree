@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Business.Queries.TaskQueries;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
@@ -23,6 +24,11 @@ namespace WorkPlanner.Business.QueryHandlers.TaskHandlers
             Guid taskId = Guid.Parse(request.Id);
 
             SprintTask task = await unitOfWork.Tasks.GetWithSubtasks(taskId);
+
+            if(task is null)
+            {
+                throw new SprintTaskNotFoundException();
+            }
 
             SprintTaskDto taskDto = mapper.Map<SprintTaskDto>(task);
 

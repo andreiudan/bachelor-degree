@@ -3,6 +3,7 @@ import { User } from '../../../models/user';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from '../storage/storage.service';
+import { UserAuthentication } from '../../../models/userAuthentication';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthenticationService {
     this.isLoggedIn();
   }
 
-  public login(user: User): Observable<string> {
+  public login(user: UserAuthentication): Observable<string> {
     const jwtToken = this.httpClient.post(this.loginUrl, user, {responseType: 'text' }).pipe(
       tap((token) => {
         this.storageService.saveJwtToken(token)
