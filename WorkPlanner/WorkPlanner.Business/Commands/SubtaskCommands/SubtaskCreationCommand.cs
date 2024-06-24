@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.Dtos;
 
 namespace WorkPlanner.Business.Commands.SubtaskCommands
 {
-    public class SubtaskCreationCommand : IRequest<Subtask>
+    public class SubtaskCreationCommand : IRequest<SubtaskDto>
     {
         public string TaskId { get; }
         public string SubtaskName { get; }

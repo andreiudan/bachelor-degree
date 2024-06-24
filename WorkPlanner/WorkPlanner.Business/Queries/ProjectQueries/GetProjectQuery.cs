@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.Dtos;
 
 namespace WorkPlanner.Business.Queries.ProjectQueries
 {
-    public class GetProjectQuery : IRequest<Project>
+    public class GetProjectQuery : IRequest<ProjectDto>
     {
         public string Id { get; }
 

@@ -9,14 +9,14 @@ namespace WorkPlanner.Domain.Dtos
         [MinLength(2, ErrorMessage = ValidationConstants.NameLengthErrorMessage)]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
+
+        public string Label { get; set; }
 
         public string SprintId { get; set; }
 
         public Guid ProjectId { get; set; }
-
-        [Required]
-        public string CreatorUsername { get; set; }
 
         public string AssigneeUsername { get; set; } = string.Empty;
 

@@ -3,18 +3,26 @@ import { ErrorHandler, Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoadingService } from '../loading/loading.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorHandlingService extends ErrorHandler {
 
-  constructor(private zone: NgZone, private router: Router, private authService: AuthenticationService, private snackBar: MatSnackBar) { 
+  constructor(private zone: NgZone, 
+              private router: Router, 
+              private authService: AuthenticationService, 
+              private snackBar: MatSnackBar, 
+              private loadingService: LoadingService) 
+            { 
     super();
   }
 
   override handleError(error: Error | HttpErrorResponse) {
     let errorMessage = 'An unexpected error occurred. Please try again later.';
+
+    this.loadingService.hide();
 
     if (error instanceof HttpErrorResponse) {
       switch(error.status) {

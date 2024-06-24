@@ -17,6 +17,6 @@ namespace WorkPlanner.Interfaces.DataAccess.Repositories
 
         public Task<List<Sprint>> GetInactiveSprintsForProject(Guid projectId);
 
-        public Task<int> GetNumberOfActiveSprints();
+        public Task<int> GetNumberOfActiveSprints(Guid projectId);
     }
 }

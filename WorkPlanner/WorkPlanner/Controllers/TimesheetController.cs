@@ -5,7 +5,6 @@ using WorkPlanner.Api.Filters;
 using WorkPlanner.Business.Commands.TimesheetCommands;
 using WorkPlanner.Business.Queries.TimesheetQueries;
 using WorkPlanner.Domain.Dtos;
-using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Api.Controllers
 {
@@ -29,7 +28,7 @@ namespace WorkPlanner.Api.Controllers
 
             string result = await mediator.Send(request);
 
-            return Created("", result);
+            return Created(string.Empty, result);
         }
 
         [HttpGet]
@@ -37,7 +36,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetAllTimesheetsByUserQuery request = new GetAllTimesheetsByUserQuery();
 
-            List<Timesheet> response = await mediator.Send(request);
+            List<TimesheetDto> response = await mediator.Send(request);
 
             return Ok(response);
         }
@@ -48,7 +47,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetAllTimesheetsForUserByDateIntervalQuery request = new GetAllTimesheetsForUserByDateIntervalQuery(startDate, endDate);
 
-            List<Timesheet> response = await mediator.Send(request);
+            List<TimesheetDto> response = await mediator.Send(request);
 
             return Ok(response);
         }
@@ -61,12 +60,12 @@ namespace WorkPlanner.Api.Controllers
 
             bool deleted = await mediator.Send(request);
 
-            return NoContent();
+            return Ok(deleted);
         }
 
         [HttpPut]
         [ServiceFilter(typeof(CreateAndUpdateTimesheetActionFilter))]
-        public async Task<IActionResult> Update([FromBody] TimesheetUpdateDto timesheet)
+        public async Task<IActionResult> Update([FromBody] TimesheetDto timesheet)
         {
             UpdateTimesheetCommand request = new UpdateTimesheetCommand(timesheet);
 

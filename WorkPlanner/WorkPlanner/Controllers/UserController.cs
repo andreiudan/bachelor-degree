@@ -6,7 +6,6 @@ using WorkPlanner.Business.Commands;
 using WorkPlanner.Business.Commands.UserCommands;
 using WorkPlanner.Business.Queries.UserQueries;
 using WorkPlanner.Domain.Dtos;
-using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Api.Controllers
 {
@@ -44,7 +43,7 @@ namespace WorkPlanner.Api.Controllers
 
             await mediator.Send(emailRequest);
 
-            return Created();
+            return Created(string.Empty, result);
         }
 
         [HttpGet("validate")]

@@ -6,9 +6,9 @@ namespace WorkPlanner.Business.Commands.TimesheetCommands
 {
     public class UpdateTimesheetCommand : IRequest<bool>
     {
-        public TimesheetUpdateDto Timesheet { get; }
+        public TimesheetDto Timesheet { get; }
 
-        public UpdateTimesheetCommand(TimesheetUpdateDto timesheet)
+        public UpdateTimesheetCommand(TimesheetDto timesheet)
         {
             Timesheet = timesheet ?? throw new ArgumentNullException(nameof(timesheet));
         }

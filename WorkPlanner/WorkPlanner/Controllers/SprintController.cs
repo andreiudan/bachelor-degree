@@ -29,7 +29,7 @@ namespace WorkPlanner.Api.Controllers
 
             SprintDto result = await mediator.Send(request);
 
-            return Created();
+            return Created(string.Empty, result);
         }
 
         [HttpGet]

@@ -17,30 +17,30 @@ namespace WorkPlanner.Business.CommandHandlers.SprintHandlers
 
         public async Task<bool> Handle(ActivateSprintCommand request, CancellationToken cancellationToken)
         {
-            int activeSprints = await unitOfWork.Sprints.GetNumberOfActiveSprints();
-
-            if(activeSprints > 0)
-            {
-                throw new MultipleActiveSprintsException();
-            }
-
             Guid sprintId = Guid.Parse(request.SprintId);
 
             Sprint sprint = await unitOfWork.Sprints.FindAsync(s => s.Id.Equals(sprintId));
 
-            if(sprint is null)
+            if (sprint is null)
             {
                 throw new SprintNotFoundException();
             }
 
-            if(sprint.Active)
+            if (sprint.Active)
             {
                 throw new SprintAlreadyActiveException();
             }
 
-            if(sprint.Released)
+            if (sprint.Released)
             {
                 throw new ActivationOfReleasedSprintException();
+            }
+
+            int activeSprints = await unitOfWork.Sprints.GetNumberOfActiveSprints(sprint.ProjectId);
+
+            if (activeSprints > 0)
+            {
+                throw new MultipleActiveSprintsException();
             }
 
             sprint.Active = true;

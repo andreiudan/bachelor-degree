@@ -5,9 +5,6 @@ namespace WorkPlanner.Domain.Dtos
     public class TimesheetCreationDto
     {
         [Required]
-        public string Username { get; set; }
-
-        [Required]
         public string Date { get; set; }
 
         [Required]

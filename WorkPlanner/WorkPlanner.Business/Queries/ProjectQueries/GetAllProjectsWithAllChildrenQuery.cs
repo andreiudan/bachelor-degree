@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.Dtos;
 
 namespace WorkPlanner.Business.Queries.ProjectQueries
 {
-    public class GetAllProjectsWithAllChildrenQuery : IRequest<List<Project>>
+    public class GetAllProjectsWithAllChildrenQuery : IRequest<List<ProjectDto>>
     {
     }
 }

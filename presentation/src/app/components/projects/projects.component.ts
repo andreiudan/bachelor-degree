@@ -74,11 +74,6 @@ export class ProjectsComponent implements OnInit {
 
   private createProject(project: ProjectCreation): void {
     if(project !== undefined) {
-      const jwtToken = this.storageService.getJwtToken();
-      const username = this.jwtService.getClaim(jwtToken, 'username');
-
-      project.creatorUsername = username;
-
       this.projectService.create(project).subscribe((response) => {
       });
     }

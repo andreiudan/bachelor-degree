@@ -27,7 +27,7 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
 
         public async Task<string> Handle(UserValidationCommand request, CancellationToken cancellationToken)
         {
-            string loginUrl = $"{frontendConfiguration.Url}/login";
+            string validationSuccessfulUrl = $"{frontendConfiguration.Url}/accountValidationSuccessful";
 
             Guid idToBeActivated = DecodeId(request.ValidationToken);
 
@@ -59,7 +59,7 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
 
             await unitOfWork.CompleteAsync();
 
-            return loginUrl;
+            return validationSuccessfulUrl;
         }
 
         private Guid DecodeId(string encodedId)

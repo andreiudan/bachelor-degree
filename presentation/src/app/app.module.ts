@@ -42,6 +42,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { LoadingComponent } from './components/loading/loading.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const matFormFieldOptions: MatFormFieldDefaultOptions = {
   hideRequiredMarker: true,
@@ -64,6 +66,7 @@ const matFormFieldOptions: MatFormFieldDefaultOptions = {
     UserComponent,
     CreateIssueComponent,
     ProjectsComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +94,7 @@ const matFormFieldOptions: MatFormFieldDefaultOptions = {
     CdkDropList, 
     CdkDrag,
     MatDatepickerModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     provideClientHydration(),

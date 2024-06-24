@@ -25,6 +25,6 @@ namespace WorkPlanner.Domain.Dtos
         public bool Released { get; set; }
 
         [Required]
-        public List<SprintTask> Tasks { get; set; } = new List<SprintTask>();
+        public List<SprintTaskDto> Tasks { get; set; } = new List<SprintTaskDto>();
     }
 }

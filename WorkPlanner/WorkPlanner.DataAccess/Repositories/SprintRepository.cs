@@ -56,10 +56,10 @@ namespace WorkPlanner.DataAccess.Repositories
                                 .ToListAsync();
         }
 
-        public async Task<int> GetNumberOfActiveSprints()
+        public async Task<int> GetNumberOfActiveSprints(Guid projectId)
         {
             return await Context.Set<Sprint>()
-                                .CountAsync(s => s.Active == true && s.Released == false);
+                                .CountAsync(s => s.ProjectId.Equals(projectId) && s.Active == true && s.Released == false);
         }
     }
 }

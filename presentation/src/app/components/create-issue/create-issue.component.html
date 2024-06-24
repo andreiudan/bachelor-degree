@@ -20,13 +20,20 @@
                 <mat-error>Please enter a description.</mat-error>
             </mat-form-field>
         
-             <mat-form-field class="single-form-field">
-                <mat-label>Due Date</mat-label>
-                <input matInput [matDatepicker]="picker" [min]="today" placeholder="Choose a date" formControlName="dueDate">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-error>Please enter a date.</mat-error>
-            </mat-form-field>
+            <div class="multiple-col-alignment">
+                <mat-form-field>
+                    <mat-label>Due Date</mat-label>
+                    <input matInput [matDatepicker]="picker" [min]="today" placeholder="Choose a date" formControlName="dueDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error>Please enter a date.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Label</mat-label>
+                    <input matInput type="text" placeholder="Label" formControlName="label">
+                </mat-form-field>    
+            </div>
             
             <div class="multiple-col-alignment">
                 <mat-form-field>

@@ -9,7 +9,7 @@ export class Task {
     description: string;
     priority: PriorityTypes;
     type: TaskTypes;
-    labels: string;
+    label: string;
     status: StatusTypes;
     storyPoints: number;
     assigneeId: string;

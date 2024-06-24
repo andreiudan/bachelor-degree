@@ -58,6 +58,9 @@ export class CreateIssueComponent implements OnInit{
           Validators.required,
         ]
       ],
+      label: [
+        ''
+      ],
       dueDate: [
         '',
         [
@@ -117,6 +120,10 @@ export class CreateIssueComponent implements OnInit{
     return this.taskCreationForm.get('description');
   }
 
+  public get label() {
+    return this.taskCreationForm.get('label');
+  }
+
   public get dueDate() {
     return this.taskCreationForm.get('dueDate');
   }
@@ -153,19 +160,16 @@ export class CreateIssueComponent implements OnInit{
       this.router.navigate(['/backlog']);
     }
 
-    const jwtToken = this.storageService.getJwtToken();
-    const username = this.jwtService.getClaim(jwtToken, 'username');
-
     let newTask: TaskCreation = {
       name: this.name?.value,
       description: this.description?.value,
+      label: this.label?.value,
       dueDate: this.dueDate?.value,
       priority: this.priority?.value,
       type: this.type?.value,
       storyPoints: this.storyPoints?.value,
       sprintId: '',
       projectId: projectId,
-      creatorUsername: username,
       assigneeUsername: this.assignee?.value.username ?? ''
     };
 

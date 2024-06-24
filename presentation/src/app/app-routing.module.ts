@@ -15,6 +15,7 @@ import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ValidationSuccessfulComponent } from './components/validation-successful/validation-successful.component';
 
 const routes: Routes = [
   {
@@ -80,6 +81,11 @@ const routes: Routes = [
     path: 'projects',
     component: ProjectsComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'accountValidationSuccessful',
+    component: ValidationSuccessfulComponent,
+    canActivate: [ guestGuard ],
   },
   {
     path: '**',

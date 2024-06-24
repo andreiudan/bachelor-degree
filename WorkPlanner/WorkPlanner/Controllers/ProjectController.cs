@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using WorkPlanner.Business.Commands.ProjectCommands;
 using WorkPlanner.Business.Queries.ProjectQueries;
 using WorkPlanner.Domain.Dtos;
-using WorkPlanner.Domain.Entities;
 
 namespace WorkPlanner.Api.Controllers
 {
@@ -35,7 +34,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetAllProjectsQuery request = new GetAllProjectsQuery();
 
-            List<Project> result = await mediator.Send(request);
+            List<ProjectDto> result = await mediator.Send(request);
 
             return Ok(result);
         }
@@ -45,7 +44,7 @@ namespace WorkPlanner.Api.Controllers
         {
             GetProjectQuery request = new GetProjectQuery(id);
 
-            Project result = await mediator.Send(request);
+            ProjectDto result = await mediator.Send(request);
 
             return Ok(result);
         }
@@ -53,9 +52,9 @@ namespace WorkPlanner.Api.Controllers
         [HttpGet("getAllChildren")]
         public async Task<IActionResult> GetAllWithAllChildren()
         {
-            GetAllProjectsQuery request = new GetAllProjectsQuery();
+            GetAllProjectsWithAllChildrenQuery request = new GetAllProjectsWithAllChildrenQuery();
 
-            List<Project> result = await mediator.Send(request);
+            List<ProjectDto> result = await mediator.Send(request);
 
             return Ok(result);
         }

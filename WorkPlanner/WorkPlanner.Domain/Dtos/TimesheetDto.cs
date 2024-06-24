@@ -2,13 +2,10 @@
 
 namespace WorkPlanner.Domain.Dtos
 {
-    public class TimesheetUpdateDto
+    public class TimesheetDto
     {
         [Required]
         public string Id { get; set; }
-
-        [Required]
-        public string Username { get; set; }
 
         [Required]
         public string Date { get; set; }

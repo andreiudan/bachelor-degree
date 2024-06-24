@@ -46,6 +46,6 @@ namespace WorkPlanner.Domain.Dtos
         public int StoryPoints { get; set; }
 
         [Required]
-        public List<Subtask> Subtasks { get; set; } = new List<Subtask>();
+        public List<SubtaskDto> Subtasks { get; set; } = new List<SubtaskDto>();
     }
 }

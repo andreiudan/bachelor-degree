@@ -6,7 +6,6 @@ using WorkPlanner.Business.Commands.TaskCommands;
 using WorkPlanner.Business.Queries.SubtaskQueries;
 using WorkPlanner.Business.Queries.TaskQueries;
 using WorkPlanner.Domain.Dtos;
-using WorkPlanner.Domain.Entities;
 using WorkPlanner.Domain.EntityPropertyTypes;
 
 namespace WorkPlanner.Api.Controllers
@@ -30,7 +29,7 @@ namespace WorkPlanner.Api.Controllers
 
             SprintTaskDto result = await mediator.Send(request);
 
-            return Created();
+            return Created(string.Empty, result);
         }
 
         [HttpGet]
@@ -78,7 +77,7 @@ namespace WorkPlanner.Api.Controllers
         {
             SubtaskCreationCommand request = new SubtaskCreationCommand(taskId, subtaskName);
 
-            Subtask result = await mediator.Send(request);
+            SubtaskDto result = await mediator.Send(request);
 
             return Ok(result);
         }

@@ -22,5 +22,8 @@ namespace WorkPlanner.Domain.Dtos
 
         [Required]
         public DateTime DueDate { get; set; }
+
+        [Required]
+        public List<SprintDto> Sprints { get; set; } = new List<SprintDto>();
     }
 }

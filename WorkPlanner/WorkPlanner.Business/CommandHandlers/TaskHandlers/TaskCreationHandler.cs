@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using WorkPlanner.Business.Commands.TaskCommands;
 using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Dtos;
@@ -12,19 +13,26 @@ namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public TaskCreationHandler(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public TaskCreationHandler(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public async Task<SprintTaskDto> Handle(TaskCreationCommand request, CancellationToken cancellationToken)
         {
+            string usernameClaimIdentification = "username";
+
             SprintTask task = mapper.Map<SprintTask>(request.Task);
             SprintTask addedTask = null;
 
-            User user = await unitOfWork.Users.FindAsync(u => u.Username.Equals(request.Task.CreatorUsername));
+            string username = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == usernameClaimIdentification)?.Value;
+
+            User user = await unitOfWork.Users.FindAsync(u => u.Username.Equals(username));
 
             if(user is null)
             {

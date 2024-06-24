@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.Dtos;
 
 namespace WorkPlanner.Business.Queries.TimesheetQueries
 {
-    public class GetAllTimesheetsForUserByDateIntervalQuery : IRequest<List<Timesheet>>
+    public class GetAllTimesheetsForUserByDateIntervalQuery : IRequest<List<TimesheetDto>>
     {
         public string StartDate { get; }
         public string EndDate { get; }

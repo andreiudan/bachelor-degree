@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using WorkPlanner.Business.Commands.TimesheetCommands;
 using WorkPlanner.Business.Exceptions;
@@ -12,16 +13,23 @@ namespace WorkPlanner.Business.CommandHandlers.TimesheetHandlers
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public CreateTimesheetHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public CreateTimesheetHandler(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+
         }
 
         public async Task<string> Handle(CreateTimesheetCommand request, CancellationToken cancellationToken)
         {
-            User user = await unitOfWork.Users.FindAsync(u => u.Username.Equals(request.Timesheet.Username));
+            string usernameClaimIdentification = "username";
+
+            string username = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == usernameClaimIdentification)?.Value;
+
+            User user = await unitOfWork.Users.FindAsync(u => u.Username.Equals(username));
 
             if (user is null)
             {

@@ -514,7 +514,6 @@ export class CalendarComponent {
     const calculatedDate = this.calculateDateFromInsetInline(insetInline);
 
     const timesheet: TimesheetCreation = {
-      username: username,
       date: calculatedDate.toDateString(),
       startTime: this.calculateTimeFromPositions(top),
       endTime: this.calculateTimeFromPositions(100 - bottom),

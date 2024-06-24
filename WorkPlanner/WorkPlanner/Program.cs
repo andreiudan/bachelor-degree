@@ -17,7 +17,6 @@ using System.Text.Json.Serialization;
 using WorkPlanner.Api.Filters;
 using Microsoft.AspNetCore.Mvc;
 using WorkPlanner.Domain;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
