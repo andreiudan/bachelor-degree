@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Options;
 using System.Text;
 using WorkPlanner.Business.Commands.UserCommands;
 using WorkPlanner.Business.Exceptions;
+using WorkPlanner.Domain;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
@@ -12,15 +14,21 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IUsernameGenerator usernameGenerator;
+        private readonly FrontendConfiguration frontendConfiguration;
 
-        public UserValidationHandler(IUnitOfWork unitOfWork, IUsernameGenerator usernameGenerator)
+        public UserValidationHandler(IUnitOfWork unitOfWork, 
+                                     IUsernameGenerator usernameGenerator,
+                                     IOptions<FrontendConfiguration> frontendConfiguration)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             this.usernameGenerator = usernameGenerator ?? throw new ArgumentNullException(nameof(usernameGenerator));
+            this.frontendConfiguration = frontendConfiguration.Value ?? throw new ArgumentNullException(nameof(frontendConfiguration.Value));
         }
 
         public async Task<string> Handle(UserValidationCommand request, CancellationToken cancellationToken)
         {
+            string loginUrl = $"{frontendConfiguration.Url}/login";
+
             Guid idToBeActivated = DecodeId(request.ValidationToken);
 
             User userToValidate = await unitOfWork.Users.FindAsync(u => u.Id.Equals(idToBeActivated));
@@ -51,7 +59,7 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
 
             await unitOfWork.CompleteAsync();
 
-            return "Activated!"; //TO DO: redirect to success activation page
+            return loginUrl;
         }
 
         private Guid DecodeId(string encodedId)

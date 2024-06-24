@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WorkPlanner.Domain.Entities;
+using WorkPlanner.Domain.EntityPropertyTypes;
 using WorkPlanner.Interfaces.DataAccess.Repositories;
 
 namespace WorkPlanner.DataAccess.Repositories
@@ -145,6 +146,7 @@ namespace WorkPlanner.DataAccess.Repositories
 
             task.BacklogId = backlog.Id;
             task.Backlog = backlog;
+            task.Status = StatusType.ToDo;
 
             Update(task);
 

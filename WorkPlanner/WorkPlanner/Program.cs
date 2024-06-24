@@ -16,6 +16,8 @@ using WorkPlanner.Business.Commands.UserCommands;
 using System.Text.Json.Serialization;
 using WorkPlanner.Api.Filters;
 using Microsoft.AspNetCore.Mvc;
+using WorkPlanner.Domain;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,10 +47,12 @@ builder.Services.AddScoped<ReleaseSprintExceptionFilter>();
 builder.Services.Configure<ApiBehaviorOptions>(options
     => options.SuppressModelStateInvalidFilter = true);
 
+var frontendUrl = builder.Configuration["FrontendConfiguration:Url"];
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-               builder => builder.WithOrigins("http://localhost:4200")
+               builder => builder.WithOrigins(frontendUrl)
                                  .AllowAnyMethod()
                                  .AllowAnyHeader()
                                  .AllowCredentials());
@@ -72,6 +76,9 @@ builder.Services.AddOptions<JwtBearerConfiguration>()
     .Bind(builder.Configuration.GetSection(nameof(JwtBearerConfiguration)));
 
 builder.Services.ConfigureOptions<JwtBearerOptionsConfigurator>();
+
+builder.Services.AddOptions<FrontendConfiguration>()
+    .Bind(builder.Configuration.GetSection(nameof(FrontendConfiguration)));
 
 builder.Services.AddAuthentication(option =>
 {

@@ -165,7 +165,8 @@ export class CreateIssueComponent implements OnInit{
       storyPoints: this.storyPoints?.value,
       sprintId: '',
       projectId: projectId,
-      username: username,
+      creatorUsername: username,
+      assigneeUsername: this.assignee?.value.username ?? ''
     };
 
     if(this.sprintId !== ''){

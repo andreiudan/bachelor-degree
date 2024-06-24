@@ -4,10 +4,11 @@ import { TaskService } from '../../services/task/task.service';
 import { StatusTypes } from '../../../models/statusTypes';
 import { Sprint } from '../../../models/sprint';
 import { SprintService } from '../../services/sprint/sprint.service';
-import { ProjectService } from '../../services/project/project.service';
 import { lastValueFrom } from 'rxjs';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
+import { User } from '../../../models/user';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-sprint',
@@ -29,7 +30,12 @@ export class SprintComponent {
   public doneTasksLoaded: Promise<boolean>;
   public sprintLoaded: Promise<boolean>;
 
-  constructor(private sprintService: SprintService, private projectService: ProjectService, private taskService: TaskService, private router: Router) {}
+  public taskUserMap: Map<string, User> = new Map<string, User>();
+
+  constructor(private sprintService: SprintService, 
+              private userService: UserService, 
+              private taskService: TaskService, 
+              private router: Router) {}
 
   ngOnInit() {
     this.initialize();
@@ -64,6 +70,7 @@ export class SprintComponent {
     await this.loadInProgressTasks();
     await this.loadInReviewTasks();
     await this.loadDoneTasks();
+    await this.mapTasksToUsers();
 
     this.toDoTasksLoaded = Promise.resolve(true);
     this.inProgressTasksLoaded = Promise.resolve(true);
@@ -91,6 +98,34 @@ export class SprintComponent {
     this.doneTasks = await lastValueFrom(doneTasks$);
   }
 
+  private async mapTasksToUsers() {
+    if(this.toDoTasks.length > 0) {
+      await this.setTaskUserMap(this.toDoTasks);
+    }
+
+    if(this.inProgressTasks.length > 0) {
+      await this.setTaskUserMap(this.inProgressTasks);
+    }
+
+    if(this.inReviewTasks.length > 0) {
+      await this.setTaskUserMap(this.inReviewTasks);
+    }
+
+    if(this.doneTasks.length > 0) {
+      await this.setTaskUserMap(this.doneTasks);
+    }
+  }
+
+  private setTaskUserMap(tasks: Task[]) {
+    const promises = tasks.map(async task => {
+      const user$ = this.userService.get(task.assigneeId);
+      const user = await lastValueFrom(user$);
+      this.taskUserMap.set(task.id, user);
+    })
+
+    return Promise.all(promises);
+  }
+
   public async drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray<Task>(event.container.data, event.previousIndex, event.currentIndex);
@@ -101,22 +136,18 @@ export class SprintComponent {
 
       switch(event.container.id) {
         case 'toDoList':
-          movedTask = event.previousContainer.data[event.currentIndex];
           newStatus = StatusTypes.ToDo;
           break;
 
         case 'inProgressList':
-          movedTask = event.previousContainer.data[event.currentIndex];
           newStatus = StatusTypes.InProgress;
           break;
 
         case 'inReviewList':
-          movedTask = event.previousContainer.data[event.currentIndex];
           newStatus = StatusTypes.InReview;
           break;
 
         case 'doneList':
-          movedTask = event.previousContainer.data[event.currentIndex];
           newStatus = StatusTypes.Done;
           break;
         
@@ -124,6 +155,8 @@ export class SprintComponent {
           console.log('default');
           break;
       }
+
+      movedTask = event.previousContainer.data[event.previousIndex];
 
       const modified$ = this.taskService.updateStatus(movedTask.id, newStatus);
       wasUpdateSuccessful = await lastValueFrom(modified$);
@@ -145,5 +178,25 @@ export class SprintComponent {
     this.sprintService.release(this.activeSprint.id).subscribe(() => {
       this.router.navigate(['/backlog']);
     });
+  }
+
+  public getAssigneeFullName(taskId: string): string {
+    const user = this.taskUserMap.get(taskId);
+
+    if(user === undefined || user === null) {
+      return 'No assignee';
+    }
+
+    return user.firstName + ' ' + user.lastName;
+  }
+
+  public getAssigneeUsername(taskId: string): string {
+    const user = this.taskUserMap.get(taskId);
+
+    if(user === undefined || user === null) {
+      return 'No assignee';
+    }
+
+    return user.username;
   }
 }

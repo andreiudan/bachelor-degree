@@ -6,7 +6,8 @@ export class TaskCreation {
     description: string;
     sprintId: string;
     projectId: string;
-    username: string;
+    creatorUsername: string;
+    assigneeUsername: string;
     dueDate: Date;
     priority: PriorityTypes;
     type: TaskTypes;

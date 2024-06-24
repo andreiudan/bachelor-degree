@@ -16,7 +16,9 @@ namespace WorkPlanner.Domain.Dtos
         public Guid ProjectId { get; set; }
 
         [Required]
-        public string Username { get; set; }
+        public string CreatorUsername { get; set; }
+
+        public string AssigneeUsername { get; set; } = string.Empty;
 
         [Required]
         public string DueDate { get; set; }

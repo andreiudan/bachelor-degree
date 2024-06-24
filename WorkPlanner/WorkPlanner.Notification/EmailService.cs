@@ -39,7 +39,7 @@ namespace WorkPlanner.Notification
 
             BodyBuilder bodyBuilder = new()
             {
-                HtmlBody = string.Format(messageContent.Content)
+                HtmlBody = messageContent.Content
             };
 
             emailToSend.Body = bodyBuilder.ToMessageBody();

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using WorkPlanner.Business.Commands.TaskCommands;
+using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain.Dtos;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.DataAccess;
@@ -23,7 +24,28 @@ namespace WorkPlanner.Business.CommandHandlers.TaskHandlers
             SprintTask task = mapper.Map<SprintTask>(request.Task);
             SprintTask addedTask = null;
 
-            User user = await unitOfWork.Users.FindAsync(u => u.Username.Equals(request.Task.Username));
+            User user = await unitOfWork.Users.FindAsync(u => u.Username.Equals(request.Task.CreatorUsername));
+
+            if(user is null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            if(request.Task.AssigneeUsername == string.Empty)
+            {
+                task.AssigneeId = Guid.Empty;
+            }
+            else
+            {
+                User assignee = await unitOfWork.Users.FindAsync(u => u.Username.Equals(request.Task.AssigneeUsername));
+
+                if(assignee is null)
+                {
+                    throw new UserNotFoundException();
+                }
+
+                task.AssigneeId = assignee.Id;
+            }
 
             task.CreatorId = user.Id;
 

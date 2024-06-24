@@ -231,18 +231,20 @@ export class BacklogComponent {
       let wasMoved = false;
       let movedTask$: Observable<any> = new Observable();
 
+      const taskToBeMovedId = event.previousContainer.data[event.previousIndex].id;
+
       switch(event.container.id) {
         case 'activeSprintTasksList':
-          movedTask$ = this.tasksService.changeSprint(event.previousContainer.data[event.currentIndex].id, this.activeSprint.id);
+          movedTask$ = this.tasksService.changeSprint(taskToBeMovedId, this.activeSprint.id);
           break;
 
         case 'backlogTasksList':
-          movedTask$ = this.tasksService.moveToBacklog(event.previousContainer.data[event.currentIndex].id);
+          movedTask$ = this.tasksService.moveToBacklog(taskToBeMovedId);
           break;
         
         default:
           if(this.inactiveSprints.filter(sprint => sprint.id === event.container.id).length > 0){
-            movedTask$ = this.tasksService.changeSprint(event.previousContainer.data[event.currentIndex].id, event.container.id);
+            movedTask$ = this.tasksService.changeSprint(taskToBeMovedId, event.container.id);
             break;
           }
           else{

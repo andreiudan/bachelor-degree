@@ -15,7 +15,7 @@ namespace WorkPlanner.Business.Services
 
         public TokenService(IOptions<JwtBearerConfiguration> jwtConfig)
         {
-            this.jwtConfig = jwtConfig.Value;
+            this.jwtConfig = jwtConfig.Value ?? throw new ArgumentNullException(nameof(jwtConfig.Value));
         }
 
         public string GenerateToken(User user)

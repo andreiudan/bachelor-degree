@@ -54,7 +54,7 @@
                 <mat-form-field>
                     <mat-label>Assignee</mat-label>
                     <mat-select formControlName="assignee">
-                        <mat-option *ngFor="let assignee of users; trackBy: trackByFn" [value]="assignee">{{ assignee.firstName }}</mat-option>
+                        <mat-option *ngFor="let assignee of users; trackBy: trackByFn" [value]="assignee">{{ assignee.firstName }} ({{assignee.username}})</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
