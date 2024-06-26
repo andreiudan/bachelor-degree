@@ -16,6 +16,10 @@ import { UserService } from '../../services/user/user.service';
 import { User } from '../../../models/user';
 import { SubTask } from '../../../models/subTask';
 import { ActivateSprintAlertDialogComponent } from '../activate-sprint-alert-dialog/activate-sprint-alert-dialog.component';
+import { PriorityTypes } from '../../../models/priorityTypes';
+import { IconsService } from '../../services/icons/icons.service';
+import { TaskTypes } from '../../../models/taskTypes';
+import { StatusTypes } from '../../../models/statusTypes';
 
 @Component({
   selector: 'app-backlog',
@@ -37,11 +41,15 @@ export class BacklogComponent {
 
   private taskUserMap: Map<string, User> = new Map<string, User>();
 
+  public taskTypes = Object.values(TaskTypes).filter(value => typeof value === 'string');
+  public statusTypes = Object.values(StatusTypes).filter(value => typeof value === 'string');
+  
   constructor(private backlogService: BacklogService, 
               private sprintService: SprintService, 
               private projectService: ProjectService,
               private tasksService: TaskService,
               private userService: UserService,
+              private iconsService: IconsService,
               private dialog: MatDialog,
               private router: Router) {}
 
@@ -270,26 +278,32 @@ export class BacklogComponent {
 
   public startSprint(sprintId: string) {
     if(this.activeSprint.id !== ''){
-      const dialogRef = this.dialog.open(ActivateSprintAlertDialogComponent);
-
-      dialogRef.afterClosed().subscribe(result => {
-        if(result === false || result === undefined){
-          return;
-        }
-        
-        this.sprintService.release(this.activeSprint.id).subscribe(() => {
-          this.sprintService.activate(sprintId).subscribe(() => {
-            this.ngOnInit();
-          });
-        });
-
-        return;
-      });
+      this.openActivateSprintDialog(sprintId);
     }
     else{
       this.sprintService.activate(sprintId).subscribe(() => {
         this.ngOnInit();
       });
     }
+  }
+
+  private openActivateSprintDialog(sprintId: string) {
+    const dialogRef = this.dialog.open(ActivateSprintAlertDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result === false || result === undefined){
+        return;
+      }
+      
+      this.sprintService.release(this.activeSprint.id).subscribe(() => {
+        this.sprintService.activate(sprintId).subscribe(() => {
+          this.ngOnInit();
+        });
+      });
+    });
+  }
+
+  public getIconName(priority: PriorityTypes | string): string {
+    return this.iconsService.getIconName(priority);
   }
 }

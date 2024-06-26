@@ -19,6 +19,7 @@ export class BacklogService {
         ...task,
         dueDate: new Date(task.dueDate),
         startDate: new Date(task.startDate),
+        progress: 0,
       })))
     );
   }

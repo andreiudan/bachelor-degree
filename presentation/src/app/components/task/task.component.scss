@@ -127,6 +127,41 @@
     }
 }
 
+.details-alignment{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: -4px;
+    margin-bottom: 6px;
+
+    div{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 0 0 0 0;
+        padding-left: 48px;
+    }
+
+    .properties-values{
+        width: 65%;
+    }
+
+    .properties-names{
+        width: 35%;
+        
+    }
+
+    .details-alignment-section {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+}
+
 p{
     margin: 3px 0 3px 0;
 }

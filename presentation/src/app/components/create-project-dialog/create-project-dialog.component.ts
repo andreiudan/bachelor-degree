@@ -45,7 +45,12 @@ export class CreateProjectDialogComponent implements OnInit{
           CustomValidators.nameMinimumLengthValidator,
         ]
       ],
-      description: [''],
+      description: [
+        '',
+        [
+          Validators.required,
+        ]
+      ],
       dueDate: [
         '',
         [
@@ -78,7 +83,7 @@ export class CreateProjectDialogComponent implements OnInit{
 
     this.project = new ProjectCreation(); {
       this.project.name = this.createProjectForm.value.projectName,
-      this.project.description = this.createProjectForm.value.projectDescription,
+      this.project.description = this.createProjectForm.value.description,
       this.project.dueDate = this.createProjectForm.value.dueDate
     }
 

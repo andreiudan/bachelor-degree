@@ -12,26 +12,28 @@
         <h4>Edit Event</h4>
     </div>
 
-    <div class="content">
-        <div>
-            <p>From:</p>
-            <input type="time" class="time-input" [(ngModel)]="this.hourFrom" value="{{hourFrom}}" />
+    <form [formGroup]="timesForm" (ngSubmit)="save()">
+        <div class="content">
+            <div>
+                <p>From:</p>
+                <input type="time" class="time-input" value="{{hourFrom}}" formControlName="hourFromInput"/>
+            </div>
+            <div>
+                <p>To:</p>
+                <input type="time" class="time-input" value="{{hourTo}}" formControlName="hourToInput"/>
+            </div>
+            <div>
+                <p>Tasks:</p>
+            </div>
         </div>
-        <div>
-            <p>To:</p>
-            <input type="time" class="time-input" [(ngModel)]="this.hourTo" value="{{hourTo}}" />
+    
+        <div class="actions">
+            <button type="button" (click)="deleteEvent()" class="delete-button">Delete</button>
+            <div class="close-save-buttons-div">
+                <button type="button" (click)="closeComponent()" class="close-button">Close</button>
+                <button type="submit" class="save-button">Save</button>
+            </div>
         </div>
-        <div>
-            <p>Tasks:</p>
-        </div>
-    </div>
-
-    <div class="actions">
-        <button (click)="deleteEvent()" class="delete-button">Delete</button>
-        <div class="close-save-buttons-div">
-            <button (click)="closeComponent()" class="close-button">Close</button>
-            <button (click)="save()" class="save-button">Save</button>
-        </div>
-    </div>
+    </form>
 </div>
 

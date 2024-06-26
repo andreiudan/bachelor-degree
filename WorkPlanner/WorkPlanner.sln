@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkPlanner.Domain", "WorkP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkPlanner.Notification", "WorkPlanner.Notification\WorkPlanner.Notification.csproj", "{1E844BF6-1A85-4849-AF22-706A366ACF01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkPlanner.UnitTests", "WorkPlanner.UnitTests\WorkPlanner.UnitTests.csproj", "{0100E340-288B-4C55-9184-1A1F9A774D5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkPlanner.UnitTests", "WorkPlanner.UnitTests\WorkPlanner.UnitTests.csproj", "{0100E340-288B-4C55-9184-1A1F9A774D5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

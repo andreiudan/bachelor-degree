@@ -198,7 +198,7 @@ h2{
     margin-top: 8px;
     margin-bottom: 8px;
     cursor: pointer;
-    background-color: #B0B0B0;
+    background-color: #ededed;
 
     .task-info{
         display: grid;
@@ -256,15 +256,17 @@ h2{
         padding: 2px 4px 2px 4px;
         font-size: 12px;
         width: fit-content;
+        display: flex;
+        align-items: center;
     }
 }
 
 .task-card:hover{
-    background-color: #f0f0f0;
+    background-color: #d4d4d4;
 }
 
 .task-card:active{
-    background-color: #e4e4e4;
+    background-color: #c7c7c7;
 }
 
 .backlog{

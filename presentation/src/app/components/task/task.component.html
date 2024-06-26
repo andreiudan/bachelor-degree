@@ -72,11 +72,11 @@
                     </div>
                     <div class="properties-values">
                         <div class="priority-property">
-                            <mat-icon>home</mat-icon>
+                            <mat-icon>{{ this.getIconName(task.priority) }}</mat-icon>
                             <p>{{ priorityTypes[task.priority] }}</p>
                         </div>
                         <p>{{ taskTypes[task.type] }}</p>
-                        <p>{{ task.label !== undefined ? task.label : 'No label'}}</p>
+                        <p>{{ task.label !== '' ? task.label : 'No label'}}</p>
                         <p>{{ statusTypes[task.status] }}</p>
                         <p>{{ task.storyPoints }}</p>
                     </div>

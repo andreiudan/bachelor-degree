@@ -30,10 +30,7 @@ export class ProjectsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private projectService: ProjectService, 
-              private userService: UserService, 
-              private dialog: MatDialog,
-              private storageService: StorageService,
-              private jwtService: JwtService) { }
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadProjects();

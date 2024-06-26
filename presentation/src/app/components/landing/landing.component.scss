@@ -24,7 +24,7 @@
     padding-block-start: 30vh;
     padding-block-end: 30vh;
     padding-inline-start: 0px;
-    padding-inline-end: 8em;
+    padding-inline-end: 5em;
 }
 
 .right-div {
@@ -41,7 +41,8 @@
 
 h2 {
     margin: 0;
-    font-size: clamp(18px, 5vw, 58px);
+    // font-size: clamp(18px, 5vw, 58px);
+    font-size: 48px;
 }
 
 .padding-top-200 {

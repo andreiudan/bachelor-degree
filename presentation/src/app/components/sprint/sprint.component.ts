@@ -9,6 +9,8 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Router } from '@angular/router';
 import { User } from '../../../models/user';
 import { UserService } from '../../services/user/user.service';
+import { IconsService } from '../../services/icons/icons.service';
+import { PriorityTypes } from '../../../models/priorityTypes';
 
 @Component({
   selector: 'app-sprint',
@@ -31,10 +33,11 @@ export class SprintComponent {
   public sprintLoaded: Promise<boolean>;
 
   public taskUserMap: Map<string, User> = new Map<string, User>();
-
+  
   constructor(private sprintService: SprintService, 
               private userService: UserService, 
-              private taskService: TaskService, 
+              private taskService: TaskService,
+              private iconsService: IconsService, 
               private router: Router) {}
 
   ngOnInit() {
@@ -198,5 +201,9 @@ export class SprintComponent {
     }
 
     return user.username;
+  }
+
+  public getIconName(priority: PriorityTypes | string): string {
+    return this.iconsService.getIconName(priority);
   }
 }

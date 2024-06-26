@@ -9,6 +9,7 @@ namespace WorkPlanner.Domain.Dtos
         [MinLength(2, ErrorMessage = ValidationConstants.NameLengthErrorMessage)]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
         [Required]

@@ -16,7 +16,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -42,7 +42,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { LoadingComponent } from './components/loading/loading.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const matFormFieldOptions: MatFormFieldDefaultOptions = {
@@ -66,7 +65,6 @@ const matFormFieldOptions: MatFormFieldDefaultOptions = {
     UserComponent,
     CreateIssueComponent,
     ProjectsComponent,
-    LoadingComponent,
   ],
   imports: [
     BrowserModule,
@@ -110,4 +108,9 @@ const matFormFieldOptions: MatFormFieldDefaultOptions = {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+
+  constructor(private matIconRegistry: MatIconRegistry) {
+    this.matIconRegistry.setDefaultFontSetClass('material-symbols-outlined');
+  }
+}

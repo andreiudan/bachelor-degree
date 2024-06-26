@@ -6,23 +6,30 @@ namespace WorkPlanner.Api.Filters
 {
     public class ValidationExceptionFilter : IExceptionFilter
     {
-        private const string userNotFound = "UserNotFound";
-        private const string userAlreadyActivated = "UserAlreadyActivated";
+        private const string UserNotFound = "UserNotFound";
+        private const string UserAlreadyActivated = "UserAlreadyActivated";
+        private const string ActivationLinkExpiredException = "ActivationLinkExpiredException";
+
         private List<string> errorStates = new List<string>() 
         {
-            userNotFound,
-            userAlreadyActivated
+            UserNotFound,
+            UserAlreadyActivated,
+            ActivationLinkExpiredException
         };
 
         public void OnException(ExceptionContext context)
         {
             if(context.Exception is UserNotFoundException)
             {
-                context.ModelState.AddModelError(userNotFound, context.Exception.Message);
+                context.ModelState.AddModelError(UserNotFound, context.Exception.Message);
+            }
+            else if (context.Exception is ActivationLinkExpiredException)
+            {
+                context.ModelState.AddModelError(ActivationLinkExpiredException, context.Exception.Message);
             }
             else if(context.Exception is UserAlreadyActivatedException)
             {
-                context.ModelState.AddModelError(userAlreadyActivated, context.Exception.Message);
+                context.ModelState.AddModelError(UserAlreadyActivated, context.Exception.Message);
             }
 
             bool hasError = errorStates.Any(e => context.ModelState.ContainsKey(e));

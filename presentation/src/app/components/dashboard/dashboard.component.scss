@@ -65,7 +65,12 @@ mat-card{
 
 mat-card-header {
     font-weight: normal;
-    padding: 6px 0 0 6px;
+    padding: 6px 0 0 12px;
+    
+    mat-card-title {
+        font-size: 16px;
+        font-weight: bolder;
+    }
 }
 
 .story-points-divider {
@@ -139,6 +144,8 @@ mat-card-header {
         background-color: #bebaba;
         border-radius: 30px;
         padding: 2px 4px 2px 4px;
+        display: flex;
+        align-items: center;
     }
 
     .task-title {

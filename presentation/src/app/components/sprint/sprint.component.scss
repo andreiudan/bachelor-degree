@@ -129,7 +129,6 @@ mat-card{
             font-size: 14px;
             padding: 0 0 0 0;
             color: black;
-            white-space: nowrap;
         }
     
         mat-card-subtitle{
@@ -155,6 +154,8 @@ mat-card{
         border-radius: 30px;
         padding: 2px 4px 2px 4px;
         font-size: 12px;
+        display: flex;
+        align-items: center;
     }
 
     .task-labels{

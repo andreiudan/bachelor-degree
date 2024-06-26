@@ -41,7 +41,7 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
                 throw new InvalidPasswordException();
             }
 
-            return tokenService.GenerateToken(user); ;
+            return tokenService.GenerateToken(user);
         }
     }
 }

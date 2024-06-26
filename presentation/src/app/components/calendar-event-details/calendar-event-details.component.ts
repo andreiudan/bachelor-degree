@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatInput } from '@angular/material/input';
 
 export interface IHoursInterval {
@@ -10,7 +10,7 @@ export interface IHoursInterval {
 @Component({
   selector: 'app-calendar-event-details',
   standalone: true,
-  imports: [MatInput, MatFormField, FormsModule],
+  imports: [MatInput, MatFormField, FormsModule, ReactiveFormsModule],
   templateUrl: './calendar-event-details.component.html',
   styleUrl: './calendar-event-details.component.scss'
 })
@@ -45,21 +45,43 @@ export class CalendarEventDetailsComponent {
 
   public hoursInterval: IHoursInterval;
 
-  constructor() { }
+  public timesForm: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) { }
+
+  public get hourFromInput() {
+    return this.timesForm.get('hourFromInput')?.value;
+  }
+
+  public get hourToInput() {
+    return this.timesForm.get('hourToInput')?.value;
+  }
 
   public initialize(eventElement: HTMLElement, calendar: ElementRef, calendarEvents: ElementRef): void {
+    this.timesForm = this.formBuilder.group({
+      hourFromInput: [
+        ''
+      ],
+      hourToInput: [
+        ''
+      ]
+    });
+    
     this.calendar = calendar;
     this.eventElement = eventElement;
     this.calendarEvents = calendarEvents;
 
     this.setAlignmentAttributes(eventElement);
 
-    const computedStyle = getComputedStyle(eventElement);
-
     const eventElementRect = eventElement.getBoundingClientRect();
 
     this.hourFrom = this.calculateTimeFromPositions(eventElementRect.top + 0.0118);
     this.hourTo = this.calculateTimeFromPositions(eventElementRect.bottom);
+
+    this.timesForm.patchValue({
+      hourFromInput: this.hourFrom,
+      hourToInput: this.hourTo
+    });
   }
 
   private setAlignmentAttributes(eventElement: HTMLElement): void{
@@ -93,7 +115,13 @@ export class CalendarEventDetailsComponent {
     const hour = Math.floor(time);
     const minutes = Math.floor((time - hour) * 60);
 
-    return `${hour < 10 ? '0' : ''}${hour}:${minutes < 10 ? '0' : ''}${minutes}`;
+    const finalTime = `${hour < 10 ? '0' : ''}${hour}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+    if(finalTime === '24:00'){
+      return '23:59';
+    }
+
+    return finalTime;
   }
 
   public closeComponent(): void {
@@ -101,10 +129,10 @@ export class CalendarEventDetailsComponent {
   }
 
   public save(): void {
-    var fromInput = document.getElementById('from');
-    var toInput = document.getElementById('to');
+    const fromInput = this.timesForm.value.hourFromInput;
+    const toInput = this.timesForm.value.hourToInput;
 
-    if(fromInput?.textContent === this.hourFrom && toInput?.textContent === this.hourTo){
+    if(fromInput === this.hourFrom && toInput === this.hourTo){
       return;
     }
 

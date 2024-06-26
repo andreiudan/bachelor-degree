@@ -193,6 +193,8 @@ export class CalendarComponent {
       dblClickListener: eventButton.dbClickListener,
       timesheetId: timesheet.id,
     });
+
+    this.setCalendarEventSubtitle(eventButton.button, top, bottom);
   }
 
   public onDayClicked(): void {
@@ -382,7 +384,7 @@ export class CalendarComponent {
 
     this.renderer.appendChild(this.calendarEvents.nativeElement, eventDiv);
 
-    const bottom = await this.getBottomPercentageOfEventDiv(eventDiv);
+    const bottom = await this.getBottomPercentageOfEventDiv(eventDiv, top);
 
     let newTimesheetId = await this.addNewTimesheet(top, bottom, insetInline);
 
@@ -401,6 +403,21 @@ export class CalendarComponent {
     if(newTimesheetId === '' || undefined){
       this.deleteCalendarEventElement(eventDiv);
     }
+
+    this.setCalendarEventSubtitle(eventButton.button, top, bottom);
+  }
+
+  private setCalendarEventSubtitle(eventButton: HTMLElement, top: number, bottom: number) {
+    const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
+    const startTime = this.calculateTimeFromPositionsPercentage(top);
+    const endTime = this.calculateTimeFromPositionsPercentage(100 - bottom);
+
+    const buttonSubTitleDiv = this.renderer.createElement('div');
+    this.renderer.addClass(buttonSubTitleDiv, 'event-button-subtitle');
+    const buttonSubTitle = this.renderer.createText(`${startTime} - ${endTime}`);
+    this.renderer.appendChild(buttonSubTitleDiv, buttonSubTitle);
+
+    this.renderer.appendChild(eventButton, buttonSubTitleDiv);
   }
 
   public onCalendarEventClick(event: MouseEvent) {
@@ -417,16 +434,10 @@ export class CalendarComponent {
 
     const buttonTitleDiv = this.renderer.createElement('div');
     this.renderer.addClass(buttonTitleDiv, 'event-button-title');
-    const buttonTitle = this.renderer.createText('Event title');
+    const buttonTitle = this.renderer.createText('Timesheet entry');
     this.renderer.appendChild(buttonTitleDiv, buttonTitle);
 
-    const buttonSubTitleDiv = this.renderer.createElement('div');
-    this.renderer.addClass(buttonSubTitleDiv, 'event-button-subtitle');
-    const buttonSubTitle = this.renderer.createText('Event subtitle');
-    this.renderer.appendChild(buttonSubTitleDiv, buttonSubTitle);
-
     this.renderer.appendChild(button, buttonTitleDiv);
-    this.renderer.appendChild(button, buttonSubTitleDiv);
 
     const listener = this.renderer.listen(button, 'dblclick', (event: MouseEvent) => 
       this.onCalendarEventDoubleClick(event, event.target as HTMLElement));
@@ -507,16 +518,14 @@ export class CalendarComponent {
   }
 
   private async addNewTimesheet(top: number, bottom: number, insetInline: IInsetInline): Promise<string> {
-    const jwtToken = this.storageService.getJwtToken();
-    const username = this.jwtService.getClaim(jwtToken, 'username');
     let timesheetId = '';
 
     const calculatedDate = this.calculateDateFromInsetInline(insetInline);
 
     const timesheet: TimesheetCreation = {
       date: calculatedDate.toDateString(),
-      startTime: this.calculateTimeFromPositions(top),
-      endTime: this.calculateTimeFromPositions(100 - bottom),
+      startTime: this.calculateTimeFromPositionsPercentage(top),
+      endTime: this.calculateTimeFromPositionsPercentage(100 - bottom),
     };
 
     const createTimesheet = this.timesheetService.create(timesheet);
@@ -533,7 +542,7 @@ export class CalendarComponent {
     return new Date(this.selectedYear, this.selectedMonth, dateDay);
   }
 
-  private calculateTimeFromPositions(position: number) {
+  private calculateTimeFromPositionsPercentage(position: number) {
     const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
 
     const positionAsPx = (position / 100) * calendarEventsRect.height;
@@ -542,8 +551,14 @@ export class CalendarComponent {
     const hour = Math.floor(time);
     const minutes = Math.floor((time - hour) * 60);
 
-    return `${hour < 10 ? '0' : ''}${hour}:${minutes < 10 ? '0' : ''}${minutes}`;
-  } //floating point precision problem
+    let endTime = `${hour < 10 ? '0' : ''}${hour}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+    if(endTime === '24:00') {
+      endTime = '23:59';
+    }
+
+    return endTime;
+  }
 
   public onCalendarEventDelete(): void {
     this.deleteCalendarEventElement(this.calendarEventDetailsComponent.eventElement);
@@ -577,10 +592,15 @@ export class CalendarComponent {
       (div) => div.eventElementButton === this.calendarEventDetailsComponent.eventElement
     );
 
+    const divToModifyRect = divToModify[0].eventElement.getBoundingClientRect();
+    const calendarEventsRect = this.calendarEvents.nativeElement.getBoundingClientRect();
+
+    const insetInlineStart = calendarEventsRect.left - divToModifyRect.left;
+
     const timesheet: Timesheet = {
       id: divToModify[0].timesheetId,
       username: this.jwtService.getClaim(this.storageService.getJwtToken(), 'username'),
-      date: new Date(this.selectedYear, this.selectedMonth, this.selectedDay).toDateString(),
+      date: this.calculateDateByInsetInline(divToModifyRect.left, calendarEventsRect.width).toDateString(),
       startTime: newTimeInterval.hourFrom,
       endTime: newTimeInterval.hourTo,
     }
@@ -590,6 +610,14 @@ export class CalendarComponent {
         this.setNewCalendarEventPositions(divToModify[0].eventElement, newTimeInterval.hourFrom, newTimeInterval.hourTo);
       }
     );
+  }
+
+  private calculateDateByInsetInline(insetInlineStart: number, calendarEventsWidth: number): Date {
+    const dateDayIndex = Math.floor((insetInlineStart * 7) / calendarEventsWidth) - 1;
+
+    const dateDay = this.daysInSelectedWeek[dateDayIndex].date;
+
+    return new Date(this.selectedYear, this.selectedMonth, dateDay);
   }
 
   private setNewCalendarEventPositions(eventElement: HTMLElement, hourFrom: string, hourTo: string): void {
@@ -646,45 +674,49 @@ export class CalendarComponent {
     return top;
   }
 
-  private async getBottomPercentageOfEventDiv(eventDiv: any): Promise<number> {
+  private async getBottomPercentageOfEventDiv(eventDiv: any, topPosition: number): Promise<number> {
     return new Promise<number>((resolve) => {
-      let finalBottom = 0; 
+      const calendarEventsRectMove =
+            this.calendarEvents.nativeElement.getBoundingClientRect();
+      const fiveMinutesSegments = 24 * 12;
+      const oneFiveMinuteSegmentPercentage = 100 / fiveMinutesSegments;
+      const maxBottomPercentage =
+        fiveMinutesSegments * oneFiveMinuteSegmentPercentage;
+      const bottomEquivalentOfTopPosition = 100 - (topPosition + 5 * oneFiveMinuteSegmentPercentage);
+      let finalBottom = bottomEquivalentOfTopPosition;
 
       const mouseMoveListener = this.renderer.listen(
         this.calendarEvents.nativeElement,
         'mousemove',
-        (moveEvent: MouseEvent) => {
-          const calendarEventsRectMove =
-            this.calendarEvents.nativeElement.getBoundingClientRect();
-          const fiveMinuesSegments = 24 * 12;
-          const oneFiveMinuteSegmentPercentage = 100 / fiveMinuesSegments;
-          const maxBottomPercentage =
-            fiveMinuesSegments * oneFiveMinuteSegmentPercentage;
-
+        (moveEvent: MouseEvent) => {  
           const mouseYMove = moveEvent.clientY - calendarEventsRectMove.top;
-
+  
           const bottomPercentage =
             ((calendarEventsRectMove.height - mouseYMove) /
               calendarEventsRectMove.height) *
             100;
           const bottomSegment =
-            (bottomPercentage * fiveMinuesSegments) / maxBottomPercentage;
-
-          const bottom =
+            (bottomPercentage * fiveMinutesSegments) / maxBottomPercentage;
+  
+          let bottom =
             Math.floor(bottomSegment) * oneFiveMinuteSegmentPercentage;
+  
+          if(bottom > bottomEquivalentOfTopPosition) {
+            return;
+          }
 
-            finalBottom = bottom;
-            this.renderer.setStyle(eventDiv, 'bottom', `${bottom}%`);
+          finalBottom = bottom;
+          this.renderer.setStyle(eventDiv, 'bottom', `${bottom}%`);
         }
       );
-
+  
       const mouseUpListener = this.renderer.listen(
         this.calendarEvents.nativeElement,
         'mouseup',
         () => {
           mouseMoveListener();
           mouseUpListener();
-          resolve(finalBottom)
+          resolve(finalBottom);
         }
       );
     });

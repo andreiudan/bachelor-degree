@@ -68,23 +68,29 @@
                     <div class="blank-title-space">
                       <div class="no-legend">
                         <div class="title">
-                          <mat-icon>block</mat-icon>
-                          <h4>{{ task.name }}</h4>
+                          <div>
+                            <mat-icon>{{ this.getIconName(task.priority) }}</mat-icon>
+                          </div>
+                          <div>
+                            <h4>{{ task.name }}</h4>
+                          </div>
                         </div>
-                        <mat-card class="task-labels">
-                          <mat-card-content>
-                            <p>{{ task.label }}</p>
-                          </mat-card-content>
-                        </mat-card>
+                        <div>
+                          <mat-card class="task-labels">
+                            <mat-card-content>
+                              <p>{{ task.label }}</p>
+                            </mat-card-content>
+                          </mat-card>
+                        </div>
                       </div>
                     </div>
                     <div class="info-alignment">
                       <div class="info data">
                         <div>
-                          <p>{{ task.status }}</p>
+                          <p>{{ statusTypes[task.status] }}</p>
                         </div>
                         <div>
-                          <p>{{ task.type }}</p>
+                          <p>{{ taskTypes[task.type] }}</p>
                         </div>
                         <div>
                           <div class="progress">
@@ -176,8 +182,12 @@
                     <div class="blank-title-space">
                       <div class="no-legend">
                         <div class="title">
-                          <mat-icon>block</mat-icon>
-                          <h4>{{ task.name }}</h4>
+                          <div>
+                            <mat-icon>{{ this.getIconName(task.priority) }}</mat-icon>
+                          </div>
+                          <div>
+                            <h4>{{ task.name }}</h4>
+                          </div>
                         </div>
                         <mat-card class="task-labels">
                           <mat-card-content>
@@ -189,10 +199,10 @@
                     <div class="info-alignment">
                       <div class="info data">
                         <div>
-                          <p>{{ task.status }}</p>
+                          <p>{{ statusTypes[task.status] }}</p>
                         </div>
                         <div>
-                          <p>{{ task.type }}</p>
+                          <p>{{ taskTypes[task.type] }}</p>
                         </div>
                         <div>
                           <div class="progress">
@@ -274,8 +284,12 @@
                     <div class="blank-title-space">
                       <div class="no-legend">
                         <div class="title">
-                          <mat-icon>block</mat-icon>
-                          <h4>{{ task.name }}</h4>
+                          <div>
+                            <mat-icon>{{ this.getIconName(task.priority) }}</mat-icon>
+                          </div>
+                          <div>
+                            <h4>{{ task.name }}</h4>
+                          </div>
                         </div>
                         <mat-card class="task-labels">
                           <mat-card-content>
@@ -287,7 +301,7 @@
                     <div class="backlog-info-alignment">
                       <div class="backlog-info data">
                         <div>
-                          <p>{{ task.type }}</p>
+                          <p>{{ taskTypes[task.type] }}</p>
                         </div>
                         <div>
                           <p>{{ this.changeDateTimeToDate(task.dueDate) }}</p>

@@ -57,12 +57,27 @@ namespace WorkPlanner.Domain.Entities
                 this.CreatorId.CompareTo(obj.CreatorId) == 0 &&
                 this.StartDate == obj.StartDate &&
                 this.DueDate == obj.DueDate &&
+                this.Active.Equals(obj.Active) &&
+                this.Released.Equals(obj.Released) &&
                 this.Tasks == obj.Tasks;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, ProjectId, Project, Name, CreatorId, StartDate, DueDate, Tasks);
+            HashCode hash = new HashCode();
+
+            hash.Add(Id);
+            hash.Add(ProjectId);
+            hash.Add(Project);
+            hash.Add(Name);
+            hash.Add(CreatorId);
+            hash.Add(StartDate);
+            hash.Add(DueDate);
+            hash.Add(Active);
+            hash.Add(Released);
+            hash.Add(Tasks);
+
+            return hash.ToHashCode();
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Task } from '../../../models/task';
 import { ProjectService } from '../../services/project/project.service';
 import { Project } from '../../../models/project';
@@ -39,7 +39,8 @@ export class DashboardComponent {
   public projects: Project[] = [];
 
   public selectedProject: Project = new Project();
-
+  public activeSprint: Sprint = new Sprint();
+  
   public dataLoaded: Promise<boolean>;
   public sprintsFetched: Promise<boolean>;
 
@@ -69,7 +70,7 @@ export class DashboardComponent {
 
         if(localStorage.getItem('selectedProjectId') === null || localStorage.getItem('selectedProjectId') === ''){
           this.selectedProject = this.projects[0];
-          this.getSprints().then(() => this.calculateData());
+          this.getActiveSprint().then(() => this.calculateData());
           localStorage.setItem('selectedProjectId', this.selectedProject.id);
         }
         else{
@@ -77,7 +78,7 @@ export class DashboardComponent {
 
           if(selectedProject$ !== undefined){
             this.selectedProject = selectedProject$;
-            this.getSprints().then(() => this.calculateData());
+            this.getActiveSprint().then(() => this.calculateData());
           }
         }
 
@@ -86,13 +87,9 @@ export class DashboardComponent {
     );
   }
 
-  private async getSprints(): Promise<Sprint[]> {
-    let projectSprints: Sprint[] = [];
-
-    const sprints = this.projectService.getSprintsForProject(this.selectedProject.id);
-    this.selectedProject.sprints = await lastValueFrom(sprints);
-
-    return projectSprints
+  private async getActiveSprint() {
+    const sprints = this.sprintService.getActiveSprintForProject(this.selectedProject.id);
+    this.activeSprint = await lastValueFrom(sprints);
   }
 
   trackByFn(index: number, item: any) {
@@ -103,11 +100,11 @@ export class DashboardComponent {
     this.selectedProject = selectedProject;
     localStorage.setItem('selectedProjectId', this.selectedProject.id);
     this.initializeData();
-    this.getSprints().then(() => this.calculateData());
+    this.getActiveSprint().then(() => this.calculateData());
   }
 
   private async setToDoTasksNumber() {
-    const sprintToDoTasks = this.sprintService.getTasksByTaskStatusForSprint(this.selectedProject.sprints[0].id, StatusTypes.ToDo);
+    const sprintToDoTasks = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.ToDo);
     const toDoTasks = await lastValueFrom(sprintToDoTasks);
 
     this.toDoTasksNumber = toDoTasks.length;
@@ -118,7 +115,7 @@ export class DashboardComponent {
   }
 
   private async setInProgressTasksNumber() {
-    const sprintInProgressTasks = this.sprintService.getTasksByTaskStatusForSprint(this.selectedProject.sprints[0].id, StatusTypes.InProgress);
+    const sprintInProgressTasks = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.InProgress);
     const inProgressTasks = await lastValueFrom(sprintInProgressTasks);
 
     this.inProgressTasksNumber = inProgressTasks.length;
@@ -129,7 +126,7 @@ export class DashboardComponent {
   }
 
   private async setInReviewTasksNumber() {
-    const sprintInReviewTasks = this.sprintService.getTasksByTaskStatusForSprint(this.selectedProject.sprints[0].id, StatusTypes.InReview);
+    const sprintInReviewTasks = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.InReview);
     const inReviewTasks = await lastValueFrom(sprintInReviewTasks);
 
     this.inReviewTasksNumber = inReviewTasks.length;
@@ -140,7 +137,7 @@ export class DashboardComponent {
   }
 
   private async setDoneTasksNumber() {
-    const sprintDoneTasks = this.sprintService.getTasksByTaskStatusForSprint(this.selectedProject.sprints[0].id, StatusTypes.Done);
+    const sprintDoneTasks = this.sprintService.getTasksByTaskStatusForSprint(this.activeSprint.id, StatusTypes.Done);
     const doneTasks = await lastValueFrom(sprintDoneTasks);
 
     this.doneTasksNumber = doneTasks.length;
@@ -159,28 +156,28 @@ export class DashboardComponent {
   }
 
   private async setBlockerTasksNumber() {
-    const sprintBlockerTasks = this.sprintService.getTasksByTaskPriorityForSprint(this.selectedProject.sprints[0].id, PriorityTypes.Blocker);
+    const sprintBlockerTasks = this.sprintService.getTasksByTaskPriorityForSprint(this.activeSprint.id, PriorityTypes.Blocker);
     this.blockerTasks = await lastValueFrom(sprintBlockerTasks);
 
     this.blockerPriorityTasksNumber = this.blockerTasks.length;
   }
 
   private async setHighPriorityTasksNumber() {
-    const sprintHighPriorityTasks = this.sprintService.getTasksByTaskPriorityForSprint(this.selectedProject.sprints[0].id, PriorityTypes.High);
+    const sprintHighPriorityTasks = this.sprintService.getTasksByTaskPriorityForSprint(this.activeSprint.id, PriorityTypes.High);
     const highPriorityTasks = await lastValueFrom(sprintHighPriorityTasks);
 
     this.highPriorityTasksNumber = highPriorityTasks.length;
   }
 
   private async setMediumPriorityTasksNumber() {
-    const sprintMediumPriorityTasks = this.sprintService.getTasksByTaskPriorityForSprint(this.selectedProject.sprints[0].id, PriorityTypes.Medium);
+    const sprintMediumPriorityTasks = this.sprintService.getTasksByTaskPriorityForSprint(this.activeSprint.id, PriorityTypes.Medium);
     const mediumPriorityTasks = await lastValueFrom(sprintMediumPriorityTasks);
 
     this.mediumPriorityTasksNumber = mediumPriorityTasks.length;
   }
 
   private async setLowPriorityTasksNumber() {
-    const sprintLowPriorityTasks = this.sprintService.getTasksByTaskPriorityForSprint(this.selectedProject.sprints[0].id, PriorityTypes.Low);
+    const sprintLowPriorityTasks = this.sprintService.getTasksByTaskPriorityForSprint(this.activeSprint.id, PriorityTypes.Low);
     const lowPriorityTasks = await lastValueFrom(sprintLowPriorityTasks);
 
     this.lowPriorityTasksNumber = lowPriorityTasks.length;
@@ -213,7 +210,7 @@ export class DashboardComponent {
       {title: 'Days left until release', data: 0},
       {title: 'Days left in this sprint', data: 0},
       {title: 'Hours worked on this project', data: 0},
-      {title: 'Meetings today?', data: 0},
+      {title: 'Meetings today', data: 0},
     ]
   }
 
@@ -235,7 +232,7 @@ export class DashboardComponent {
   private calculateDaysLeftInSprint(): number {
     let daysLeftInSprint = 0;
 
-    const diff = Math.abs(this.selectedProject.sprints[0].dueDate.getTime() - new Date().getTime());
+    const diff = Math.abs(this.activeSprint.dueDate.getTime() - new Date().getTime());
     daysLeftInSprint = Math.ceil(diff / (1000 * 3600 * 24));
 
     return daysLeftInSprint;
@@ -252,7 +249,7 @@ export class DashboardComponent {
       {title: 'Days left until release', data: this.calculateDaysLeftUnitlRelease()},
       {title: 'Days left in this sprint', data: this.calculateDaysLeftInSprint()},
       {title: 'Hours worked on this project', data: this.calculateHoursWorkedOnProject()},
-      {title: 'Meetings today?', data: 2},
+      {title: 'Meetings today', data: 0},
     ];
   }
 }

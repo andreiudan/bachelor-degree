@@ -1,4 +1,3 @@
-import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { Task } from '../../../models/task';
 import { SubTask } from '../../../models/subTask';
@@ -12,6 +11,7 @@ import { PriorityTypes } from '../../../models/priorityTypes';
 import { StatusTypes } from '../../../models/statusTypes';
 import { User } from '../../../models/user';
 import { UserService } from '../../services/user/user.service';
+import { IconsService } from '../../services/icons/icons.service';
 
 @Component({
   selector: 'app-task',
@@ -43,6 +43,7 @@ export class TaskComponent {
               private router: Router, 
               private taskService: TaskService, 
               private userService: UserService,
+              private iconsService: IconsService,
               private dialog: MatDialog) {}
 
   async ngOnInit() {
@@ -163,5 +164,9 @@ export class TaskComponent {
     }
 
     return this.assignee.firstName + ' ' + this.assignee.lastName;
+  }
+
+  public getIconName(priority: PriorityTypes | string): string {
+    return this.iconsService.getIconName(priority);
   }
 }

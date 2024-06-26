@@ -5,7 +5,6 @@ import { Sprint } from '../../../models/sprint';
 import { Task } from '../../../models/task';
 import { PriorityTypes } from '../../../models/priorityTypes';
 import { StatusTypes } from '../../../models/statusTypes';
-import { TaskTypes } from '../../../models/taskTypes';
 import { SprintCreation } from '../../../models/sprintCreation';
 
 @Injectable({
@@ -87,9 +86,6 @@ export class SprintService {
           ...task,
           dueDate: new Date(task.dueDate),
           createdDate: new Date(task.startDate),
-          status: StatusTypes[task.status],
-          priority: PriorityTypes[task.priority],
-          type: TaskTypes[task.type],
           progress: 0,
         }))
       )
@@ -109,9 +105,6 @@ export class SprintService {
           ...task,
           dueDate: new Date(task.dueDate),
           startDate: new Date(task.startDate),
-          status: StatusTypes[task.status],
-          priority: PriorityTypes[task.priority],
-          type: TaskTypes[task.type],
           progress: 0,
         })),
       }))
@@ -132,9 +125,6 @@ export class SprintService {
             ...task,
             dueDate: new Date(task.dueDate),
             startDate: new Date(task.startDate),
-            status: StatusTypes[task.status],
-            priority: PriorityTypes[task.priority],
-            type: TaskTypes[task.type],
             progress: 0,
           })),
         }))

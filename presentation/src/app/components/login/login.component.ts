@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '../../../models/user';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { Router } from '@angular/router';
 import { CustomValidators } from '../../input-validation/custom-validators';
 import { INPUT_VALIDATION_RULES } from '../../input-validation/input-validation-rules';
 import { UserAuthentication } from '../../../models/userAuthentication';
-import { LoadingService } from '../../services/loading/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +20,6 @@ export class LoginComponent implements OnInit{
 
   public constructor(private formBuilder: FormBuilder, 
                      private authService: AuthenticationService,
-                     private loadingService: LoadingService,
                      private router: Router) {
   }
 
@@ -66,10 +63,7 @@ export class LoginComponent implements OnInit{
         password: btoa(this.password?.value),
       };
 
-      this.loadingService.show();
-
       this.authService.login(userWithEncodedPassword).subscribe(() => {
-        this.loadingService.hide();
         this.router.navigate(['/dashboard']);
       });
     }

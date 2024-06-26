@@ -4,6 +4,7 @@ using System.Text;
 using WorkPlanner.Business.Commands.UserCommands;
 using WorkPlanner.Business.Exceptions;
 using WorkPlanner.Domain;
+using WorkPlanner.Domain.Configurations;
 using WorkPlanner.Domain.Entities;
 using WorkPlanner.Interfaces.Business;
 using WorkPlanner.Interfaces.DataAccess;
@@ -15,14 +16,17 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
         private readonly IUnitOfWork unitOfWork;
         private readonly IUsernameGenerator usernameGenerator;
         private readonly FrontendConfiguration frontendConfiguration;
+        private readonly AccountValidationConfiguration accountValidationConfiguration;
 
-        public UserValidationHandler(IUnitOfWork unitOfWork, 
+        public UserValidationHandler(IUnitOfWork unitOfWork,
                                      IUsernameGenerator usernameGenerator,
-                                     IOptions<FrontendConfiguration> frontendConfiguration)
+                                     IOptions<FrontendConfiguration> frontendConfiguration,
+                                     IOptions<AccountValidationConfiguration> accountValidationConfiguration)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             this.usernameGenerator = usernameGenerator ?? throw new ArgumentNullException(nameof(usernameGenerator));
             this.frontendConfiguration = frontendConfiguration.Value ?? throw new ArgumentNullException(nameof(frontendConfiguration.Value));
+            this.accountValidationConfiguration = accountValidationConfiguration.Value ?? throw new ArgumentNullException(nameof(accountValidationConfiguration.Value));
         }
 
         public async Task<string> Handle(UserValidationCommand request, CancellationToken cancellationToken)
@@ -36,6 +40,11 @@ namespace WorkPlanner.Business.CommandHandlers.UserHandlers
             if(userToValidate is null)
             {
                 throw new UserNotFoundException();
+            }
+
+            if(userToValidate.RegistrationTime.AddMinutes(accountValidationConfiguration.ExpirationTimeInMinutes) > DateTime.UtcNow)
+            {
+                throw new ActivationLinkExpiredException();
             }
 
             if(userToValidate.Verified == true)
